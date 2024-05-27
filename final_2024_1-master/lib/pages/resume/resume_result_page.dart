@@ -25,7 +25,7 @@ class ResumeResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("이력서 결과")),
+      appBar: AppBar(title: const Text("최종 이력서")),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _fetchResumeData(),
         builder: (context, snapshot) {
@@ -46,13 +46,13 @@ class ResumeResultPage extends StatelessWidget {
                   _buildBox(_buildAcademicInfo(data['AcademicInfo'])),
                   SizedBox(height: 20),
                   _buildSectionTitle("경력 정보"),
-                  ..._buildCareerInfos(data['CareerInfos']),
+                  _buildCareerInfos(data['CareerInfos']),
                   SizedBox(height: 20),
                   _buildSectionTitle("자격/면허 정보"),
-                  ..._buildLicenseInfos(data['LicenseInfos']),
+                  _buildLicenseInfos(data['LicenseInfos']),
                   SizedBox(height: 20),
                   _buildSectionTitle("훈련 정보"),
-                  ..._buildTrainingInfos(data['TrainingInfos']),
+                  _buildTrainingInfos(data['TrainingInfos']),
                 ],
               ),
             );
@@ -109,39 +109,72 @@ class ResumeResultPage extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildCareerInfos(List<dynamic>? careerInfos) {
-    if (careerInfos == null || careerInfos.isEmpty) return [Text("경력 정보 없음")];
-    return careerInfos.map((career) {
-      return Card(
-        child: ListTile(
-          title: Text("근무처: ${career['place']}"),
-          subtitle: Text("근무 기간: ${career['period']}\n업무 내용: ${career['task']}"),
-        ),
-      );
-    }).toList();
+  Widget _buildCareerInfos(List<dynamic>? careerInfos) {
+    if (careerInfos == null || careerInfos.isEmpty) return Text("경력 정보 없음");
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: careerInfos.length,
+      itemBuilder: (context, index) {
+        var career = careerInfos[index];
+        return Column(
+          children: [
+            Card(
+              child: ListTile(
+                title: Text("근무처: ${career['place']}"),
+                subtitle: Text("근무 기간: ${career['period']}\n업무 내용: ${career['task']}"),
+              ),
+            ),
+            SizedBox(height: 10), // 항목 간의 간격 추가
+          ],
+        );
+      },
+    );
   }
 
-  List<Widget> _buildLicenseInfos(List<dynamic>? licenseInfos) {
-    if (licenseInfos == null || licenseInfos.isEmpty) return [Text("자격/면허 정보 없음")];
-    return licenseInfos.map((license) {
-      return Card(
-        child: ListTile(
-          title: Text("자격증/면허: ${license['licenseName']}"),
-          subtitle: Text("취득일: ${license['date']}\n시행 기관: ${license['agency']}"),
-        ),
-      );
-    }).toList();
+  Widget _buildLicenseInfos(List<dynamic>? licenseInfos) {
+    if (licenseInfos == null || licenseInfos.isEmpty) return Text("자격/면허 정보 없음");
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: licenseInfos.length,
+      itemBuilder: (context, index) {
+        var license = licenseInfos[index];
+        return Column(
+          children: [
+            Card(
+              child: ListTile(
+                title: Text("자격증/면허: ${license['licenseName']}"),
+                subtitle: Text("취득일: ${license['date']}\n시행 기관: ${license['agency']}"),
+              ),
+            ),
+            SizedBox(height: 10), // 항목 간의 간격 추가
+          ],
+        );
+      },
+    );
   }
 
-  List<Widget> _buildTrainingInfos(List<dynamic>? trainingInfos) {
-    if (trainingInfos == null || trainingInfos.isEmpty) return [Text("훈련/교육 정보 없음")];
-    return trainingInfos.map((training) {
-      return Card(
-        child: ListTile(
-          title: Text("훈련/교육명: ${training['trainingName']}"),
-          subtitle: Text("훈련/교육 기간: ${training['date']}\n훈련/교육 기관: ${training['agency']}"),
-        ),
-      );
-    }).toList();
+  Widget _buildTrainingInfos(List<dynamic>? trainingInfos) {
+    if (trainingInfos == null || trainingInfos.isEmpty) return Text("훈련/교육 정보 없음");
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: trainingInfos.length,
+      itemBuilder: (context, index) {
+        var training = trainingInfos[index];
+        return Column(
+          children: [
+            Card(
+              child: ListTile(
+                title: Text("훈련/교육명: ${training['trainingName']}"),
+                subtitle: Text("훈련/교육 기간: ${training['date']}\n훈련/교육 기관: ${training['agency']}"),
+              ),
+            ),
+            SizedBox(height: 10), // 항목 간의 간격 추가
+          ],
+        );
+      },
+    );
   }
 }
