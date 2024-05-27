@@ -1,0 +1,30 @@
+[33mcommit 0b78e2f7780898e9db125835ba78a5b3c7004296[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/hayoung[m[33m)[m
+Merge: 125925a 87c59df
+Author: emitlighthy <emitlighthy@naver.com>
+Date:   Mon May 27 17:15:13 2024 +0900
+
+    Merge branch 'main' of https://github.com/1210so/flutter into feature/hayoung
+
+[33mcommit 87c59dffd65206d953592d0d38b7d6dde787f3c9[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: yaejinkong <0910a@naver.com>
+Date:   Mon May 27 17:09:26 2024 +0900
+
+    마지막 체크 페이지 추가
+
+[33mcommit 125925a8678623d0fe5319f10dd1613c9e234663[m
+Author: emitlighthy <emitlighthy@naver.com>
+Date:   Mon May 27 17:01:33 2024 +0900
+
+    [FEAT] 자격증 API 연동하여 변수 저장 완료
+
+[33mcommit 7ab3df1aff1707ac7b198a0e2601d9c870de59c2[m[33m ([m[1;32mmain[m[33m)[m
+Author: yaejinkong <0910a@naver.com>
+Date:   Mon May 27 15:04:18 2024 +0900
+
+    플러터 파일 추가
+
+[33mcommit 1c4b84a807893a729ba228b0a820ebf32a1a54e7[m
+Author: yaejinkong <127467781+yaejinkong@users.noreply.github.com>
+Date:   Mon May 27 14:49:09 2024 +0900
+
+    Create README.md
