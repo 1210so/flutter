@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:final_2024_1/pages/training_info/training_info_first_page.dart';
-import 'package:final_2024_1/pages/resume/resume_result_page.dart';
+import 'package:final_2024_1/pages/resume/check_resume_result_page.dart';
 import 'package:final_2024_1/pages/training_info/training_info_edit_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -111,7 +111,7 @@ class _TrainingInfoResultPageState extends State<TrainingInfoResultPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ResumeResultPage(userId: widget.userId)),
+                          MaterialPageRoute(builder: (context) => CheckResumeResultPage(userId: widget.userId)),
                         );
                       },
                       child: const Text('최종 이력서 정보 확인하기'),
