@@ -127,4 +127,3 @@ class _TrainingInfoResultPageState extends State<TrainingInfoResultPage> {
     );
   }
 }
-

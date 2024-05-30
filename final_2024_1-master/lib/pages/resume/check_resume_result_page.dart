@@ -327,4 +327,3 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
   }
 }
 
-
