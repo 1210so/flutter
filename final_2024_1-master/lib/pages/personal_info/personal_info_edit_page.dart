@@ -61,63 +61,100 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("개인정보 수정"),
-      ),
-      body: SingleChildScrollView( // 스크롤 가능하도록 수정
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: '이름',
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              SizedBox(height: 100),
+              Text(
+                "틀린 부분을 수정해주세요!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
+                  height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _birthController,
-              decoration: const InputDecoration(
-                labelText: '생년월일',
+              SizedBox(height: 20),
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: '이름',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _ssnController,
-              decoration: const InputDecoration(
-                labelText: '주민등록번호',
+              SizedBox(height: 20),
+              TextField(
+                controller: _birthController,
+                decoration: const InputDecoration(
+                  labelText: '생년월일',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _contactController,
-              decoration: const InputDecoration(
-                labelText: '전화번호',
+              SizedBox(height: 20),
+              TextField(
+                controller: _ssnController,
+                decoration: const InputDecoration(
+                  labelText: '주민등록번호',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: '이메일주소',
+              SizedBox(height: 20),
+              TextField(
+                controller: _contactController,
+                decoration: const InputDecoration(
+                  labelText: '전화번호',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _addressController,
-              decoration: const InputDecoration(
-                labelText: '주소',
+              SizedBox(height: 20),
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: '이메일주소',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _updateData,
-              child: const Text('수정 완료'),
-            ),
-          ],
+              SizedBox(height: 20),
+              TextField(
+                controller: _addressController,
+                decoration: const InputDecoration(
+                  labelText: '주소',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF001ED6),
+                  side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                  minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
+                ),
+                onPressed: _updateData,
+                child: const Text(
+                  '수정 완료',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+

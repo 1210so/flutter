@@ -4,6 +4,7 @@ import 'package:final_2024_1/pages/personal_info/personal_info_edit_page.dart';
 import 'package:final_2024_1/pages/career_info/career_info_edit_page.dart';
 import 'package:final_2024_1/pages/license_info/license_info_edit_page.dart';
 import 'package:final_2024_1/pages/training_info/training_info_edit_page.dart';
+import 'package:final_2024_1/pages/introduction_info/introduction_info_edit_page.dart';
 import 'package:final_2024_1/pages/resume/resume_result_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -50,6 +51,21 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
+  Future<void> _saveUpdatedIntroduction(String updatedText) async {
+    var url = Uri.parse('http://10.0.2.2:50369/introduction-info/update/${widget.userId}');
+    var headers = {'Content-Type': 'application/json'};
+    var body = jsonEncode({'gpt': updatedText});
+
+    try {
+      var response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode != 200) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${response.reasonPhrase}')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,13 +90,16 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                   _buildBox(_buildAcademicInfo(data['AcademicInfo'], context)),
                   SizedBox(height: 20),
                   _buildSectionTitle("경력 정보"),
-                  _buildCareerInfos(data['CareerInfos'], context),
+                  _buildBox(_buildCareerInfos(data['CareerInfos'], context)),
                   SizedBox(height: 20),
                   _buildSectionTitle("자격/면허 정보"),
-                  _buildLicenseInfos(data['LicenseInfos'], context),
+                  _buildBox(_buildLicenseInfos(data['LicenseInfos'], context)),
                   SizedBox(height: 20),
                   _buildSectionTitle("훈련 정보"),
-                  _buildTrainingInfos(data['TrainingInfos'], context),
+                  _buildBox(_buildTrainingInfos(data['TrainingInfos'], context)),
+                  SizedBox(height: 20),
+                  _buildSectionTitle("자기소개서"),
+                  _buildBox(_buildIntroductionInfo(data['IntroductionInfo'], context)),
                   SizedBox(height: 20),
                   Center(
                     child: Column(
@@ -325,5 +344,41 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
       },
     );
   }
+
+  Widget _buildIntroductionInfo(Map<String, dynamic>? introductionInfo, BuildContext context) {
+    if (introductionInfo == null) return Text("자기소개서 정보 없음");
+    return Column(
+      children: [
+        ListTile(
+          subtitle: Text(
+            introductionInfo['gpt'] ?? '자기소개서가 없습니다.',
+            style: TextStyle(fontSize: 16.0, color: Colors.black87),
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () async {
+              final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => IntroductionInfoEditPage(
+                      userId: widget.userId,
+                      initialText: introductionInfo['gpt'] ?? '',
+                    ),
+                  )
+              );
+              if (result != null && result is String) {
+                setState(() {
+                  introductionInfo['gpt'] = result;
+                  // 변경된 자기소개서 정보를 서버에 저장합니다.
+                  _saveUpdatedIntroduction(result);
+                });
+              }
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }
+
 

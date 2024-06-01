@@ -40,7 +40,6 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("개인정보 입력 결과")),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _dataFuture,
         builder: (context, snapshot) {
@@ -49,19 +48,57 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
               return Center(child: Text("Error: ${snapshot.error}"));
             }
             var data = snapshot.data!;
-            return Center(
+            return SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(height: 100),
                     Text(
-                      "이름: ${data['name']}\n생년월일: ${data['birth']}\n주민등록번호: ${data['ssn']}\n"
-                          "전화번호: ${data['contact']}\n이메일주소: ${data['email']}\n주소: ${data['address']}",
-                      style: TextStyle(fontSize: 16.0, color: Colors.black87),
+                      "입력한 내용을\n확인해주세요",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
+                        height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 16),
+                    Text(
+                      "정보가 틀린 부분이 있어도\n12쉽소는 책임지지 않아요.\n틀린 부분을 확인해주세요.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
+                        height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      ),
+                    ),
+                    SizedBox(height: 32),
+                    Text(
+                      "이름: ${data['name']}\n생년월일: ${data['birth']}\n주민등록번호: ${data['ssn']}\n전화번호: ${data['contact']}\n이메일주소: ${data['email']}\n주소: ${data['address']}",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
+                        height: 1.7, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      ),
+                    ),
+                    SizedBox(height: 50),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        side: BorderSide(color: Color(0xFF001ED6), width: 2),
+                        minimumSize: Size(double.infinity, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                      ),
                       onPressed: () async {
                         bool? result = await Navigator.push(
                           context,
@@ -78,10 +115,27 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                           });
                         }
                       },
-                      child: const Text('개인정보 수정하기'),
+                      child: const Text(
+                        '수정하고 싶은 부분이 있어요',
+                        style: TextStyle(
+                          color: Color(0xFF001ED6),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF001ED6),
+                        side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                        minimumSize: Size(double.infinity, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                        shadowColor: Colors.black, // 버튼의 그림자 색상
+                        elevation: 6, // 버튼의 그림자 높이,
+                      ),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -90,14 +144,21 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                           ),
                         );
                       },
-                      child: const Text('학력 정보 입력하기'),
+                      child: const Text(
+                        '모든 정보가 맞아요!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
             );
           }
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

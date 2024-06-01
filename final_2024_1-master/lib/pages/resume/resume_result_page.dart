@@ -53,6 +53,9 @@ class ResumeResultPage extends StatelessWidget {
                   SizedBox(height: 20),
                   _buildSectionTitle("훈련 정보"),
                   _buildTrainingInfos(data['TrainingInfos']),
+                  SizedBox(height: 20),
+                  _buildSectionTitle("자기소개서"),
+                  _buildIntroductionInfo(data['IntroductionInfo']),
                 ],
               ),
             );
@@ -175,6 +178,22 @@ class ResumeResultPage extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildIntroductionInfo(Map<String, dynamic>? introductionInfo) {
+    if (introductionInfo == null) return Text("자기소개서 정보 없음");
+    return Column(
+        children: [
+          Card(
+            child: ListTile(
+              subtitle: Text(
+                introductionInfo['gpt'] ?? '자기소개서가 없습니다.',
+                style: TextStyle(fontSize: 16.0, color: Colors.black87),
+              ),
+            ),
+          )
+        ]
     );
   }
 }

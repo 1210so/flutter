@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'personal_info_confirmation_page.dart';
 import 'personal_info_result_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -11,7 +12,13 @@ class LastPage extends StatefulWidget {
   final String email;
 
   const LastPage(
-      {Key? key, required this.name, required this.birth, required this.ssn, required this.contact, required this.email}) : super(key: key);
+      {Key? key,
+        required this.name,
+        required this.birth,
+        required this.ssn,
+        required this.contact,
+        required this.email})
+      : super(key: key);
 
   @override
   _LastPageState createState() => _LastPageState();
@@ -20,7 +27,7 @@ class LastPage extends StatefulWidget {
 class _LastPageState extends State<LastPage> {
   final TextEditingController _addressController = TextEditingController();
 
-  Future<void> _sendData() async {
+  Future<void> _sendData(String address) async {
     try {
       var response = await http.post(
         Uri.parse('http://10.0.2.2:50369/personal-info/save'),
@@ -33,15 +40,17 @@ class _LastPageState extends State<LastPage> {
           'ssn': widget.ssn,
           'contact': widget.contact,
           'email': widget.email,
-          'address': _addressController.text,
+          'address': address,
         }),
       );
 
       if (response.statusCode == 201) {
         var data = jsonDecode(utf8.decode(response.bodyBytes));
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => PersonalInfoResultPage(userId: data['userId'])),
+          MaterialPageRoute(
+              builder: (context) =>
+                  PersonalInfoResultPage(userId: data['userId'])),
         );
       } else {
         print('데이터 저장 실패');
@@ -51,28 +60,114 @@ class _LastPageState extends State<LastPage> {
     }
   }
 
+  void _onConfirmAddress() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PersonalInfoConfirmationPage(
+          title: '주소 확인',
+          infoLabel: '주소가',
+          info: _addressController.text,
+          onConfirmed: () {
+            _sendData(_addressController.text);
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("주소 입력"),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            controller: _addressController,
-            decoration: const InputDecoration(
-              labelText: '주소를 입력해주세요!',
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xFFFFFFFF), // 앱 바의 배경색을 흰색으로 설정
+          elevation: 0, // 앱 바의 그림자 제거
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 150), // 텍스트와 입력 칸을 상단에 고정
+                  Text(
+                    '${widget.name}님은\n어디에\n거주하시나요?',
+                    textAlign: TextAlign.center, // 텍스트 가운데 정렬
+                    style: TextStyle(
+                      fontSize: 48, // 텍스트 크기
+                      fontWeight: FontWeight.bold, // 텍스트 굵기
+                      fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
+                      height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                  Container(
+                    width: 347, // 입력 창의 너비
+                    height: 60, // 입력 창의 높이
+                    decoration: BoxDecoration(
+                      color: Colors.white, // 입력 창의 배경색
+                      borderRadius: BorderRadius.circular(24.0), // 입력 창의 모서리 둥글기
+                      border: Border.all(
+                        color: Color(0xFF001ED6), // 입력 창의 테두리 색상
+                        width: 2.0, // 입력 창의 테두리 두께
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0), // 입력 창의 내부 패딩
+                      child: TextField(
+                        controller: _addressController, // 입력 컨트롤러 설정
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20, // 입력 텍스트의 크기
+                          color: Color(0xFF001ED6), // 입력 텍스트의 색상
+                          fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
+                        ),
+                        decoration: InputDecoration(
+                          hintText: '주소 입력', // 입력 필드의 힌트 텍스트
+                          hintStyle: TextStyle(
+                            color: Color(0xFF001ED6), // 힌트 텍스트의 색상
+                            fontSize: 20, // 힌트 텍스트의 크기
+                            fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
+                          ),
+                          border: InputBorder.none, // 입력 필드의 기본 테두리 제거
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 150),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF001ED6), // 버튼의 배경색
+                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2,), // 버튼의 테두리 설정
+                      minimumSize: Size(345, 60), // 버튼의 최소 크기 설정
+                      shadowColor: Colors.black, // 버튼의 그림자 색상
+                      elevation: 6, // 버튼의 그림자 높이,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0), // 버튼의 모서리 둥글기
+                      ),
+                    ),
+                    onPressed: _onConfirmAddress, // 주소 확인 버튼을 눌렀을 때 실행되는 함수
+                    child: const Text(
+                      '다음',
+                      style: TextStyle(
+                        fontSize: 18, // 버튼 텍스트의 크기
+                        fontWeight: FontWeight.bold, // 버튼 텍스트의 굵기
+                        color: Colors.white, // 버튼 텍스트의 색상
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20), // 추가된 공간
+                ],
+              ),
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _sendData,
-        tooltip: '완료',
-        child: const Icon(Icons.done),
-      ),
     );
   }
 }
+

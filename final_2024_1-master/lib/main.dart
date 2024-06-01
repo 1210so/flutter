@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_first_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,22 +15,23 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: '사용자 정보 수집 앱',
       theme: ThemeData(
+        scaffoldBackgroundColor: Color(0xFFFFFFFF),
         primarySwatch: Colors.indigo,
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.indigo, secondary: Colors.amber),
-        useMaterial3: true,
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
-          filled: true,
-          fillColor: Colors.indigo.shade50,
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Colors.indigo,
-          foregroundColor: Colors.white,
         ),
       ),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('ko', 'KR'), // 한국어 로케일 지원
+      ],
+      locale: const Locale('ko', 'KR'), // 기본 로케일 설정
       home: const FirstPage(),
     );
   }
