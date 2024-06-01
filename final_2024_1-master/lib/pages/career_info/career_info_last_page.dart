@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'career_info_result_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:final_2024_1/config.dart';
+
 
 class CareerInfoLastPage extends StatefulWidget {
   final int userId;
@@ -19,7 +21,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
   Future<void> _sendData() async {
     try {
       var response = await http.post(
-        Uri.parse('http://10.0.2.2:50369/career-info/save/${widget.userId}'),
+        Uri.parse('$BASE_URL/career-info/save/${widget.userId}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

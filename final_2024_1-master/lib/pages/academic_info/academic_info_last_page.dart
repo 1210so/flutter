@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'academic_info_result_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:final_2024_1/config.dart';
+
 
 class AcademicInfoLastPage extends StatefulWidget {
   final int userId;
@@ -20,7 +22,7 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
   Future<void> _sendData() async {
     try {
       var response = await http.post(
-          Uri.parse('http://10.0.2.2:50369/academic-info/save/${widget.userId}'),
+          Uri.parse('$BASE_URL/academic-info/save/${widget.userId}'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },

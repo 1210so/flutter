@@ -4,6 +4,8 @@ import 'package:final_2024_1/pages/training_info/training_info_edit_page.dart';
 import 'package:final_2024_1/pages/introduction_info/introduction_info_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:final_2024_1/config.dart';
+
 
 class TrainingInfoResultPage extends StatefulWidget {
   final int userId;
@@ -25,7 +27,7 @@ class _TrainingInfoResultPageState extends State<TrainingInfoResultPage> {
 
   Future<List<Map<String, dynamic>>> _fetchData() async {
     var response = await http.get(
-      Uri.parse('http://10.0.2.2:50369/training-info/${widget.userId}'),
+      Uri.parse('$BASE_URL/training-info/${widget.userId}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

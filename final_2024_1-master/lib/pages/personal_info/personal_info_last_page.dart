@@ -3,6 +3,8 @@ import 'personal_info_confirmation_page.dart';
 import 'personal_info_result_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:final_2024_1/config.dart';
+
 
 class LastPage extends StatefulWidget {
   final String name;
@@ -30,7 +32,7 @@ class _LastPageState extends State<LastPage> {
   Future<void> _sendData(String address) async {
     try {
       var response = await http.post(
-        Uri.parse('http://10.0.2.2:50369/personal-info/save'),
+        Uri.parse('$BASE_URL/personal-info/save'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

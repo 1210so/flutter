@@ -3,6 +3,7 @@ import 'package:final_2024_1/pages/academic_info/academic_info_first_page.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_edit_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:final_2024_1/config.dart';
 
 class PersonalInfoResultPage extends StatefulWidget {
   final int userId;
@@ -24,7 +25,7 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
 
   Future<Map<String, dynamic>> _fetchData() async {
     var response = await http.get(
-      Uri.parse('http://10.0.2.2:50369/personal-info/${widget.userId}'),
+      Uri.parse('$BASE_URL/personal-info/${widget.userId}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

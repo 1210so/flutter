@@ -4,6 +4,7 @@ import 'license_info_edit_page.dart';
 import 'package:final_2024_1/pages/training_info/training_info_first_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:final_2024_1/config.dart';
 
 class LicenseInfoResultPage extends StatefulWidget {
   final int userId;
@@ -25,7 +26,7 @@ class _LicenseInfoResultPageState extends State<LicenseInfoResultPage> {
 
   Future<List<Map<String, dynamic>>> _fetchData() async {
     var response = await http.get(
-      Uri.parse('http://10.0.2.2:50369/license-info/${widget.userId}'),
+      Uri.parse('$BASE_URL/license-info/${widget.userId}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/pages/resume/check_resume_result_page.dart';
 import 'introduction_info_edit_page.dart';
+import 'package:final_2024_1/config.dart';
+
 
 class IntroductionInfoResultPage extends StatefulWidget {
   final int userId;
@@ -24,7 +26,7 @@ class _IntroductionInfoResultPageState extends State<IntroductionInfoResultPage>
   }
 
   Future<void> _updateIntroduction(String newText) async {
-    var url = Uri.parse('http://10.0.2.2:50369/introduction-info/update/${widget.userId}');
+    var url = Uri.parse('$BASE_URL/introduction-info/update/${widget.userId}');
     var headers = {'Content-Type': 'application/json'};
     var body = jsonEncode({'gpt': newText});
 

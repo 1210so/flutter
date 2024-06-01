@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:final_2024_1/config.dart';
 
 class TrainingInfoEditPage extends StatefulWidget {
   final int userId;
@@ -37,7 +38,7 @@ class _TrainingInfoEditPageState extends State<TrainingInfoEditPage> {
       widget.trainingInfos[widget.trainingIndex] = updatedTraining;
 
       var response = await http.post(
-        Uri.parse('http://10.0.2.2:50369/training-info/update/${widget.userId}'),
+        Uri.parse('$BASE_URL/training-info/update/${widget.userId}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

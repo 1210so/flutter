@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'introduction_info_result_page.dart';
+import 'package:final_2024_1/config.dart';
+import 'package:final_2024_1/config.dart';
+
+
 
 class IntroductionInfoPage extends StatefulWidget {
   final int userId;
@@ -54,7 +58,7 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
 
   Future<Map<String, dynamic>> _fetchPersonalInfo() async {
     var response = await http.get(
-      Uri.parse('http://10.0.2.2:50369/personal-info/${widget.userId}'),
+      Uri.parse('$BASE_URL/personal-info/${widget.userId}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -68,7 +72,7 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
   }
 
   Future<void> _generateAndSaveIntroduction() async {
-    var url = Uri.parse('http://10.0.2.2:50369/introduction-info/save/${widget.userId}');
+    var url = Uri.parse('$BASE_URL/introduction-info/save/${widget.userId}');
     var headers = {'Content-Type': 'application/json'};
     var body = jsonEncode({'prompt': selectedOptions.join(", ")});
 

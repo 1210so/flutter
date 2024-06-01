@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:final_2024_1/config.dart';
+
 
 class PersonalInfoEditPage extends StatefulWidget {
   final int userId;
@@ -34,7 +36,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
   Future<void> _updateData() async {
     try {
       var response = await http.post(
-        Uri.parse('http://10.0.2.2:50369/personal-info/update/${widget.userId}'),
+        Uri.parse('$BASE_URL/personal-info/update/${widget.userId}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
