@@ -1,9 +1,7 @@
-import 'package:final_2024_1/config.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
-
 
 class IntroductionInfoEditPage extends StatefulWidget {
   final int userId;
@@ -35,45 +33,101 @@ class _IntroductionInfoEditPageState extends State<IntroductionInfoEditPage> {
       );
 
       if (response.statusCode == 200) {
-        // 화면 전환 전에 약간의 딜레이를 추가
         await Future.delayed(Duration(milliseconds: 300));
-        Navigator.pop(context, _introductionController.text); // 수정된 텍스트를 반환
+        Navigator.pop(context, _introductionController.text);
       } else {
-        print('데이터 업데이트 실패');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${response.reasonPhrase}')),
+        );
       }
     } catch (e) {
-      print('데이터 전송 실패 : $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("자기소개서 수정"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _introductionController,
-              maxLines: 10,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '자기소개서 내용을 수정하세요',
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 80),
+                  Text(
+                    '자기소개서를\n수정해주세요!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Apple SD Gothic Neo',
+                      height: 1.2,
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9, // 가로 사이즈를 줄임
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24.0),
+                      border: Border.all(
+                        color: Color(0xFF001ED6),
+                        width: 2.0,
+                      ),
+                    ),
+                    child: Scrollbar(
+                      thumbVisibility: true, // 스크롤바 항상 표시
+                      child: TextField(
+                        controller: _introductionController,
+                        maxLines: 15,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        style: TextStyle(
+                          fontSize: 18, // 글씨 크기
+                          fontWeight: FontWeight.bold, // 글씨 굵기
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF001ED6),
+                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2,),
+                      minimumSize: Size(345, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                      shadowColor: Colors.black, // 버튼의 그림자 색상
+                      elevation: 5, // 버튼의 그림자 높이
+                    ),
+                    onPressed: _saveIntroduction,
+                    child: const Text(
+                      '수정 완료',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveIntroduction,
-              child: const Text('수정 완료'),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
 

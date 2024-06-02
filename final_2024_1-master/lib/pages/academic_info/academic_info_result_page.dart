@@ -5,11 +5,21 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 
-
 class AcademicInfoResultPage extends StatefulWidget {
   final int userId;
+  final String highestEdu;
+  final String schoolName;
+  final String major;
+  final String userName;
 
-  const AcademicInfoResultPage({Key? key, required this.userId}) : super(key: key);
+  const AcademicInfoResultPage({
+    Key? key,
+    required this.userId,
+    required this.highestEdu,
+    required this.schoolName,
+    required this.major,
+    required this.userName,
+  }) : super(key: key);
 
   @override
   _AcademicInfoResultPageState createState() => _AcademicInfoResultPageState();
@@ -42,7 +52,6 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("학력 정보 결과")),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _dataFuture,
         builder: (context, snapshot) {
@@ -51,47 +60,136 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
               return Center(child: Text("Error: ${snapshot.error}"));
             }
             var data = snapshot.data!;
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "최종 학력: ${data['highestEdu']}\n학교 이름: ${data['schoolName']}"
-                        "\n전공 계열: ${data['major']}\n세부 전공: ${data['detailedMajor']}",
-                    style: TextStyle(fontSize: 16.0, color: Colors.black87),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      bool? result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AcademicInfoEditPage(userId: widget.userId, academicInfo: data)),
-                      );
-                      if (result == true) {
-                        setState(() {
-                          _dataFuture = _fetchData();
-                        });
-                      }
-                    },
-                    child: const Text('학력 정보 수정하기'),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CareerInfoFirstPage(userId: widget.userId)),
-                      );
-                    },
-                    child: const Text('경력 정보 입력하기'),
-                  ),
-                ],
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 170),
+                    Text(
+                      "입력한 내용을\n확인해주세요",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
+                        height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      "정보가 틀린 부분이 있어도\n12쉽소는 책임지지 않아요.\n틀린 부분을 확인해주세요.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
+                        height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      ),
+                    ),
+                    SizedBox(height: 32),
+                    Text(
+                      _buildAcademicInfoText(data),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
+                        height: 1.7, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      ),
+                    ),
+                    SizedBox(height: 80),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        side: BorderSide(color: Color(0xFF001ED6), width: 2),
+                        minimumSize: Size(double.infinity, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                      ),
+                      onPressed: () async {
+                        bool? result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AcademicInfoEditPage(
+                              userId: widget.userId,
+                              academicInfo: data,
+                            ),
+                          ),
+                        );
+                        if (result == true) {
+                          setState(() {
+                            _dataFuture = _fetchData();
+                          });
+                        }
+                      },
+                      child: const Text(
+                        '수정하고 싶은 부분이 있어요',
+                        style: TextStyle(
+                          color: Color(0xFF001ED6),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF001ED6),
+                        side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                        minimumSize: Size(double.infinity, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                        shadowColor: Colors.black, // 버튼의 그림자 색상
+                        elevation: 6, // 버튼의 그림자 높이,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CareerInfoFirstPage(userId: widget.userId),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        '모든 정보가 맞아요!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );
   }
+
+  String _buildAcademicInfoText(Map<String, dynamic> data) {
+    List<String> info = [];
+
+    info.add("최종 학력: ${data['highestEdu']}");
+    info.add("학교 이름: ${data['schoolName']}");
+    if (data['major'] != null && data['major'].isNotEmpty) {
+      info.add("전공 계열: ${data['major']}");
+    }
+    if (data['detailedMajor'] != null && data['detailedMajor'].isNotEmpty) {
+      info.add("세부 전공: ${data['detailedMajor']}");
+    }
+
+    return info.join("\n");
+  }
 }
+
+

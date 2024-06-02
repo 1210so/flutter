@@ -74,7 +74,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
             children: [
               SizedBox(height: 100),
               Text(
-                "틀린 부분을 수정해주세요!",
+                "틀린 부분을\n수정해주세요!",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 48,

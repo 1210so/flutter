@@ -3,9 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'introduction_info_result_page.dart';
 import 'package:final_2024_1/config.dart';
-import 'package:final_2024_1/config.dart';
-
-
 
 class IntroductionInfoPage extends StatefulWidget {
   final int userId;
@@ -72,12 +69,47 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
   }
 
   Future<void> _generateAndSaveIntroduction() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Row(
+              children: [
+                CircularProgressIndicator(
+                  backgroundColor: Color(0xFF001ED6), // 로딩 스피너의 배경색
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white), // 로딩 스피너의 색상
+                ),
+                SizedBox(width: 20),
+                Text(
+                  "자기소개서를 생성중입니다",
+                  style: TextStyle(
+                    fontSize: 18, // 텍스트 크기
+                    fontWeight: FontWeight.bold, // 텍스트 굵기
+                    color: Color(0xFF001ED6), // 텍스트 색상
+                  ),
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.white, // 다이얼로그 배경색
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.0), // 다이얼로그 모서리 둥글기
+            side: BorderSide(color: Color(0xFF001ED6), width: 2), // 다이얼로그 테두리 설정
+          ),
+        );
+      },
+    );
+
     var url = Uri.parse('$BASE_URL/introduction-info/save/${widget.userId}');
     var headers = {'Content-Type': 'application/json'};
     var body = jsonEncode({'prompt': selectedOptions.join(", ")});
 
     try {
       var response = await http.post(url, headers: headers, body: body);
+      Navigator.pop(context); // close the dialog
       if (response.statusCode == 201) {
         var responseData = jsonDecode(utf8.decode(response.bodyBytes));
         String introductionText = responseData['gpt'] ?? '자기소개서 생성에 실패했습니다.';
@@ -95,6 +127,7 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${response.reasonPhrase}')));
       }
     } catch (e) {
+      Navigator.pop(context); // close the dialog
       print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
     }
@@ -107,9 +140,6 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text("자기소개서 생성하기"),
-            ),
             body: Center(
               child: CircularProgressIndicator(),
             ),
@@ -127,9 +157,6 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
           var name = personalInfo['name'];
 
           return Scaffold(
-            appBar: AppBar(
-              title: const Text("자기소개서 생성하기"),
-            ),
             body: SingleChildScrollView(
               child: Center(
                 child: Padding(
@@ -137,6 +164,7 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      SizedBox(height: 150), // 텍스트와 선택지 사이의 간격
                       AnimatedBuilder(
                         animation: _controller,
                         builder: (context, child) {
@@ -146,7 +174,7 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
                           );
                         },
                         child: Text(
-                          '$name 선생님을\n설명해주는 표현를\n3개만 골라주세요!',
+                          '$name님을\n설명해주는 표현를\n3개만 골라주세요!',
                           style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
@@ -164,7 +192,13 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
                                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: ChoiceChip(
                                   label: Text(option, style: TextStyle(fontSize: 20)), // 글자 크기 키우기
+                                  backgroundColor: Colors.white, // 배경색 흰색
+                                  side: BorderSide(color: Color(0xFF001ED6), width: 2), // 테두리 색 파란색
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(24.0), // 둥근 모서리
+                                  ),
                                   selected: selectedOptions.contains(option),
+                                  selectedColor: Color(0xFF001ED6), // 선택된 상태의 배경색
                                   onSelected: (selected) {
                                     setState(() {
                                       if (selected) {
@@ -176,6 +210,13 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
                                       }
                                     });
                                   },
+                                  labelStyle: TextStyle(
+                                    color: selectedOptions.contains(option) ? Colors.white : Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: selectedOptions.contains(option) ? FontWeight.bold : FontWeight.normal,
+                                  ),
+                                  elevation: selectedOptions.contains(option) ? 5 : 0,
+                                  shadowColor: selectedOptions.contains(option) ? Colors.black : Colors.transparent,
                                 ),
                               ),
                             );
@@ -183,9 +224,27 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
                         ),
                         SizedBox(height: 20),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF001ED6), // 버튼의 배경색
+                            side: BorderSide(color: Color(0xFFFFFFFF), width: 2,), // 버튼의 테두리 설정
+                            minimumSize: Size(345, 60), // 버튼의 최소 크기 설정
+                            shadowColor: Colors.black, // 버튼의 그림자 색상
+                            elevation: 5, // 버튼의 그림자 높이,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24.0), // 버튼의 모서리 둥글기
+                            ),
+                          ),
                           onPressed: selectedOptions.length == 3 ? _generateAndSaveIntroduction : null,
-                          child: const Text('다 골랐어요!', style: TextStyle(fontSize: 18)),
+                          child: const Text(
+                            '다 골랐어요!',
+                            style: TextStyle(
+                              fontSize: 18, // 버튼 텍스트의 크기
+                              fontWeight: FontWeight.bold, // 버튼 텍스트의 굵기
+                              color: Colors.white, // 버튼 텍스트의 색상
+                            ),
+                          ),
                         ),
+                        SizedBox(height: 20), // 추가된 공간
                       ],
                     ],
                   ),

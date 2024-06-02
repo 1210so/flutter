@@ -5,43 +5,165 @@ class AcademicInfoThirdPage extends StatefulWidget {
   final int userId;
   final String highestEdu;
   final String schoolName;
-  const AcademicInfoThirdPage({super.key, required this.userId, required this.highestEdu, required this.schoolName});
+  final String userName;
+
+  const AcademicInfoThirdPage({
+    super.key,
+    required this.userId,
+    required this.highestEdu,
+    required this.schoolName,
+    required this.userName,
+  });
 
   @override
   _AcademicInfoThirdPageState createState() => _AcademicInfoThirdPageState();
 }
 
 class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
-  final TextEditingController _majorController = TextEditingController();
+  String? _selectedMajorCategory;
+
+  final List<String> _majorCategories = [
+    '전체',
+    '인문계열',
+    '사회계열',
+    '교육계열',
+    '공학계열',
+    '자연계열',
+    '의약계열',
+    '예체능계열',
+  ];
+
+  void _onNextButtonPressed() {
+    if (_selectedMajorCategory != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AcademicInfoLastPage(
+            userId: widget.userId,
+            highestEdu: widget.highestEdu,
+            schoolName: widget.schoolName,
+            major: _selectedMajorCategory!,
+            userName: widget.userName, // 사용자 이름을 전달
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('전공 계열을 선택해주세요!')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("전공 입력"),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            controller: _majorController,
-            decoration: const InputDecoration(
-              labelText: '전공 분야를 입력해주세요!',
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 180),
+                  Text(
+                    '${widget.userName}님의\n전공 계열을\n선택해주세요.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Apple SD Gothic Neo',
+                      height: 1.2,
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                  Container(
+                    width: 347,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24.0),
+                      border: Border.all(
+                        color: Color(0xFF001ED6),
+                        width: 2.0,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: _selectedMajorCategory,
+                          hint: Text(
+                            '전공 계열을 선택하세요',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xFF001ED6),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedMajorCategory = newValue;
+                            });
+                          },
+                          items: _majorCategories.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFF001ED6),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          dropdownColor: Colors.white, // 드롭다운 배경색
+                          iconEnabledColor: Color(0xFF001ED6), // 드롭다운 아이콘 색상
+                          underline: SizedBox.shrink(), // 기본 밑줄 제거
+                          alignment: Alignment.centerLeft, // 드롭다운 내용 정렬
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 250),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF001ED6),
+                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                      minimumSize: Size(345, 60),
+                      shadowColor: Colors.black,
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                    ),
+                    onPressed: _onNextButtonPressed,
+                    child: const Text(
+                      '다음',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton (
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      AcademicInfoLastPage(userId: widget.userId, highestEdu: widget.highestEdu, schoolName: widget.schoolName, major: _majorController.text)));
-        },
-        tooltip: '다음',
-        child: const Icon(Icons.navigate_next),
-      ),
     );
   }
 }
+
+
+
