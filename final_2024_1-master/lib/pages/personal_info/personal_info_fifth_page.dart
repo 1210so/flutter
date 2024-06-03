@@ -91,7 +91,7 @@ class _FifthPageState extends State<FifthPage> {
                   ),
                   if (_isEmailEmpty)
                     Text(
-                      '이메일 주소를 다시 입력해주세요!!',
+                      '이메일 주소를 정확히 입력해주세요.',
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18,

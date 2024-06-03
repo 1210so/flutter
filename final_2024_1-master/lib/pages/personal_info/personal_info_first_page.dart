@@ -76,7 +76,7 @@ class _FirstPageState extends State<FirstPage> {
                   ),
                   if (_isNameEmpty)
                     Text(
-                      '성함을 다시 입력해주세요!!',
+                      '성함을 정확히 입력해주세요.',
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18,

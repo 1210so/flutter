@@ -97,18 +97,6 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                       height: 1.2,
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
-                    "정보가 틀린 부분이 있어도\n12쉽소는 책임지지 않아요.\n꼼꼼히 확인해주세요!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Apple SD Gothic Neo',
-                      height: 1.0,
-                    ),
-                  ),
                   SizedBox(height: 32),
                   _buildSectionTitle("개인 정보"),
                   SizedBox(height: 30),
@@ -131,12 +119,12 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                   SizedBox(height: 50),
                   _buildBox(_buildIntroductionInfo(
                       data['IntroductionInfo'], context)),
-                  SizedBox(height: 20),
+                  SizedBox(height: 70),
                   Center(
                     child: Column(
                       children: [
                         Text(
-                          "이력서 정보가 맞으시면\n아래 버튼을 눌러주세요",
+                          "제시해주신 정보가 사실과 달라도\n저희 서비스에서는 책임지지 않습니다.",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20,
@@ -147,7 +135,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                             height: 1.0,
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 30),
                         ElevatedButton(
                           onPressed: _generateResume,
                           child: const Text(
@@ -161,7 +149,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF001ED6),
                             side:
-                            BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                                BorderSide(color: Color(0xFFFFFFFF), width: 2),
                             minimumSize: Size(double.infinity, 60),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24.0),
@@ -193,7 +181,6 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
-
   Widget _buildBox(Widget child) {
     return Card(
       shape: RoundedRectangleBorder(
@@ -208,8 +195,17 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
-  Widget _buildPersonalInfo(Map<String, dynamic>? personalInfo, BuildContext context) {
-    if (personalInfo == null) return Text("개인 정보 없음");
+  Widget _buildPersonalInfo(
+      Map<String, dynamic>? personalInfo, BuildContext context) {
+    if (personalInfo == null) return Text(
+      "정보 없음",
+      style: TextStyle(
+        fontSize: 16.0,
+        color: Colors.black87,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Apple SD Gothic Neo',
+      ),
+    );
     return Column(
       children: [
         Container(
@@ -220,11 +216,11 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                 flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
                 child: Text(
                   "이름: ${personalInfo['name']}\n"
-                      "생년월일: ${personalInfo['birth']}\n"
-                      "주민등록번호: ${personalInfo['ssn']}\n"
-                      "전화번호: ${personalInfo['contact']}\n"
-                      "이메일주소: ${personalInfo['email']}\n"
-                      "주소: ${personalInfo['address']}",
+                  "생년월일: ${personalInfo['birth']}\n"
+                  "주민등록번호: ${personalInfo['ssn']}\n"
+                  "전화번호: ${personalInfo['contact']}\n"
+                  "이메일주소: ${personalInfo['email']}\n"
+                  "주소: ${personalInfo['address']}",
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black87,
@@ -262,8 +258,17 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
-  Widget _buildAcademicInfo(Map<String, dynamic>? academicInfo, BuildContext context) {
-    if (academicInfo == null) return Text("학력 정보 없음");
+  Widget _buildAcademicInfo(
+      Map<String, dynamic>? academicInfo, BuildContext context) {
+    if (academicInfo == null) return Text(
+      "정보 없음",
+      style: TextStyle(
+        fontSize: 16.0,
+        color: Colors.black87,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Apple SD Gothic Neo',
+      ),
+    );
     return Column(
       children: [
         Container(
@@ -274,9 +279,9 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                 flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
                 child: Text(
                   "최종 학력: ${academicInfo['highestEdu']}\n"
-                      "학교 이름: ${academicInfo['schoolName']}\n"
-                      "전공 계열: ${academicInfo['major']}\n"
-                      "세부 전공: ${academicInfo['detailedMajor']}",
+                  "학교 이름: ${academicInfo['schoolName']}\n"
+                  "전공 계열: ${academicInfo['major']}\n"
+                  "세부 전공: ${academicInfo['detailedMajor']}",
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black87,
@@ -315,7 +320,16 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
   }
 
   Widget _buildCareerInfos(List<dynamic>? careerInfos, BuildContext context) {
-    if (careerInfos == null || careerInfos.isEmpty) return Text("경력 정보 없음");
+    if (careerInfos == null || careerInfos.isEmpty)
+      return Text(
+        "정보 없음",
+        style: TextStyle(
+          fontSize: 16.0,
+          color: Colors.black87,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Apple SD Gothic Neo',
+        ),
+      );
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -397,7 +411,15 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
 
   Widget _buildLicenseInfos(List<dynamic>? licenseInfos, BuildContext context) {
     if (licenseInfos == null || licenseInfos.isEmpty)
-      return Text("자격/면허 정보 없음");
+      return Text(
+        "정보 없음",
+        style: TextStyle(
+          fontSize: 16.0,
+          color: Colors.black87,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Apple SD Gothic Neo',
+        ),
+      );
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -477,9 +499,18 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
-  Widget _buildTrainingInfos(List<dynamic>? trainingInfos, BuildContext context) {
+  Widget _buildTrainingInfos(
+      List<dynamic>? trainingInfos, BuildContext context) {
     if (trainingInfos == null || trainingInfos.isEmpty)
-      return Text("훈련/교육 정보 없음");
+      return Text(
+        "정보 없음",
+        style: TextStyle(
+          fontSize: 16.0,
+          color: Colors.black87,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Apple SD Gothic Neo',
+        ),
+      );
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -559,10 +590,17 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
-
   Widget _buildIntroductionInfo(
       Map<String, dynamic>? introductionInfo, BuildContext context) {
-    if (introductionInfo == null) return Text("자기소개서 정보 없음");
+    if (introductionInfo == null) return Text(
+      "정보 없음",
+      style: TextStyle(
+        fontSize: 16.0,
+        color: Colors.black87,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Apple SD Gothic Neo',
+      ),
+    );
     return Column(
       children: [
         Container(
@@ -611,4 +649,3 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 }
-

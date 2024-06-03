@@ -114,7 +114,7 @@ class _AcademicInfoFirstPageState extends State<AcademicInfoFirstPage> {
                       : CircularProgressIndicator(), // 이름을 불러오는 동안 로딩 인디케이터 표시
                   if (_isEduEmpty)
                     Text(
-                      '학력을 선택해주세요!!',
+                      '학력을 다시 선택해주세요.',
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18,
@@ -196,9 +196,6 @@ class _AcademicInfoFirstPageState extends State<AcademicInfoFirstPage> {
     );
   }
 }
-
-
-
 
 
 

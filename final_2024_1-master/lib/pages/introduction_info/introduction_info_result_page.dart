@@ -96,7 +96,7 @@ class _IntroductionInfoResultPageState extends State<IntroductionInfoResultPage>
                   ),
                   SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
                   Text(
-                    '⚠️AI가 작성한 내용은 정확하지 않습니다.⚠️\n꼼꼼히 확인해주세요!️',
+                    'AI는 실수를 할 수 있습니다.\n중요한 정보를 확인해주세요!',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
                     style: TextStyle(
                       fontSize: 20, // 텍스트 크기

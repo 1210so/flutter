@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 
-
 class LastPage extends StatefulWidget {
   final String name;
   final String birth;
@@ -28,6 +27,7 @@ class LastPage extends StatefulWidget {
 
 class _LastPageState extends State<LastPage> {
   final TextEditingController _addressController = TextEditingController();
+  bool _isAddressEmpty = false;
 
   Future<void> _sendData(String address) async {
     try {
@@ -63,6 +63,14 @@ class _LastPageState extends State<LastPage> {
   }
 
   void _onConfirmAddress() {
+    setState(() {
+      _isAddressEmpty = _addressController.text.isEmpty;
+    });
+
+    if (_isAddressEmpty) {
+      return;
+    }
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -85,10 +93,6 @@ class _LastPageState extends State<LastPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xFFFFFFFF), // 앱 바의 배경색을 흰색으로 설정
-          elevation: 0, // 앱 바의 그림자 제거
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -106,6 +110,16 @@ class _LastPageState extends State<LastPage> {
                       height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                     ),
                   ),
+                  SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
+                  if (_isAddressEmpty)
+                    Text(
+                      '주소를 정확히 입력해주세요.',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   SizedBox(height: 40),
                   Container(
                     width: 347, // 입력 창의 너비
@@ -172,4 +186,3 @@ class _LastPageState extends State<LastPage> {
     );
   }
 }
-
