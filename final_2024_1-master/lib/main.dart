@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_first_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
