@@ -79,7 +79,7 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      "정보가 틀린 부분이 있어도\n12쉽소는 책임지지 않아요.\n틀린 부분을 확인해주세요.",
+                      "잘못 입력하신 정보에 대해서는\n책임지지 않습니다.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20,

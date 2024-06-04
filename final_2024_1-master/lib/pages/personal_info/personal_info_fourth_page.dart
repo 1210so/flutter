@@ -118,7 +118,7 @@ class _FourthPageState extends State<FourthPage> {
                   SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
                   if (_isPhoneEmpty)
                     Text(
-                      '전화번호를 다시 입력해주세요!!',
+                      '전화번호를 정확히 입력해주세요.',
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18,

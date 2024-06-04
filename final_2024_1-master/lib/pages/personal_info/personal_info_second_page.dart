@@ -68,17 +68,13 @@ class _SecondPageState extends State<SecondPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xFFFFFFFF), // 앱 바의 배경색을 흰색으로 설정
-          elevation: 0, // 앱 바의 그림자 제거
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 150), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 250), // 텍스트와 입력 칸을 상단에 고정
                   Text(
                     '${widget.name}님은\n언제\n태어나셨나요?',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
@@ -91,7 +87,7 @@ class _SecondPageState extends State<SecondPage> {
                   ),
                   if (_isBirthEmpty)
                     Text(
-                      '생년월일을 다시 입력해주세요!!',
+                      '생년월일을 정확히 입력해주세요.',
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18,

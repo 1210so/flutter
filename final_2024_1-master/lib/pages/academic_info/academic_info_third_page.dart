@@ -21,9 +21,9 @@ class AcademicInfoThirdPage extends StatefulWidget {
 
 class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
   String? _selectedMajorCategory;
+  bool _isMajorCategoryEmpty = false; // 전공 계열이 비어 있는지 여부를 확인하는 변수
 
   final List<String> _majorCategories = [
-    '전체',
     '인문계열',
     '사회계열',
     '교육계열',
@@ -34,7 +34,11 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
   ];
 
   void _onNextButtonPressed() {
-    if (_selectedMajorCategory != null) {
+    setState(() {
+      _isMajorCategoryEmpty = _selectedMajorCategory == null;
+    });
+
+    if (!_isMajorCategoryEmpty) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -46,10 +50,6 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
             userName: widget.userName, // 사용자 이름을 전달
           ),
         ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('전공 계열을 선택해주세요!')),
       );
     }
   }
@@ -78,6 +78,19 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                       height: 1.2,
                     ),
                   ),
+                  SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
+                  if (_isMajorCategoryEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        '전공 계열을 선택해주세요!',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   SizedBox(height: 40),
                   Container(
                     width: 347,
@@ -107,6 +120,7 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                           onChanged: (String? newValue) {
                             setState(() {
                               _selectedMajorCategory = newValue;
+                              _isMajorCategoryEmpty = false; // 선택하면 오류 메시지 숨김
                             });
                           },
                           items: _majorCategories.map<DropdownMenuItem<String>>((String value) {
@@ -132,7 +146,7 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 250),
+                  SizedBox(height: 180),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6),
@@ -164,6 +178,3 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
     );
   }
 }
-
-
-

@@ -114,9 +114,10 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
                       height: 1.2,
                     ),
                   ),
+                  SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
                   if (_isDetailedMajorEmpty)
                     Text(
-                      '님의 세부 전공을 입력해주세요!',
+                      '세부 전공을 정확히 입력해주세요.',
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18,
@@ -157,7 +158,7 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 200),
+                  SizedBox(height: 180),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6),

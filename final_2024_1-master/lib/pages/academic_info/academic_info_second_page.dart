@@ -128,7 +128,7 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
                   SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
                   if (_isSchoolNameEmpty)
                     Text(
-                      '학교 이름을 다시 입력해주세요!!',
+                      '학교 이름을 정확히 입력해주세요.',
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18,
