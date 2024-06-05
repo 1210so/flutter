@@ -8,8 +8,9 @@ import 'package:final_2024_1/config.dart';
 
 class LicenseInfoResultPage extends StatefulWidget {
   final int userId;
+  final String userName;
 
-  const LicenseInfoResultPage({Key? key, required this.userId}) : super(key: key);
+  const LicenseInfoResultPage({Key? key, required this.userId, required this.userName}) : super(key: key);
 
   @override
   _LicenseInfoResultPageState createState() => _LicenseInfoResultPageState();
@@ -159,7 +160,7 @@ class _LicenseInfoResultPageState extends State<LicenseInfoResultPage> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LicenseInfoFirstPage(userId: widget.userId)),
+                              MaterialPageRoute(builder: (context) => LicenseInfoFirstPage(userId: widget.userId, userName: widget.userName)),
                             );
                           },
                           child: const Text(
@@ -186,7 +187,7 @@ class _LicenseInfoResultPageState extends State<LicenseInfoResultPage> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => TrainingInfoFirstPage(userId: widget.userId)),
+                              MaterialPageRoute(builder: (context) => TrainingInfoFirstPage(userId: widget.userId, userName: widget.userName)),
                             );
                           },
                           child: const Text(

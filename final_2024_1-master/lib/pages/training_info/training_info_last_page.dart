@@ -3,12 +3,15 @@ import 'training_info_result_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
+import '../academic_info/academic_info_confirmation_page.dart';
 
 class TrainingInfoLastPage extends StatefulWidget {
   final int userId;
+  final String userName;
   final String trainingName;
   final String date;
-  const TrainingInfoLastPage({super.key, required this.userId, required this.trainingName, required this.date});
+
+  const TrainingInfoLastPage({super.key, required this.userId, required this.userName, required this.trainingName, required this.date});
 
   @override
   _TrainingInfoLastPageState createState() => _TrainingInfoLastPageState();
@@ -16,6 +19,27 @@ class TrainingInfoLastPage extends StatefulWidget {
 
 class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
   final TextEditingController _agencyController = TextEditingController();
+  bool _isAgencyEmpty = false;
+  bool _hasInput = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _agencyController.addListener(_updateTextColor);
+  }
+
+  @override
+  void dispose() {
+    _agencyController.removeListener(_updateTextColor);
+    _agencyController.dispose();
+    super.dispose();
+  }
+
+  void _updateTextColor() {
+    setState(() {
+      _hasInput = _agencyController.text.isNotEmpty;
+    });
+  }
 
   Future<void> _sendData() async {
     try {
@@ -34,9 +58,9 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
 
       if (response.statusCode == 201) {
         var data = jsonDecode(utf8.decode(response.bodyBytes));
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => TrainingInfoResultPage(userId: widget.userId)),
+          MaterialPageRoute(builder: (context) => TrainingInfoResultPage(userId: widget.userId, userName: widget.userName)),
         );
       } else {
         print('데이터 저장 실패');
@@ -46,27 +70,126 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
     }
   }
 
+  void _onConfirmAgency() {
+    setState(() {
+      _isAgencyEmpty = _agencyController.text.isEmpty;
+    });
+
+    if (_isAgencyEmpty) {
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AcademicInfoConfirmationPage(
+          title: '훈련/교육기관 확인',
+          infoLabel: '훈련/교육기관이',
+          info: _agencyController.text,
+          onConfirmed: () {
+            _sendData();
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("훈련/교육기관 입력"),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            controller: _agencyController,
-            decoration: const InputDecoration(
-              labelText: '해당 훈련/교육을 주관한 기관의 이름은 무엇인가요?',
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 230),
+                  Text(
+                    '${widget.userName}님,\n해당 훈련/교육의\n주관기관은\n어딘가요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Apple SD Gothic Neo',
+                      height: 1.2,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  if (_isAgencyEmpty)
+                    Text(
+                      '주관기관을 정확히 입력해주세요.',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  SizedBox(height: 40),
+                  Container(
+                    width: 347,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24.0),
+                      border: Border.all(
+                        color: Color(0xFF001ED6),
+                        width: 2.0,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: TextField(
+                        controller: _agencyController,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: _hasInput ? Color(0xFF001ED6) : Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: '주관기관 입력',
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 100),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF001ED6),
+                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                      minimumSize: Size(345, 60),
+                      shadowColor: Colors.black,
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                    ),
+                    onPressed: _onConfirmAgency,
+                    child: const Text(
+                      '완료',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _sendData,
-        tooltip: '완료',
-        child: const Icon(Icons.done),
       ),
     );
   }

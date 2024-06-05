@@ -152,7 +152,7 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CareerInfoFirstPage(userId: widget.userId),
+                            builder: (context) => CareerInfoFirstPage(userId: widget.userId, userName: widget.userName),
                           ),
                         );
                       },

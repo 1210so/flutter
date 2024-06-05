@@ -17,6 +17,7 @@ class LicenseInfoSecondPage extends StatefulWidget {
 class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
   DateTime? _selectedDate;
   bool _isDateEmpty = false;
+  bool _isFutureDate = false; // 미래 날짜 여부 확인 변수
 
   void _showDatePicker(BuildContext context) {
     showModalBottomSheet(
@@ -32,9 +33,11 @@ class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
           child: CupertinoDatePicker(
             mode: CupertinoDatePickerMode.date,
             initialDateTime: DateTime.now(),
+            maximumDate: DateTime.now(),
             onDateTimeChanged: (DateTime newDateTime) {
               setState(() {
                 _selectedDate = newDateTime;
+                _isFutureDate = newDateTime.isAfter(DateTime.now());
               });
             },
           ),
@@ -43,6 +46,7 @@ class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
     ).whenComplete(() {
       setState(() {
         _selectedDate ??= DateTime.now();
+        _isFutureDate = _selectedDate!.isAfter(DateTime.now());
       });
     });
   }
@@ -50,9 +54,10 @@ class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
   void _onNextButtonPressed() {
     setState(() {
       _isDateEmpty = _selectedDate == null;
+      _isFutureDate = _selectedDate != null && _selectedDate!.isAfter(DateTime.now());
     });
 
-    if (_isDateEmpty) {
+    if (_isDateEmpty || _isFutureDate) {
       return;
     }
 
@@ -97,7 +102,7 @@ class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
                 children: [
                   SizedBox(height: 230),
                   Text(
-                    '${widget.userName}님은\n언제\n해당 자격증/면허를\n취득하셨나요?',
+                    '${widget.userName}님은\n해당 자격증/면허를\n언제\n취득하셨나요?',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 48,
@@ -112,6 +117,18 @@ class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Text(
                         '취득일을 정확히 선택해주세요.',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  if (_isFutureDate)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        '미래 날짜는 선택할 수 없습니다.',
                         style: TextStyle(
                           color: Colors.red,
                           fontSize: 18,

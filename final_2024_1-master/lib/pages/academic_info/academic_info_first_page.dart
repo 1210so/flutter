@@ -1,31 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'academic_info_second_page.dart';
-import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
-
-// 예시로 사용자의 이름을 가져오는 함수 (실제로는 서버 요청 등으로 가져와야 함)
-Future<String> getUserName(int userId) async {
-  // 서버에서 사용자 이름을 가져오는 로직
-  var response = await http.get(
-    Uri.parse('$BASE_URL/personal-info/$userId'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-  );
-
-  if (response.statusCode == 200) {
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-    return data['name']; // 예시로 사용자의 이름을 반환
-  } else {
-    throw Exception('사용자 이름을 가져오는데 실패했습니다.');
-  }
-}
 
 class AcademicInfoFirstPage extends StatefulWidget {
   final int userId;
-  const AcademicInfoFirstPage({super.key, required this.userId});
+  final String userName; // 추가된 사용자 이름 변수
+
+  const AcademicInfoFirstPage({super.key, required this.userId, required this.userName});
 
   @override
   _AcademicInfoFirstPageState createState() => _AcademicInfoFirstPageState();
@@ -34,24 +15,6 @@ class AcademicInfoFirstPage extends StatefulWidget {
 class _AcademicInfoFirstPageState extends State<AcademicInfoFirstPage> {
   String? _highestEdu; // 학력 선택 변수
   bool _isEduEmpty = false; // 학력 선택 여부 확인 변수
-  String? _userName; // 사용자 이름 변수
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchUserName();
-  }
-
-  Future<void> _fetchUserName() async {
-    try {
-      String name = await getUserName(widget.userId);
-      setState(() {
-        _userName = name;
-      });
-    } catch (e) {
-      print('사용자 이름을 가져오는데 실패했습니다: $e');
-    }
-  }
 
   void _onNextButtonPressed() {
     setState(() {
@@ -76,7 +39,7 @@ class _AcademicInfoFirstPageState extends State<AcademicInfoFirstPage> {
                 builder: (context) => AcademicInfoSecondPage(
                   userId: widget.userId,
                   highestEdu: _highestEdu!,
-                  userName: _userName!, // 사용자 이름을 전달
+                  userName: widget.userName, // 사용자 이름을 전달
                 ),
               ),
             );
@@ -100,9 +63,8 @@ class _AcademicInfoFirstPageState extends State<AcademicInfoFirstPage> {
               child: Column(
                 children: [
                   SizedBox(height: 150), // 텍스트와 입력 칸을 상단에 고정
-                  _userName != null
-                      ? Text(
-                    '$_userName님의\n최종 학력을\n선택해주세요',
+                  Text(
+                    '${widget.userName}님의\n최종 학력을\n선택해주세요',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
                     style: TextStyle(
                       fontSize: 48, // 텍스트 크기
@@ -110,8 +72,7 @@ class _AcademicInfoFirstPageState extends State<AcademicInfoFirstPage> {
                       fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
                       height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                     ),
-                  )
-                      : CircularProgressIndicator(), // 이름을 불러오는 동안 로딩 인디케이터 표시
+                  ),
                   if (_isEduEmpty)
                     Text(
                       '학력을 다시 선택해주세요.',
@@ -196,7 +157,3 @@ class _AcademicInfoFirstPageState extends State<AcademicInfoFirstPage> {
     );
   }
 }
-
-
-
-

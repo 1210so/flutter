@@ -149,7 +149,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF001ED6),
                             side:
-                                BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                            BorderSide(color: Color(0xFFFFFFFF), width: 2),
                             minimumSize: Size(double.infinity, 60),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24.0),
@@ -216,11 +216,11 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                 flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
                 child: Text(
                   "이름: ${personalInfo['name']}\n"
-                  "생년월일: ${personalInfo['birth']}\n"
-                  "주민등록번호: ${personalInfo['ssn']}\n"
-                  "전화번호: ${personalInfo['contact']}\n"
-                  "이메일주소: ${personalInfo['email']}\n"
-                  "주소: ${personalInfo['address']}",
+                      "생년월일: ${personalInfo['birth']}\n"
+                      "주민등록번호: ${personalInfo['ssn']}\n"
+                      "전화번호: ${personalInfo['contact']}\n"
+                      "이메일주소: ${personalInfo['email']}\n"
+                      "주소: ${personalInfo['address']}",
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black87,
@@ -279,9 +279,9 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                 flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
                 child: Text(
                   "최종 학력: ${academicInfo['highestEdu']}\n"
-                  "학교 이름: ${academicInfo['schoolName']}\n"
-                  "전공 계열: ${academicInfo['major']}\n"
-                  "세부 전공: ${academicInfo['detailedMajor']}",
+                      "학교 이름: ${academicInfo['schoolName']}\n"
+                      "전공 계열: ${academicInfo['major']}\n"
+                      "세부 전공: ${academicInfo['detailedMajor']}",
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black87,

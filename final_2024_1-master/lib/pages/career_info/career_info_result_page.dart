@@ -8,8 +8,9 @@ import 'package:final_2024_1/config.dart';
 
 class CareerInfoResultPage extends StatefulWidget {
   final int userId;
+  final String userName;
 
-  const CareerInfoResultPage({Key? key, required this.userId}) : super(key: key);
+  const CareerInfoResultPage({Key? key, required this.userId, required this.userName}) : super(key: key);
 
   @override
   _CareerInfoResultPageState createState() => _CareerInfoResultPageState();
@@ -159,7 +160,7 @@ class _CareerInfoResultPageState extends State<CareerInfoResultPage> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CareerInfoFirstPage(userId: widget.userId)),
+                              MaterialPageRoute(builder: (context) => CareerInfoFirstPage(userId: widget.userId, userName: widget.userName,)),
                             );
                           },
                           child: const Text(
@@ -186,7 +187,7 @@ class _CareerInfoResultPageState extends State<CareerInfoResultPage> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LicenseInfoFirstPage(userId: widget.userId)),
+                              MaterialPageRoute(builder: (context) => LicenseInfoFirstPage(userId: widget.userId, userName: widget.userName)),
                             );
                           },
                           child: const Text(

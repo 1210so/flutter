@@ -7,25 +7,10 @@ import 'license_info_second_page.dart';
 import 'package:final_2024_1/pages/training_info/training_info_first_page.dart';
 import 'package:final_2024_1/config.dart';
 
-Future<String> getUserName(int userId) async {
-  var response = await http.get(
-    Uri.parse('$BASE_URL/personal-info/$userId'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-  );
-
-  if (response.statusCode == 200) {
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-    return data['name'];
-  } else {
-    throw Exception('사용자 이름을 가져오는데 실패했습니다.');
-  }
-}
-
 class LicenseInfoFirstPage extends StatefulWidget {
   final int userId;
-  const LicenseInfoFirstPage({super.key, required this.userId});
+  final String userName;
+  const LicenseInfoFirstPage({super.key, required this.userId, required this.userName});
 
   @override
   _LicenseInfoFirstPageState createState() => _LicenseInfoFirstPageState();
@@ -38,7 +23,6 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
   bool _isLoading = false;
   bool _isLicenseNameEmpty = false;
   bool _hasInputLicenseName = false;
-  String? _userName;
   late AnimationController _fadeController;
   late AnimationController _slideController;
   late Animation<Color?> _colorAnimation;
@@ -91,8 +75,6 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
     _fadeController.forward().then((_) {
       _slideController.forward();
     });
-
-    _fetchUserName();
   }
 
   @override
@@ -118,17 +100,6 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
     });
   }
 
-  Future<void> _fetchUserName() async {
-    try {
-      String name = await getUserName(widget.userId);
-      setState(() {
-        _userName = name;
-      });
-    } catch (e) {
-      print('사용자 이름을 가져오는데 실패했습니다: $e');
-    }
-  }
-
   void _showLoadingDialog() {
     showDialog(
       context: context,
@@ -140,25 +111,25 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
             child: Row(
               children: [
                 CircularProgressIndicator(
-                  backgroundColor: Color(0xFF001ED6), // 로딩 스피너의 배경색
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white), // 로딩 스피너의 색상
+                  backgroundColor: Color(0xFF001ED6),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
                 SizedBox(width: 20),
                 Text(
                   "자격증/면허 정보를\n불러오는 중입니다",
                   style: TextStyle(
-                    fontSize: 18, // 텍스트 크기
-                    fontWeight: FontWeight.bold, // 텍스트 굵기
-                    color: Color(0xFF001ED6), // 텍스트 색상
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF001ED6),
                   ),
                 ),
               ],
             ),
           ),
-          backgroundColor: Colors.white, // 다이얼로그 배경색
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24.0), // 다이얼로그 모서리 둥글기
-            side: BorderSide(color: Color(0xFF001ED6), width: 2), // 다이얼로그 테두리 설정
+            borderRadius: BorderRadius.circular(24.0),
+            side: BorderSide(color: Color(0xFF001ED6), width: 2),
           ),
         );
       },
@@ -184,24 +155,23 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
             ...dataList1.map((item) => item['종목명']?.toString() ?? ''),
             ...dataList2.map((item) => item['자격명']?.toString() ?? '')
           ];
-          _items.removeWhere((item) => item.isEmpty); // 빈 문자열 제거
+          _items.removeWhere((item) => item.isEmpty);
 
-          // 초기 선택 항목 설정
           if (_items.isNotEmpty) {
             _selectedItem = _items[0];
           }
-          _isLoading = false; // 데이터 로딩 완료
+          _isLoading = false;
         });
-        Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
+        Navigator.of(context).pop();
       } else {
         throw Exception('Failed to load data');
       }
     } catch (e) {
       print("Error fetching data: $e");
       setState(() {
-        _isLoading = false; // 데이터 로딩 실패 시에도 로딩 상태 해제
+        _isLoading = false;
       });
-      Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
+      Navigator.of(context).pop();
     }
   }
 
@@ -228,7 +198,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                 builder: (context) => LicenseInfoSecondPage(
                   userId: widget.userId,
                   licenseName: _typeAheadController.text,
-                  userName: _userName!,
+                  userName: widget.userName,
                 ),
               ),
             );
@@ -242,7 +212,10 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TrainingInfoFirstPage(userId: widget.userId),
+        builder: (context) => TrainingInfoFirstPage(
+          userId: widget.userId,
+          userName: widget.userName,
+        ),
       ),
     );
   }
@@ -269,9 +242,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                       animation: _colorAnimation,
                       builder: (context, child) {
                         return Text(
-                          _userName != null
-                              ? "${_userName}님이 보유하신\n자격증/면허가 궁금해요!\n지원하는 직무와\n관련있는 것부터 먼저\n작성해주세요!"
-                              : '',
+                          "${widget.userName}님이 보유하신\n자격증/면허가 궁금해요!\n지원하는 직무와\n관련있는 것부터 먼저\n작성해주세요!",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 30,
@@ -286,9 +257,8 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                     opacity: _fadeAnimation,
                     child: Column(
                       children: [
-                        _userName != null
-                            ? Text(
-                          '${_userName}님은\n어떤 자격증/면허를\n가지고 계신가요?',
+                        Text(
+                          '${widget.userName}님은\n어떤 자격증/면허를\n가지고 계신가요?',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 48,
@@ -296,8 +266,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                             fontFamily: 'Apple SD Gothic Neo',
                             height: 1.2,
                           ),
-                        )
-                            : CircularProgressIndicator(),
+                        ),
                         SizedBox(height: 10),
                         if (_isLicenseNameEmpty)
                           Text(
@@ -348,7 +317,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                                   maxHeight: 200,
                                 ),
                                 hasScrollbar: true,
-                                color: Colors.white, // 리스트의 배경색을 흰색으로 설정
+                                color: Colors.white,
                               ),
                               suggestionsCallback: (pattern) {
                                 return _items.where((item) => item.toLowerCase().contains(pattern.toLowerCase()));
@@ -357,7 +326,10 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                                 return ListTile(
                                   title: Text(
                                     suggestion,
-                                    style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF001ED6),),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF001ED6),
+                                    ),
                                   ),
                                 );
                               },

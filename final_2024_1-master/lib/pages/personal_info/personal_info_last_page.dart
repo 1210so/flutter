@@ -71,8 +71,10 @@ class _LastPageState extends State<LastPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  PersonalInfoResultPage(userId: data['userId'])),
+            builder: (context) => PersonalInfoResultPage(
+              userId: data['userId'],
+            ),
+          ),
         );
       } else {
         print('데이터 저장 실패');

@@ -62,8 +62,8 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                       style: TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                        height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                        fontFamily: 'Apple SD Gothic Neo',
+                        height: 1.2,
                       ),
                     ),
                     SizedBox(height: 16),
@@ -74,8 +74,8 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                         fontSize: 20,
                         color: Colors.red,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                        height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                        fontFamily: 'Apple SD Gothic Neo',
+                        height: 1.0,
                       ),
                     ),
                     SizedBox(height: 32),
@@ -86,8 +86,8 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                         fontSize: 20,
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                        height: 1.7, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                        fontFamily: 'Apple SD Gothic Neo',
+                        height: 1.7,
                       ),
                     ),
                     SizedBox(height: 50),
@@ -134,14 +134,17 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24.0),
                         ),
-                        shadowColor: Colors.black, // 버튼의 그림자 색상
-                        elevation: 6, // 버튼의 그림자 높이,
+                        shadowColor: Colors.black,
+                        elevation: 6,
                       ),
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AcademicInfoFirstPage(userId: widget.userId),
+                            builder: (context) => AcademicInfoFirstPage(
+                              userId: widget.userId,
+                              userName: data['name'], // 업데이트된 사용자 이름 전달
+                            ),
                           ),
                         );
                       },

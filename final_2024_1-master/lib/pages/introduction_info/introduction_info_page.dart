@@ -6,8 +6,9 @@ import 'package:final_2024_1/config.dart';
 
 class IntroductionInfoPage extends StatefulWidget {
   final int userId;
+  final String userName;
 
-  const IntroductionInfoPage({super.key, required this.userId});
+  const IntroductionInfoPage({super.key, required this.userId, required this.userName});
 
   @override
   _IntroductionInfoPageState createState() => _IntroductionInfoPageState();
@@ -174,7 +175,7 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
                           );
                         },
                         child: Text(
-                          '$name님을\n설명해주는 표현을\n3개만 골라주세요!',
+                          '$name님을\n설명해주는 표현을\n3가지 골라주세요!',
                           style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),

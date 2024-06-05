@@ -6,26 +6,11 @@ import 'package:final_2024_1/config.dart';
 import 'career_info_second_page.dart';
 import '../academic_info/academic_info_confirmation_page.dart';
 
-Future<String> getUserName(int userId) async {
-  var response = await http.get(
-    Uri.parse('$BASE_URL/personal-info/$userId'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-  );
-
-  if (response.statusCode == 200) {
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-    return data['name']; // 예시로 사용자의 이름을 반환
-  } else {
-    throw Exception('사용자 이름을 가져오는데 실패했습니다.');
-  }
-}
-
 class CareerInfoFirstPage extends StatefulWidget {
   final int userId;
+  final String userName;
 
-  const CareerInfoFirstPage({super.key, required this.userId});
+  const CareerInfoFirstPage({super.key, required this.userId, required this.userName});
 
   @override
   _CareerInfoFirstPageState createState() => _CareerInfoFirstPageState();
@@ -33,8 +18,7 @@ class CareerInfoFirstPage extends StatefulWidget {
 
 class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerProviderStateMixin {
   final TextEditingController _placeController = TextEditingController();
-  bool _isPlaceEmpty = false; // 근무처가 비어 있는지 여부를 확인하는 변수
-  String? _userName; // 사용자 이름 변수
+  bool _isPlaceEmpty = false;
   late AnimationController _fadeController;
   late AnimationController _slideController;
   late Animation<Color?> _colorAnimation;
@@ -73,19 +57,6 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
     _fadeController.forward().then((_) {
       _slideController.forward();
     });
-
-    _fetchUserName();
-  }
-
-  Future<void> _fetchUserName() async {
-    try {
-      String name = await getUserName(widget.userId);
-      setState(() {
-        _userName = name;
-      });
-    } catch (e) {
-      print('사용자 이름을 가져오는데 실패했습니다: $e');
-    }
   }
 
   void _onNextButtonPressed() {
@@ -93,7 +64,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
       _isPlaceEmpty = _placeController.text.isEmpty;
     });
 
-    if (_isPlaceEmpty || _userName == null) {
+    if (_isPlaceEmpty) {
       return;
     }
 
@@ -111,7 +82,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                 builder: (context) => CareerInfoSecondPage(
                   userId: widget.userId,
                   place: _placeController.text,
-                  userName: _userName!, // 사용자 이름을 전달
+                  userName: widget.userName,
                 ),
               ),
             );
@@ -125,7 +96,10 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LicenseInfoFirstPage(userId: widget.userId),
+        builder: (context) => LicenseInfoFirstPage(
+          userId: widget.userId,
+          userName: widget.userName,
+        ),
       ),
     );
   }
@@ -172,9 +146,8 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                     opacity: _fadeAnimation,
                     child: Column(
                       children: [
-                        _userName != null
-                            ? Text(
-                          '${_userName}님은\n어디서\n일하셨나요?',
+                        Text(
+                          '${widget.userName}님은\n어디서\n일하셨나요?',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 48,
@@ -182,9 +155,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                             fontFamily: 'Apple SD Gothic Neo',
                             height: 1.2,
                           ),
-                        )
-                            : CircularProgressIndicator(),
-                        // 이름을 불러오는 동안 로딩 인디케이터 표시
+                        ),
                         SizedBox(height: 10),
                         if (_isPlaceEmpty)
                           Text(

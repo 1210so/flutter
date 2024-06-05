@@ -59,7 +59,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CareerInfoResultPage(userId: widget.userId)),
+          MaterialPageRoute(builder: (context) => CareerInfoResultPage(userId: widget.userId, userName: widget.userName,)),
         );
       } else {
         print('데이터 저장 실패');

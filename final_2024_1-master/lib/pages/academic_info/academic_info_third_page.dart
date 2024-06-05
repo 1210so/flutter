@@ -47,7 +47,7 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
             highestEdu: widget.highestEdu,
             schoolName: widget.schoolName,
             major: _selectedMajorCategory!,
-            userName: widget.userName, // 사용자 이름을 전달
+            userName: widget.userName,
           ),
         ),
       );

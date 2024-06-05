@@ -61,7 +61,7 @@ class _LicenseInfoLastPageState extends State<LicenseInfoLastPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => LicenseInfoResultPage(userId: widget.userId)),
+              builder: (context) => LicenseInfoResultPage(userId: widget.userId, userName: widget.userName)),
         );
       } else {
         print('데이터 저장 실패');
