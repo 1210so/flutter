@@ -31,7 +31,8 @@ class CareerInfoFirstPage extends StatefulWidget {
   _CareerInfoFirstPageState createState() => _CareerInfoFirstPageState();
 }
 
-class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerProviderStateMixin {
+class _CareerInfoFirstPageState extends State<CareerInfoFirstPage>
+    with TickerProviderStateMixin {
   final TextEditingController _placeController = TextEditingController();
   bool _isPlaceEmpty = false; // 근무처가 비어 있는지 여부를 확인하는 변수
   String? _userName; // 사용자 이름 변수
@@ -93,14 +94,18 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
       _isPlaceEmpty = _placeController.text.isEmpty;
     });
 
-    if (_isPlaceEmpty) {
+    if (_isPlaceEmpty || _userName == null) {
       return;
     }
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CareerInfoSecondPage(userId: widget.userId, place: _placeController.text),
+        builder: (context) => CareerInfoSecondPage(
+          userId: widget.userId,
+          place: _placeController.text,
+          userName: _userName!, // 사용자 이름을 전달
+        ),
       ),
     );
   }
@@ -130,7 +135,8 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
       child: Scaffold(
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Center(
               child: Column(
                 children: [
@@ -167,7 +173,8 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                             height: 1.2,
                           ),
                         )
-                            : CircularProgressIndicator(), // 이름을 불러오는 동안 로딩 인디케이터 표시
+                            : CircularProgressIndicator(),
+                        // 이름을 불러오는 동안 로딩 인디케이터 표시
                         SizedBox(height: 10),
                         if (_isPlaceEmpty)
                           Text(
@@ -191,7 +198,8 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 16.0),
                             child: TextField(
                               controller: _placeController,
                               textAlign: TextAlign.center,
@@ -216,7 +224,8 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF001ED6),
-                            side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                            side:
+                            BorderSide(color: Color(0xFFFFFFFF), width: 2),
                             minimumSize: Size(345, 60),
                             shadowColor: Colors.black,
                             elevation: 6,
@@ -238,7 +247,8 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey,
-                            side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                            side:
+                            BorderSide(color: Color(0xFFFFFFFF), width: 2),
                             minimumSize: Size(345, 60),
                             shadowColor: Colors.black,
                             elevation: 6,

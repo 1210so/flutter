@@ -106,7 +106,7 @@ class _FourthPageState extends State<FourthPage> {
                 children: [
                   SizedBox(height: 150), // 텍스트와 입력 칸을 상단에 고정
                   Text(
-                    '${widget.name}님의\n전화번호를\n입력해주세요.',
+                    '${widget.name}님의\n전화번호를\n입력해주세요',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 48,
@@ -145,7 +145,7 @@ class _FourthPageState extends State<FourthPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 100),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6),

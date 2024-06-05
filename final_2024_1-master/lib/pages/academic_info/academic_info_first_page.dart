@@ -102,7 +102,7 @@ class _AcademicInfoFirstPageState extends State<AcademicInfoFirstPage> {
                   SizedBox(height: 150), // 텍스트와 입력 칸을 상단에 고정
                   _userName != null
                       ? Text(
-                    '$_userName님의\n최종 학력을 선택해주세요.',
+                    '$_userName님의\n최종 학력을\n선택해주세요',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
                     style: TextStyle(
                       fontSize: 48, // 텍스트 크기

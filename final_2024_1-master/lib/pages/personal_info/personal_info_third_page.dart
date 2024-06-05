@@ -102,9 +102,9 @@ class _ThirdPageState extends State<ThirdPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 150), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 180), // 텍스트와 입력 칸을 상단에 고정
                   Text(
-                    '${widget.name}님의\n주민등록번호를\n입력해주세요.',
+                    '${widget.name}님의\n주민등록번호를\n입력해주세요',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
                     style: TextStyle(
                       fontSize: 48, // 텍스트 크기
@@ -138,7 +138,7 @@ class _ThirdPageState extends State<ThirdPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 90),
+                  SizedBox(height: 130),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6), // 버튼의 배경색

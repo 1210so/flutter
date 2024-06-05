@@ -10,7 +10,7 @@ class AcademicInfoLastPage extends StatefulWidget {
   final String highestEdu;
   final String schoolName;
   final String major;
-  final String userName; // 사용자 이름 추가
+  final String userName;
 
   const AcademicInfoLastPage({
     super.key,
@@ -18,7 +18,7 @@ class AcademicInfoLastPage extends StatefulWidget {
     required this.highestEdu,
     required this.schoolName,
     required this.major,
-    required this.userName, // 사용자 이름 추가
+    required this.userName,
   });
 
   @override
@@ -27,7 +27,27 @@ class AcademicInfoLastPage extends StatefulWidget {
 
 class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
   final TextEditingController _detailedMajorController = TextEditingController();
-  bool _isDetailedMajorEmpty = false; // 세부 전공이 비어 있는지 여부를 확인하는 변수
+  bool _isDetailedMajorEmpty = false;
+  bool _hasInputDetailedMajor = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _detailedMajorController.addListener(_updateDetailedMajorTextColor);
+  }
+
+  @override
+  void dispose() {
+    _detailedMajorController.removeListener(_updateDetailedMajorTextColor);
+    _detailedMajorController.dispose();
+    super.dispose();
+  }
+
+  void _updateDetailedMajorTextColor() {
+    setState(() {
+      _hasInputDetailedMajor = _detailedMajorController.text.isNotEmpty;
+    });
+  }
 
   void _onNextButtonPressed() {
     setState(() {
@@ -78,7 +98,7 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
               highestEdu: widget.highestEdu,
               schoolName: widget.schoolName,
               major: widget.major,
-              userName: widget.userName, // 사용자 이름을 전달
+              userName: widget.userName,
             ),
           ),
         );
@@ -103,9 +123,9 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 200),
+                  SizedBox(height: 230),
                   Text(
-                    '${widget.userName}님의\n세부 전공을\n입력해주세요.',
+                    '${widget.userName}님의\n세부 전공을\n입력해주세요',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 48,
@@ -114,7 +134,7 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
                       height: 1.2,
                     ),
                   ),
-                  SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 10),
                   if (_isDetailedMajorEmpty)
                     Text(
                       '세부 전공을 정확히 입력해주세요.',
@@ -143,13 +163,13 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
-                          color: Color(0xFF001ED6),
+                          color: _hasInputDetailedMajor ? Color(0xFF001ED6) : Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
                         decoration: InputDecoration(
                           hintText: '세부 전공',
                           hintStyle: TextStyle(
-                            color: Color(0xFF001ED6),
+                            color: Colors.grey,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -190,5 +210,3 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
     );
   }
 }
-
-

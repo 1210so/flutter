@@ -18,6 +18,10 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
   late TextEditingController _schoolNameController;
   late TextEditingController _majorController;
   late TextEditingController _detailedMajorController;
+  bool _isHighestEduEmpty = false;
+  bool _isSchoolNameEmpty = false;
+  bool _isMajorEmpty = false;
+  bool _isDetailedMajorEmpty = false;
 
   @override
   void initState() {
@@ -28,7 +32,27 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
     _detailedMajorController = TextEditingController(text: widget.academicInfo['detailedMajor'] ?? '');
   }
 
+  @override
+  void dispose() {
+    _highestEduController.dispose();
+    _schoolNameController.dispose();
+    _majorController.dispose();
+    _detailedMajorController.dispose();
+    super.dispose();
+  }
+
   Future<void> _updateData() async {
+    setState(() {
+      _isHighestEduEmpty = _highestEduController.text.isEmpty;
+      _isSchoolNameEmpty = _schoolNameController.text.isEmpty;
+      _isMajorEmpty = _majorController.text.isEmpty;
+      _isDetailedMajorEmpty = _detailedMajorController.text.isEmpty;
+    });
+
+    if (_isHighestEduEmpty || _isSchoolNameEmpty) {
+      return;
+    }
+
     try {
       var response = await http.post(
         Uri.parse('$BASE_URL/academic-info/update/${widget.userId}'),
@@ -79,18 +103,42 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
               SizedBox(height: 50),
               TextField(
                 controller: _highestEduController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: '최종 학력',
-                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF001ED6),
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 3.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF001ED6), width: 3.0),
+                  ),
+                  errorText: _isHighestEduEmpty ? '최종 학력을 입력해주세요' : null,
                 ),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
               TextField(
                 controller: _schoolNameController,
-                decoration: const InputDecoration(
-                  labelText: '학교aud',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: '학교명',
+                  labelStyle: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF001ED6),
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 3.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF001ED6), width: 3.0),
+                  ),
+                  errorText: _isSchoolNameEmpty ? '학교명을 입력해주세요' : null,
                 ),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               if (widget.academicInfo['major'] != null && widget.academicInfo['major'].isNotEmpty)
                 Column(
@@ -98,10 +146,22 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
                     SizedBox(height: 20),
                     TextField(
                       controller: _majorController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: '전공 계열',
-                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF001ED6),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 3.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF001ED6), width: 3.0),
+                        ),
+                        errorText: _isMajorEmpty ? '전공 계열을 입력해주세요' : null,
                       ),
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -111,22 +171,37 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
                     SizedBox(height: 20),
                     TextField(
                       controller: _detailedMajorController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: '세부 전공',
-                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF001ED6),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 3.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF001ED6), width: 3.0),
+                        ),
+                        errorText: _isDetailedMajorEmpty ? '세부 전공을 입력해주세요' : null,
                       ),
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-              SizedBox(height: 150),
+              SizedBox(height: 50),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF001ED6),
                   side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: Size(double.infinity, 60),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24.0),
                   ),
+                  shadowColor: Colors.black,
+                  // 버튼의 그림자 색상
+                  elevation: 6, // 버튼의 그림자 높이,
                 ),
                 onPressed: _updateData,
                 child: const Text(

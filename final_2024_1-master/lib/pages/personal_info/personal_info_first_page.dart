@@ -12,6 +12,26 @@ class FirstPage extends StatefulWidget {
 class _FirstPageState extends State<FirstPage> {
   final TextEditingController _nameController = TextEditingController(); // 이름 입력 컨트롤러
   bool _isNameEmpty = false; // 이름이 비어 있는지 여부를 확인하는 변수
+  bool _hasInput = false; // 이름이 입력되었는지 여부를 확인하는 변수
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.addListener(_updateTextColor);
+  }
+
+  @override
+  void dispose() {
+    _nameController.removeListener(_updateTextColor);
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  void _updateTextColor() {
+    setState(() {
+      _hasInput = _nameController.text.isNotEmpty;
+    });
+  }
 
   void _onNextButtonPressed() {
     // 다음 버튼을 눌렀을 때 실행되는 함수
@@ -63,9 +83,9 @@ class _FirstPageState extends State<FirstPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 150), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 200), // 텍스트와 입력 칸을 상단에 고정
                   Text(
-                    '성함을\n입력해주세요.',
+                    '성함이\n어떻게 되시나요?',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
                     style: TextStyle(
                       fontSize: 48, // 텍스트 크기
@@ -102,13 +122,13 @@ class _FirstPageState extends State<FirstPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20, // 입력 텍스트의 크기
-                          color: Color(0xFF001ED6), // 입력 텍스트의 색상
+                          color: _hasInput ? Color(0xFF001ED6) : Colors.grey, // 입력 텍스트의 색상
                           fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
                         ),
                         decoration: InputDecoration(
                           hintText: '성함', // 입력 필드의 힌트 텍스트
                           hintStyle: TextStyle(
-                            color: Color(0xFF001ED6), // 힌트 텍스트의 색상
+                            color: Colors.grey, // 힌트 텍스트의 색상
                             fontSize: 20, // 힌트 텍스트의 크기
                             fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
                           ),

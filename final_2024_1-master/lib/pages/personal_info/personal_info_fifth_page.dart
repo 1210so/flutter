@@ -8,12 +8,13 @@ class FifthPage extends StatefulWidget {
   final String ssn;
   final String contact;
 
-  const FifthPage(
-      {super.key,
-        required this.name,
-        required this.birth,
-        required this.ssn,
-        required this.contact});
+  const FifthPage({
+    super.key,
+    required this.name,
+    required this.birth,
+    required this.ssn,
+    required this.contact,
+  });
 
   @override
   _FifthPageState createState() => _FifthPageState();
@@ -23,12 +24,50 @@ class _FifthPageState extends State<FifthPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _domainController = TextEditingController();
   bool _isEmailEmpty = false;
+  bool _hasInputEmail = false;
+  bool _hasInputDomain = false;
   final List<String> _emailDomains = [
-    'naver.com', 'gmail.com', 'hanmail.net', 'daum.net', 'yahoo.com', 'hotmail.com', 'outlook.com', 'kakao.com', 'nate.com', 'icloud.com'
+    'naver.com',
+    'gmail.com',
+    'hanmail.net',
+    'daum.net',
+    'yahoo.com',
+    'hotmail.com',
+    'outlook.com',
+    'kakao.com',
+    'nate.com',
+    'icloud.com',
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _emailController.addListener(_updateEmailTextColor);
+    _domainController.addListener(_updateDomainTextColor);
+  }
+
+  @override
+  void dispose() {
+    _emailController.removeListener(_updateEmailTextColor);
+    _domainController.removeListener(_updateDomainTextColor);
+    _emailController.dispose();
+    _domainController.dispose();
+    super.dispose();
+  }
+
+  void _updateEmailTextColor() {
+    setState(() {
+      _hasInputEmail = _emailController.text.isNotEmpty;
+    });
+  }
+
+  void _updateDomainTextColor() {
+    setState(() {
+      _hasInputDomain = _domainController.text.isNotEmpty;
+    });
+  }
+
   void _onNextButtonPressed() {
-    // 다음 버튼을 눌렀을 때 실행되는 함수
     setState(() {
       _isEmailEmpty = _emailController.text.isEmpty || _domainController.text.isEmpty;
     });
@@ -78,9 +117,9 @@ class _FifthPageState extends State<FifthPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 150), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 230), // 텍스트와 입력 칸을 상단에 고정
                   Text(
-                    '${widget.name}님의\n이메일 주소를\n입력해주세요.',
+                    '${widget.name}님의\n이메일 주소를\n입력해주세요',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
                     style: TextStyle(
                       fontSize: 48, // 텍스트 크기
@@ -120,13 +159,13 @@ class _FifthPageState extends State<FifthPage> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 20, // 입력 텍스트의 크기
-                              color: Color(0xFF001ED6), // 입력 텍스트의 색상
+                              color: _hasInputEmail ? Color(0xFF001ED6) : Colors.grey, // 입력 텍스트의 색상
                               fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
                             ),
                             decoration: InputDecoration(
                               hintText: '아이디', // 입력 필드의 힌트 텍스트
                               hintStyle: TextStyle(
-                                color: Color(0xFF001ED6), // 힌트 텍스트의 색상
+                                color: Colors.grey, // 힌트 텍스트의 색상
                                 fontSize: 20, // 힌트 텍스트의 크기
                                 fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
                               ),
@@ -168,6 +207,12 @@ class _FifthPageState extends State<FifthPage> {
                                 });
                               }
                             },
+                            onSelected: (String selection) {
+                              setState(() {
+                                _domainController.text = selection;
+                                _hasInputDomain = true;
+                              });
+                            },
                             fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
                               _domainController.text = textEditingController.text;
                               return TextField(
@@ -176,18 +221,23 @@ class _FifthPageState extends State<FifthPage> {
                                 focusNode: focusNode,
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: Color(0xFF001ED6),
+                                  color: textEditingController.text.isNotEmpty ? Color(0xFF001ED6) : Colors.grey,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 decoration: InputDecoration(
                                   hintText: '도메인 선택',
                                   hintStyle: TextStyle(
-                                    color: Color(0xFF001ED6),
+                                    color: Colors.grey,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   border: InputBorder.none,
                                 ),
+                                onChanged: (text) {
+                                  setState(() {
+                                    _hasInputDomain = text.isNotEmpty;
+                                  });
+                                },
                               );
                             },
                             optionsViewBuilder: (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {

@@ -67,9 +67,9 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 180),
+                  SizedBox(height: 230),
                   Text(
-                    '${widget.userName}님의\n전공 계열을\n선택해주세요.',
+                    '${widget.userName}님의\n전공 계열을\n선택해주세요',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 48,
@@ -83,7 +83,7 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Text(
-                        '전공 계열을 선택해주세요!',
+                        '전공 계열을 다시 선택해주세요.',
                         style: TextStyle(
                           color: Colors.red,
                           fontSize: 18,

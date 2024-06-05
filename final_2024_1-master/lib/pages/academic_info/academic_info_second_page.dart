@@ -24,7 +24,27 @@ class AcademicInfoSecondPage extends StatefulWidget {
 
 class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
   final TextEditingController _schoolNameController = TextEditingController();
-  bool _isSchoolNameEmpty = false; // 학교명이 비어 있는지 여부를 확인하는 변수
+  bool _isSchoolNameEmpty = false;
+  bool _hasInputSchoolName = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _schoolNameController.addListener(_updateSchoolNameTextColor);
+  }
+
+  @override
+  void dispose() {
+    _schoolNameController.removeListener(_updateSchoolNameTextColor);
+    _schoolNameController.dispose();
+    super.dispose();
+  }
+
+  void _updateSchoolNameTextColor() {
+    setState(() {
+      _hasInputSchoolName = _schoolNameController.text.isNotEmpty;
+    });
+  }
 
   void _onNextButtonPressed() {
     setState(() {
@@ -51,7 +71,7 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
                     userId: widget.userId,
                     highestEdu: widget.highestEdu,
                     schoolName: _schoolNameController.text,
-                    userName: widget.userName, // 사용자 이름을 전달
+                    userName: widget.userName,
                   ),
                 ),
               );
@@ -89,7 +109,7 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
               highestEdu: widget.highestEdu,
               schoolName: _schoolNameController.text,
               major: '',
-              userName: widget.userName, // 사용자 이름을 전달
+              userName: widget.userName,
             ),
           ),
         );
@@ -114,18 +134,18 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 200), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 230),
                   Text(
-                    '${widget.userName}님이\n졸업하신 학교명을\n입력해주세요.',
-                    textAlign: TextAlign.center, // 텍스트 가운데 정렬
+                    '${widget.userName}님이\n졸업하신 학교명을\n입력해주세요',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 48, // 텍스트 크기
-                      fontWeight: FontWeight.bold, // 텍스트 굵기
-                      fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                      height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Apple SD Gothic Neo',
+                      height: 1.2,
                     ),
                   ),
-                  SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 10),
                   if (_isSchoolNameEmpty)
                     Text(
                       '학교 이름을 정확히 입력해주세요.',
@@ -137,34 +157,34 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
                     ),
                   SizedBox(height: 40),
                   Container(
-                    width: 347, // 입력 창의 너비
-                    height: 60, // 입력 창의 높이
+                    width: 347,
+                    height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.white, // 입력 창의 배경색
-                      borderRadius: BorderRadius.circular(24.0), // 입력 창의 모서리 둥글기
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24.0),
                       border: Border.all(
-                        color: Color(0xFF001ED6), // 입력 창의 테두리 색상
-                        width: 2.0, // 입력 창의 테두리 두께
+                        color: Color(0xFF001ED6),
+                        width: 2.0,
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0), // 입력 창의 내부 패딩
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: TextField(
-                        controller: _schoolNameController, // 입력 컨트롤러 설정
+                        controller: _schoolNameController,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 20, // 입력 텍스트의 크기
-                          color: Color(0xFF001ED6), // 입력 텍스트의 색상
-                          fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
+                          fontSize: 20,
+                          color: _hasInputSchoolName ? Color(0xFF001ED6) : Colors.grey,
+                          fontWeight: FontWeight.bold,
                         ),
                         decoration: InputDecoration(
-                          hintText: '학교 이름', // 입력 필드의 힌트 텍스트
+                          hintText: '학교 이름',
                           hintStyle: TextStyle(
-                            color: Color(0xFF001ED6), // 힌트 텍스트의 색상
-                            fontSize: 20, // 힌트 텍스트의 크기
-                            fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
+                            color: Colors.grey,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
-                          border: InputBorder.none, // 입력 필드의 기본 테두리 제거
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
@@ -172,26 +192,26 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
                   SizedBox(height: 180),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF001ED6), // 버튼의 배경색
-                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2), // 버튼의 테두리 설정
-                      minimumSize: Size(345, 60), // 버튼의 최소 크기 설정
-                      shadowColor: Colors.black, // 버튼의 그림자 색상
-                      elevation: 6, // 버튼의 그림자 높이
+                      backgroundColor: Color(0xFF001ED6),
+                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                      minimumSize: Size(345, 60),
+                      shadowColor: Colors.black,
+                      elevation: 6,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0), // 버튼의 모서리 둥글기
+                        borderRadius: BorderRadius.circular(24.0),
                       ),
                     ),
-                    onPressed: _onNextButtonPressed, // 다음 버튼을 눌렀을 때 실행되는 함수
+                    onPressed: _onNextButtonPressed,
                     child: const Text(
                       '다음',
                       style: TextStyle(
-                        fontSize: 18, // 버튼 텍스트의 크기
-                        fontWeight: FontWeight.bold, // 버튼 텍스트의 굵기
-                        color: Colors.white, // 버튼 텍스트의 색상
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                  SizedBox(height: 20), // 추가된 공간
+                  SizedBox(height: 20),
                 ],
               ),
             ),
@@ -201,7 +221,3 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
     );
   }
 }
-
-
-
-

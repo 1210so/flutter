@@ -14,6 +14,26 @@ class SecondPage extends StatefulWidget {
 class _SecondPageState extends State<SecondPage> {
   final TextEditingController _birthController = TextEditingController();
   bool _isBirthEmpty = false; // 생년월일이 비어 있는지 여부를 확인하는 변수
+  bool _hasInput = false; // 생년월일이 입력되었는지 여부를 확인하는 변수
+
+  @override
+  void initState() {
+    super.initState();
+    _birthController.addListener(_updateTextColor);
+  }
+
+  @override
+  void dispose() {
+    _birthController.removeListener(_updateTextColor);
+    _birthController.dispose();
+    super.dispose();
+  }
+
+  void _updateTextColor() {
+    setState(() {
+      _hasInput = _birthController.text.isNotEmpty;
+    });
+  }
 
   void _onNextButtonPressed() {
     // 다음 버튼을 눌렀을 때 실행되는 함수
@@ -113,13 +133,13 @@ class _SecondPageState extends State<SecondPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20, // 입력 텍스트의 크기
-                          color: Color(0xFF001ED6), // 입력 텍스트의 색상
+                          color: _hasInput ? Color(0xFF001ED6) : Colors.grey, // 입력 텍스트의 색상
                           fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
                         ),
                         decoration: InputDecoration(
                           hintText: '생년월일 선택하기', // 입력 필드의 힌트 텍스트
                           hintStyle: TextStyle(
-                            color: Color(0xFF001ED6), // 힌트 텍스트의 색상
+                            color: Colors.grey, // 힌트 텍스트의 색상
                             fontSize: 20, // 힌트 텍스트의 크기
                             fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
                           ),
@@ -130,7 +150,7 @@ class _SecondPageState extends State<SecondPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 90),
+                  SizedBox(height: 150),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6), // 버튼의 배경색
