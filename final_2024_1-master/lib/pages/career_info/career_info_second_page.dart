@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'career_info_last_page.dart';
+import '../academic_info/academic_info_confirmation_page.dart';
 
 class CareerInfoSecondPage extends StatefulWidget {
   final int userId;
@@ -124,11 +125,23 @@ class _CareerInfoSecondPageState extends State<CareerInfoSecondPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CareerInfoLastPage(
-          userId: widget.userId,
-          place: widget.place,
-          period: '${_selectedStartYear}년 ${_selectedStartMonth}월 ~ ${_selectedEndYear}년 ${_selectedEndMonth}월',
-          userName: widget.userName, // 사용자 이름을 전달
+        builder: (context) => AcademicInfoConfirmationPage(
+          title: '근무 기간 확인',
+          infoLabel: '근무 기간이',
+          info: '${_selectedStartYear}년 ${_selectedStartMonth}월 ~ ${_selectedEndYear}년 ${_selectedEndMonth}월',
+          onConfirmed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CareerInfoLastPage(
+                  userId: widget.userId,
+                  place: widget.place,
+                  period: '${_selectedStartYear}년 ${_selectedStartMonth}월 ~ ${_selectedEndYear}년 ${_selectedEndMonth}월',
+                  userName: widget.userName,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

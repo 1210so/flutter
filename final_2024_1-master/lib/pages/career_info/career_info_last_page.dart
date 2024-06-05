@@ -3,6 +3,7 @@ import 'career_info_result_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
+import '../academic_info/academic_info_confirmation_page.dart';
 
 class CareerInfoLastPage extends StatefulWidget {
   final int userId;
@@ -77,7 +78,17 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
       return;
     }
 
-    _sendData();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AcademicInfoConfirmationPage(
+          title: '업무 내용 확인',
+          infoLabel: '업무 내용이',
+          info: _taskController.text,
+          onConfirmed: _sendData,
+        ),
+      ),
+    );
   }
 
   @override
@@ -104,7 +115,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
                       height: 1.2,
                     ),
                   ),
-                  SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 10),
                   if (_isTaskEmpty)
                     Text(
                       '업무 내용을 정확히 입력해주세요.',

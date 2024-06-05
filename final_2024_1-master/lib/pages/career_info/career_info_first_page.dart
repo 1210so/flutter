@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'career_info_second_page.dart';
 import 'package:final_2024_1/pages/license_info/license_info_first_page.dart';
 import 'package:final_2024_1/config.dart';
+import 'career_info_second_page.dart';
+import '../academic_info/academic_info_confirmation_page.dart';
 
-// 예시로 사용자의 이름을 가져오는 함수 (실제로는 서버 요청 등으로 가져와야 함)
 Future<String> getUserName(int userId) async {
   var response = await http.get(
     Uri.parse('$BASE_URL/personal-info/$userId'),
@@ -31,8 +31,7 @@ class CareerInfoFirstPage extends StatefulWidget {
   _CareerInfoFirstPageState createState() => _CareerInfoFirstPageState();
 }
 
-class _CareerInfoFirstPageState extends State<CareerInfoFirstPage>
-    with TickerProviderStateMixin {
+class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerProviderStateMixin {
   final TextEditingController _placeController = TextEditingController();
   bool _isPlaceEmpty = false; // 근무처가 비어 있는지 여부를 확인하는 변수
   String? _userName; // 사용자 이름 변수
@@ -101,10 +100,22 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CareerInfoSecondPage(
-          userId: widget.userId,
-          place: _placeController.text,
-          userName: _userName!, // 사용자 이름을 전달
+        builder: (context) => AcademicInfoConfirmationPage(
+          title: '근무처 확인',
+          infoLabel: '근무처가',
+          info: _placeController.text,
+          onConfirmed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CareerInfoSecondPage(
+                  userId: widget.userId,
+                  place: _placeController.text,
+                  userName: _userName!, // 사용자 이름을 전달
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -135,12 +146,11 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage>
       child: Scaffold(
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 150), // 기존 300에서 200으로 조정하여 텍스트를 위로 올림
+                  SizedBox(height: 150),
                   SlideTransition(
                     position: _slideAnimation,
                     child: AnimatedBuilder(
@@ -198,8 +208,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage>
                             ),
                           ),
                           child: Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             child: TextField(
                               controller: _placeController,
                               textAlign: TextAlign.center,
@@ -224,8 +233,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage>
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF001ED6),
-                            side:
-                            BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                            side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
                             minimumSize: Size(345, 60),
                             shadowColor: Colors.black,
                             elevation: 6,
@@ -247,8 +255,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage>
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey,
-                            side:
-                            BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                            side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
                             minimumSize: Size(345, 60),
                             shadowColor: Colors.black,
                             elevation: 6,

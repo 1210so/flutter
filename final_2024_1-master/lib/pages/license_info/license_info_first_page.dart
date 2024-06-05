@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../academic_info/academic_info_confirmation_page.dart';
 import 'license_info_second_page.dart';
 import 'package:final_2024_1/pages/training_info/training_info_first_page.dart';
 import 'package:final_2024_1/config.dart';
@@ -59,7 +60,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
     );
 
     _slideController = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
@@ -144,7 +145,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                 ),
                 SizedBox(width: 20),
                 Text(
-                  "데이터를 불러오는 중입니다",
+                  "자격증/면허 정보를\n불러오는 중입니다",
                   style: TextStyle(
                     fontSize: 18, // 텍스트 크기
                     fontWeight: FontWeight.bold, // 텍스트 굵기
@@ -213,17 +214,28 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
       return;
     }
 
-    if (_selectedItem != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LicenseInfoSecondPage(
-            userId: widget.userId,
-            licenseName: _selectedItem!,
-          ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AcademicInfoConfirmationPage(
+          title: '자격증/면허명 확인',
+          infoLabel: '자격증/면허명이',
+          info: _typeAheadController.text,
+          onConfirmed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LicenseInfoSecondPage(
+                  userId: widget.userId,
+                  licenseName: _typeAheadController.text,
+                  userName: _userName!,
+                ),
+              ),
+            );
+          },
         ),
-      );
-    }
+      ),
+    );
   }
 
   void _onNoLicenseButtonPressed() {
@@ -358,7 +370,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                               noItemsFoundBuilder: (context) => const SizedBox(
                                 height: 100,
                                 child: Center(
-                                  child: Text('No items found'),
+                                  child: Text('자격증/면허 정보가 없습니다.\n직접 입력해주세요.'),
                                 ),
                               ),
                             ),

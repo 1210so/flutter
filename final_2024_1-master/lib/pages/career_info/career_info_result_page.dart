@@ -115,7 +115,8 @@ class _CareerInfoResultPageState extends State<CareerInfoResultPage> {
                                       "근무 기간: ${career['period']}\n업무 내용: ${career['task']}",
                                       style: TextStyle(
                                         color: Color(0xFF001ED6),
-                                        fontSize: 18,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     trailing: IconButton(
