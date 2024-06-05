@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remedi_kopo/remedi_kopo.dart';
 import 'personal_info_confirmation_page.dart';
 import 'personal_info_result_page.dart';
 import 'dart:convert';
@@ -12,40 +13,41 @@ class LastPage extends StatefulWidget {
   final String contact;
   final String email;
 
-  const LastPage(
-      {Key? key,
-        required this.name,
-        required this.birth,
-        required this.ssn,
-        required this.contact,
-        required this.email})
-      : super(key: key);
+  const LastPage({
+    Key? key,
+    required this.name,
+    required this.birth,
+    required this.ssn,
+    required this.contact,
+    required this.email,
+  }) : super(key: key);
 
   @override
   _LastPageState createState() => _LastPageState();
 }
 
 class _LastPageState extends State<LastPage> {
-  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _addressDetailController = TextEditingController();
+  String _selectedAddress = '';
   bool _isAddressEmpty = false;
   bool _hasInput = false;
 
   @override
   void initState() {
     super.initState();
-    _addressController.addListener(_updateTextColor);
+    _addressDetailController.addListener(_updateTextColor);
   }
 
   @override
   void dispose() {
-    _addressController.removeListener(_updateTextColor);
-    _addressController.dispose();
+    _addressDetailController.removeListener(_updateTextColor);
+    _addressDetailController.dispose();
     super.dispose();
   }
 
   void _updateTextColor() {
     setState(() {
-      _hasInput = _addressController.text.isNotEmpty;
+      _hasInput = _addressDetailController.text.isNotEmpty;
     });
   }
 
@@ -86,7 +88,7 @@ class _LastPageState extends State<LastPage> {
 
   void _onConfirmAddress() {
     setState(() {
-      _isAddressEmpty = _addressController.text.isEmpty;
+      _isAddressEmpty = _selectedAddress.isEmpty;
     });
 
     if (_isAddressEmpty) {
@@ -99,13 +101,64 @@ class _LastPageState extends State<LastPage> {
         builder: (context) => PersonalInfoConfirmationPage(
           title: '주소 확인',
           infoLabel: '주소가',
-          info: _addressController.text,
+          info: '$_selectedAddress ${_addressDetailController.text}',
           onConfirmed: () {
-            _sendData(_addressController.text);
+            _sendData('$_selectedAddress ${_addressDetailController.text}');
           },
         ),
       ),
     );
+  }
+
+  void _showLoadingDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Row(
+              children: [
+                CircularProgressIndicator(
+                  backgroundColor: Color(0xFF001ED6),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+                SizedBox(width: 20),
+                Text(
+                  "주소 정보를\n불러오는 중입니다",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF001ED6),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.0),
+            side: BorderSide(color: Color(0xFF001ED6), width: 2),
+          ),
+        );
+      },
+    );
+  }
+
+  void _onSearchAddress() async {
+    KopoModel? model = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RemediKopo(),
+      ),
+    );
+
+    if (model != null) {
+      setState(() {
+        _selectedAddress = model.address ?? '';
+      });
+    }
   }
 
   @override
@@ -143,6 +196,36 @@ class _LastPageState extends State<LastPage> {
                       ),
                     ),
                   SizedBox(height: 40),
+                  GestureDetector(
+                    onTap: _onSearchAddress,
+                    child: Container(
+                      width: 347, // 입력 창의 너비
+                      height: 60, // 입력 창의 높이
+                      decoration: BoxDecoration(
+                        color: Colors.white, // 입력 창의 배경색
+                        borderRadius: BorderRadius.circular(24.0), // 입력 창의 모서리 둥글기
+                        border: Border.all(
+                          color: Color(0xFF001ED6), // 입력 창의 테두리 색상
+                          width: 2.0, // 입력 창의 테두리 두께
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0), // 입력 창의 내부 패딩
+                        child: Center(
+                          child: Text(
+                            _selectedAddress.isEmpty ? '주소 검색' : _selectedAddress,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20, // 텍스트의 크기
+                              color: _selectedAddress.isNotEmpty ? Color(0xFF001ED6) : Colors.grey, // 텍스트의 색상
+                              fontWeight: FontWeight.bold, // 텍스트의 굵기
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
                   Container(
                     width: 347, // 입력 창의 너비
                     height: 60, // 입력 창의 높이
@@ -157,7 +240,7 @@ class _LastPageState extends State<LastPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0), // 입력 창의 내부 패딩
                       child: TextField(
-                        controller: _addressController, // 입력 컨트롤러 설정
+                        controller: _addressDetailController, // 입력 컨트롤러 설정
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20, // 입력 텍스트의 크기
@@ -165,7 +248,7 @@ class _LastPageState extends State<LastPage> {
                           fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
                         ),
                         decoration: InputDecoration(
-                          hintText: '주소 입력', // 입력 필드의 힌트 텍스트
+                          hintText: '상세 주소 입력', // 입력 필드의 힌트 텍스트
                           hintStyle: TextStyle(
                             color: Colors.grey, // 힌트 텍스트의 색상
                             fontSize: 20, // 힌트 텍스트의 크기
@@ -198,7 +281,7 @@ class _LastPageState extends State<LastPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20), // 추가된 공간
+                  SizedBox(height: 20), // 추가된
                 ],
               ),
             ),
