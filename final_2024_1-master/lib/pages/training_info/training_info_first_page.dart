@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'training_info_second_page.dart';
 import 'package:final_2024_1/pages/introduction_info/introduction_info_page.dart';
-import '../academic_info/academic_info_confirmation_page.dart';
+import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
 class TrainingInfoFirstPage extends StatefulWidget {
   final int userId;
@@ -97,7 +97,7 @@ class _TrainingInfoFirstPageState extends State<TrainingInfoFirstPage> with Tick
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AcademicInfoConfirmationPage(
+        builder: (context) => PersonalInfoConfirmationPage(
           title: '훈련/교육명 확인',
           infoLabel: '훈련/교육명이',
           info: _trainingNameController.text,
@@ -158,6 +158,7 @@ class _TrainingInfoFirstPageState extends State<TrainingInfoFirstPage> with Tick
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: _colorAnimation.value,
+                            height: 1.1,
                           ),
                         );
                       },
@@ -173,8 +174,7 @@ class _TrainingInfoFirstPageState extends State<TrainingInfoFirstPage> with Tick
                           style: TextStyle(
                             fontSize: 48,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Apple SD Gothic Neo',
-                            height: 1.2,
+                            height: 1.0,
                           ),
                         ),
                         SizedBox(height: 10),
@@ -221,7 +221,7 @@ class _TrainingInfoFirstPageState extends State<TrainingInfoFirstPage> with Tick
                             ),
                           ),
                         ),
-                        SizedBox(height: 100),
+                        SizedBox(height: 120),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF001ED6),

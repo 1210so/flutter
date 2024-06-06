@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'training_info_last_page.dart';
-import '../academic_info/academic_info_confirmation_page.dart';
+import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
 class TrainingInfoSecondPage extends StatefulWidget {
   final int userId;
@@ -125,7 +125,7 @@ class _TrainingInfoSecondPageState extends State<TrainingInfoSecondPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AcademicInfoConfirmationPage(
+        builder: (context) => PersonalInfoConfirmationPage(
           title: '훈련/교육 기간 확인',
           infoLabel: '훈련/교육 기간이',
           info: '${_selectedStartYear}년 ${_selectedStartMonth}월 ~ ${_selectedEndYear}년 ${_selectedEndMonth}월',
@@ -167,8 +167,7 @@ class _TrainingInfoSecondPageState extends State<TrainingInfoSecondPage> {
                     style: TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Apple SD Gothic Neo',
-                      height: 1.2,
+                      height: 1.0,
                     ),
                   ),
                   SizedBox(height: 10),

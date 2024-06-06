@@ -176,7 +176,7 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
                         },
                         child: Text(
                           '$name님을\n설명해주는 표현을\n3가지 골라주세요!',
-                          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1.0),
                           textAlign: TextAlign.center,
                         ),
                       ),

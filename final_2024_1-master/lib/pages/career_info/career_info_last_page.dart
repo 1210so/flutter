@@ -3,7 +3,7 @@ import 'career_info_result_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
-import '../academic_info/academic_info_confirmation_page.dart';
+import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
 class CareerInfoLastPage extends StatefulWidget {
   final int userId;
@@ -81,7 +81,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AcademicInfoConfirmationPage(
+        builder: (context) => PersonalInfoConfirmationPage(
           title: '업무 내용 확인',
           infoLabel: '업무 내용이',
           info: _taskController.text,
@@ -111,8 +111,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
                     style: TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Apple SD Gothic Neo',
-                      height: 1.2,
+                      height: 1.0,
                     ),
                   ),
                   SizedBox(height: 10),

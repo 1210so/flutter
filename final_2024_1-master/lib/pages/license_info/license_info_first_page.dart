@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../academic_info/academic_info_confirmation_page.dart';
+import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 import 'license_info_second_page.dart';
 import 'package:final_2024_1/pages/training_info/training_info_first_page.dart';
 import 'package:final_2024_1/config.dart';
@@ -20,7 +20,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
   final TextEditingController _typeAheadController = TextEditingController();
   List<String> _items = [];
   String? _selectedItem;
-  bool _isLoading = false;
+  bool _isLoading = true;
   bool _isLicenseNameEmpty = false;
   bool _hasInputLicenseName = false;
   late AnimationController _fadeController;
@@ -72,8 +72,10 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
       end: Offset(0, -0.3),
     ).animate(CurvedAnimation(parent: _fadeController, curve: Curves.easeIn));
 
-    _fadeController.forward().then((_) {
-      _slideController.forward();
+    // 로딩창을 띄우고 데이터를 가져옴
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showLoadingDialog();
+      fetchData();
     });
   }
 
@@ -105,31 +107,34 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0),
-            child: Row(
-              children: [
-                CircularProgressIndicator(
-                  backgroundColor: Color(0xFF001ED6),
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-                SizedBox(width: 20),
-                Text(
-                  "자격증/면허 정보를\n불러오는 중입니다",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF001ED6),
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            content: Container(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: Row(
+                children: [
+                  CircularProgressIndicator(
+                    backgroundColor: Color(0xFF001ED6),
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
-                ),
-              ],
+                  SizedBox(width: 20),
+                  Text(
+                    "자격증/면허 정보를\n불러오는 중입니다",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF001ED6),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24.0),
-            side: BorderSide(color: Color(0xFF001ED6), width: 2),
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24.0),
+              side: BorderSide(color: Color(0xFF001ED6), width: 2),
+            ),
           ),
         );
       },
@@ -163,6 +168,9 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
           _isLoading = false;
         });
         Navigator.of(context).pop();
+        _fadeController.forward().then((_) {
+          _slideController.forward();
+        });
       } else {
         throw Exception('Failed to load data');
       }
@@ -187,7 +195,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AcademicInfoConfirmationPage(
+        builder: (context) => PersonalInfoConfirmationPage(
           title: '자격증/면허명 확인',
           infoLabel: '자격증/면허명이',
           info: _typeAheadController.text,
@@ -227,7 +235,9 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        body: SingleChildScrollView(
+        body: _isLoading
+            ? SizedBox.shrink() // 로딩 중에는 아무것도 표시하지 않음
+            : SingleChildScrollView(
           controller: _scrollController,
           child: Padding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -242,12 +252,13 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                       animation: _colorAnimation,
                       builder: (context, child) {
                         return Text(
-                          "${widget.userName}님이 보유하신\n자격증/면허가 궁금해요!\n지원하는 직무와\n관련있는 것부터 먼저\n작성해주세요!",
+                          "당신이 보유하고 있는\n자격증/면허가 궁금해요!\n지원하는 직무와\n관련있는 것부터 먼저\n작성해주세요!",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: _colorAnimation.value,
+                            height: 1.1,
                           ),
                         );
                       },
@@ -263,8 +274,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                           style: TextStyle(
                             fontSize: 48,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Apple SD Gothic Neo',
-                            height: 1.2,
+                            height: 1.0,
                           ),
                         ),
                         SizedBox(height: 10),
@@ -348,7 +358,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                             ),
                           ),
                         ),
-                        SizedBox(height: 100),
+                        SizedBox(height: 130),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF001ED6),

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:final_2024_1/pages/license_info/license_info_first_page.dart';
 import 'package:final_2024_1/config.dart';
 import 'career_info_second_page.dart';
-import '../academic_info/academic_info_confirmation_page.dart';
+import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
 class CareerInfoFirstPage extends StatefulWidget {
   final int userId;
@@ -71,7 +71,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AcademicInfoConfirmationPage(
+        builder: (context) => PersonalInfoConfirmationPage(
           title: '근무처 확인',
           infoLabel: '근무처가',
           info: _placeController.text,
@@ -137,11 +137,13 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: _colorAnimation.value,
+                            height: 1.1,
                           ),
                         );
                       },
                     ),
                   ),
+                  SizedBox(height: 10),
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: Column(
@@ -152,8 +154,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                           style: TextStyle(
                             fontSize: 48,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Apple SD Gothic Neo',
-                            height: 1.2,
+                            height: 1.0,
                           ),
                         ),
                         SizedBox(height: 10),

@@ -73,6 +73,18 @@ class _SecondPageState extends State<SecondPage> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       locale: const Locale('ko', 'KR'), // 한글 로케일 설정
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: Color(0xFF001ED6), // 포인트 색상
+            hintColor: Color(0xFF001ED6), // 포인트 색상
+            colorScheme: ColorScheme.light(primary: Color(0xFF001ED6)), // 포인트 색상
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary), // 포인트 색상
+            dialogBackgroundColor: Colors.white, // 배경 색상
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       setState(() {
@@ -94,17 +106,17 @@ class _SecondPageState extends State<SecondPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 250), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 240), // 텍스트와 입력 칸을 상단에 고정
                   Text(
                     '${widget.name}님은\n언제\n태어나셨나요?',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
                     style: TextStyle(
                       fontSize: 48, // 텍스트 크기
                       fontWeight: FontWeight.bold, // 텍스트 굵기
-                      fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                      height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                     ),
                   ),
+                  SizedBox(height: 10),
                   if (_isBirthEmpty)
                     Text(
                       '생년월일을 정확히 입력해주세요.',

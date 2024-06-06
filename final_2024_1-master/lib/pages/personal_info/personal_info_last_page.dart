@@ -182,7 +182,7 @@ class _LastPageState extends State<LastPage> {
                       fontSize: 48, // 텍스트 크기
                       fontWeight: FontWeight.bold, // 텍스트 굵기
                       fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                      height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                     ),
                   ),
                   SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정

@@ -1,81 +1,57 @@
 import 'package:flutter/material.dart';
-import 'training_info_result_page.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
+import 'academic_info_last_page.dart';
 
-class TrainingInfoLastPage extends StatefulWidget {
+class AcademicInfoFourthPage extends StatefulWidget {
   final int userId;
+  final String highestEdu;
+  final String schoolName;
+  final String major;
   final String userName;
-  final String trainingName;
-  final String date;
 
-  const TrainingInfoLastPage({super.key, required this.userId, required this.userName, required this.trainingName, required this.date});
+  const AcademicInfoFourthPage({
+    super.key,
+    required this.userId,
+    required this.highestEdu,
+    required this.schoolName,
+    required this.major,
+    required this.userName,
+  });
 
   @override
-  _TrainingInfoLastPageState createState() => _TrainingInfoLastPageState();
+  _AcademicInfoFourthPageState createState() => _AcademicInfoFourthPageState();
 }
 
-class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
-  final TextEditingController _agencyController = TextEditingController();
-  bool _isAgencyEmpty = false;
-  bool _hasInput = false;
+class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
+  final TextEditingController _detailedMajorController = TextEditingController();
+  bool _isDetailedMajorEmpty = false;
+  bool _hasInputDetailedMajor = false;
 
   @override
   void initState() {
     super.initState();
-    _agencyController.addListener(_updateTextColor);
+    _detailedMajorController.addListener(_updateDetailedMajorTextColor);
   }
 
   @override
   void dispose() {
-    _agencyController.removeListener(_updateTextColor);
-    _agencyController.dispose();
+    _detailedMajorController.removeListener(_updateDetailedMajorTextColor);
+    _detailedMajorController.dispose();
     super.dispose();
   }
 
-  void _updateTextColor() {
+  void _updateDetailedMajorTextColor() {
     setState(() {
-      _hasInput = _agencyController.text.isNotEmpty;
+      _hasInputDetailedMajor = _detailedMajorController.text.isNotEmpty;
     });
   }
 
-  Future<void> _sendData() async {
-    try {
-      var response = await http.post(
-        Uri.parse('$BASE_URL/training-info/save/${widget.userId}'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'userId': widget.userId.toString(),
-          'trainingName': widget.trainingName,
-          'date': widget.date,
-          'agency': _agencyController.text,
-        }),
-      );
-
-      if (response.statusCode == 201) {
-        var data = jsonDecode(utf8.decode(response.bodyBytes));
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => TrainingInfoResultPage(userId: widget.userId, userName: widget.userName)),
-        );
-      } else {
-        print('데이터 저장 실패');
-      }
-    } catch (e) {
-      print('데이터 전송 실패 : $e');
-    }
-  }
-
-  void _onConfirmAgency() {
+  void _onNextButtonPressed() {
     setState(() {
-      _isAgencyEmpty = _agencyController.text.isEmpty;
+      _isDetailedMajorEmpty = _detailedMajorController.text.isEmpty;
     });
 
-    if (_isAgencyEmpty) {
+    if (_isDetailedMajorEmpty) {
       return;
     }
 
@@ -83,11 +59,23 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
       context,
       MaterialPageRoute(
         builder: (context) => PersonalInfoConfirmationPage(
-          title: '훈련/교육기관 확인',
-          infoLabel: '훈련/교육기관이',
-          info: _agencyController.text,
+          title: '세부 전공 확인',
+          infoLabel: '세부 전공이',
+          info: _detailedMajorController.text,
           onConfirmed: () {
-            _sendData();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AcademicInfoLastPage(
+                  userId: widget.userId,
+                  highestEdu: widget.highestEdu,
+                  schoolName: widget.schoolName,
+                  major: widget.major,
+                  detailedMajor: _detailedMajorController.text,
+                  userName: widget.userName,
+                ),
+              ),
+            );
           },
         ),
       ),
@@ -107,9 +95,9 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 210),
+                  SizedBox(height: 230),
                   Text(
-                    '${widget.userName}님,\n해당 훈련/교육의\n주관기관은\n어딘가요?',
+                    '${widget.userName}님의\n세부 전공을\n입력해주세요',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 48,
@@ -118,9 +106,9 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  if (_isAgencyEmpty)
+                  if (_isDetailedMajorEmpty)
                     Text(
-                      '주관기관을 정확히 입력해주세요.',
+                      '세부 전공을 정확히 입력해주세요.',
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 18,
@@ -142,15 +130,15 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: TextField(
-                        controller: _agencyController,
+                        controller: _detailedMajorController,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
-                          color: _hasInput ? Color(0xFF001ED6) : Colors.grey,
+                          color: _hasInputDetailedMajor ? Color(0xFF001ED6) : Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
                         decoration: InputDecoration(
-                          hintText: '주관기관 입력',
+                          hintText: '세부 전공',
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 20,
@@ -161,7 +149,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 130),
+                  SizedBox(height: 180),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6),
@@ -173,9 +161,9 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
                         borderRadius: BorderRadius.circular(24.0),
                       ),
                     ),
-                    onPressed: _onConfirmAgency,
+                    onPressed: _onNextButtonPressed,
                     child: const Text(
-                      '완료',
+                      '다음',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

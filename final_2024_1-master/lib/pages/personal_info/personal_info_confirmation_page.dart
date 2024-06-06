@@ -24,31 +24,31 @@ class PersonalInfoConfirmationPage extends StatelessWidget {
                     TextSpan(
                       text: '$infoLabel\n',
                       style: TextStyle(
-                        fontSize: 45, // 텍스트 크기
+                        fontSize: 48, // 텍스트 크기
                         color: Colors.black, // 기본 텍스트 색상
                         fontWeight: FontWeight.bold, // 텍스트 굵기
-                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                        height: 1.2, // 줄 간격 조정
+                        fontFamily: 'AppleSDGothicNeoM', // 기본 폰트 설정
+                        height: 1.0, // 줄 간격 조정
                       ),
                     ),
                     TextSpan(
                       text: '$info\n',
                       style: TextStyle(
-                        fontSize: 45, // 텍스트 크기
+                        fontSize: 48, // 텍스트 크기
                         color: Colors.red, // info 텍스트 색상
                         fontWeight: FontWeight.bold, // 텍스트 굵기
-                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                        height: 1.2, // 줄 간격 조정
+                        fontFamily: 'AppleSDGothicNeoM', // 기본 폰트 설정
+                        height: 1.0, // 줄 간격 조정
                       ),
                     ),
                     TextSpan(
                       text: '맞으신가요?',
                       style: TextStyle(
-                        fontSize: 45, // 텍스트 크기
+                        fontSize: 48, // 텍스트 크기
                         color: Colors.black, // 기본 텍스트 색상
                         fontWeight: FontWeight.bold, // 텍스트 굵기
-                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                        height: 1.2, // 줄 간격 조정
+                        fontFamily: 'AppleSDGothicNeoM', // 기본 폰트 설정
+                        height: 1.0, // 줄 간격 조정
                       ),
                     ),
                   ],

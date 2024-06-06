@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
+import 'package:final_2024_1/pages/personal_info/personal_info_first_page.dart';
 
 class ResumeResultPage extends StatelessWidget {
   final int userId;
@@ -26,6 +27,52 @@ class ResumeResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFFFFFFFF),
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF001ED6)),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FirstPage(),
+              ),
+            );
+          },
+        ),
+        title: Text(
+          '메인 화면으로',
+          style: TextStyle(color: Color(0xFF001ED6), fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF001ED6),
+                side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                shadowColor: Colors.black,
+                elevation: 6,
+              ),
+              onPressed: () {
+                // 공유하기 버튼 누를 때의 동작
+              },
+              child: Text(
+                '공유하기',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _fetchResumeData(),
         builder: (context, snapshot) {
@@ -57,6 +104,7 @@ class ResumeResultPage extends StatelessWidget {
                                     fontSize: 24,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
+                                    fontFamily: 'HakgyoansimKkwabaegiR',
                                   ),
                                 ),
                                 SizedBox(height: 30),
@@ -129,7 +177,23 @@ class ResumeResultPage extends StatelessWidget {
                           _buildIntroductionInfo(data['IntroductionInfo']),
                         ],
                         Divider(color: Colors.grey, thickness: 3.0),
-                        // 다른 섹션들...
+                        SizedBox(height: 40),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 16.0),
+                            child: Text(
+                              '12쉽소',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Color(0xFF001ED6),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'HakgyoansimKkwabaegiR',
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 40), // 마지막에 추가된 패딩
                       ],
                     ),
                   ),
@@ -137,7 +201,7 @@ class ResumeResultPage extends StatelessWidget {
               ),
             );
           }
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -214,6 +278,8 @@ class ResumeResultPage extends StatelessWidget {
           _buildInfoRow("학교명", academicInfo['schoolName']),
           if (academicInfo['detailedMajor'] != null && academicInfo['detailedMajor'].isNotEmpty)
             _buildInfoRow("전공명", academicInfo['detailedMajor']),
+          if (academicInfo['graduationDate'] != null && academicInfo['graduationDate'].isNotEmpty)
+            _buildInfoRow("졸업 연도", academicInfo['graduationDate']),
         ],
       ),
     );

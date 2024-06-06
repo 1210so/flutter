@@ -70,7 +70,6 @@ class _LicenseInfoResultPageState extends State<LicenseInfoResultPage> {
                           style: TextStyle(
                             fontSize: 48,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Apple SD Gothic Neo',
                             height: 1.2,
                           ),
                         ),
@@ -81,7 +80,6 @@ class _LicenseInfoResultPageState extends State<LicenseInfoResultPage> {
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.red,
-                            fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
                             fontWeight: FontWeight.bold,
                             height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                           ),

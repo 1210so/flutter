@@ -73,8 +73,7 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
                       style: TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                        height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                        height: 1.0,
                       ),
                     ),
                     SizedBox(height: 16),
@@ -85,7 +84,6 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
                         fontSize: 20,
                         color: Colors.red,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
                         height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                       ),
                     ),
@@ -97,7 +95,6 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
                         fontSize: 20,
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
                         height: 1.7, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                       ),
                     ),
@@ -152,7 +149,7 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CareerInfoFirstPage(userId: widget.userId, userName: widget.userName),
+                            builder: (context) => CareerInfoFirstPage(userId: widget.userId, userName: widget.userName,),
                           ),
                         );
                       },
@@ -187,9 +184,10 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
     if (data['detailedMajor'] != null && data['detailedMajor'].isNotEmpty) {
       info.add("세부 전공: ${data['detailedMajor']}");
     }
+    if (data['graduationDate'] != null && data['graduationDate'].isNotEmpty) {
+      info.add("졸업 연도: ${data['graduationDate']}");
+    }
 
     return info.join("\n");
   }
 }
-
-

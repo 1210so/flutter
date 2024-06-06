@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'academic_info_last_page.dart';
+import 'academic_info_fourth_page.dart';
+import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
+
 
 class AcademicInfoThirdPage extends StatefulWidget {
   final int userId;
@@ -21,7 +23,7 @@ class AcademicInfoThirdPage extends StatefulWidget {
 
 class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
   String? _selectedMajorCategory;
-  bool _isMajorCategoryEmpty = false; // 전공 계열이 비어 있는지 여부를 확인하는 변수
+  bool _isMajorCategoryEmpty = false;
 
   final List<String> _majorCategories = [
     '인문계열',
@@ -42,12 +44,24 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => AcademicInfoLastPage(
-            userId: widget.userId,
-            highestEdu: widget.highestEdu,
-            schoolName: widget.schoolName,
-            major: _selectedMajorCategory!,
-            userName: widget.userName,
+          builder: (context) => PersonalInfoConfirmationPage(
+            title: '전공 계열 확인',
+            infoLabel: '전공 계열이',
+            info: _selectedMajorCategory!,
+            onConfirmed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AcademicInfoFourthPage(
+                    userId: widget.userId,
+                    highestEdu: widget.highestEdu,
+                    schoolName: widget.schoolName,
+                    major: _selectedMajorCategory!,
+                    userName: widget.userName,
+                  ),
+                ),
+              );
+            },
           ),
         ),
       );
@@ -74,11 +88,10 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                     style: TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Apple SD Gothic Neo',
-                      height: 1.2,
+                      height: 1.0,
                     ),
                   ),
-                  SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 10),
                   if (_isMajorCategoryEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
@@ -120,7 +133,7 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                           onChanged: (String? newValue) {
                             setState(() {
                               _selectedMajorCategory = newValue;
-                              _isMajorCategoryEmpty = false; // 선택하면 오류 메시지 숨김
+                              _isMajorCategoryEmpty = false;
                             });
                           },
                           items: _majorCategories.map<DropdownMenuItem<String>>((String value) {
@@ -137,10 +150,10 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                               ),
                             );
                           }).toList(),
-                          dropdownColor: Colors.white, // 드롭다운 배경색
-                          iconEnabledColor: Color(0xFF001ED6), // 드롭다운 아이콘 색상
-                          underline: SizedBox.shrink(), // 기본 밑줄 제거
-                          alignment: Alignment.centerLeft, // 드롭다운 내용 정렬
+                          dropdownColor: Colors.white,
+                          iconEnabledColor: Color(0xFF001ED6),
+                          underline: SizedBox.shrink(),
+                          alignment: Alignment.centerLeft,
                           borderRadius: BorderRadius.circular(24.0),
                         ),
                       ),

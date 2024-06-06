@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'academic_info_result_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
-import 'dart:convert';
+import 'academic_info_result_page.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:final_2024_1/config.dart';
 
 class AcademicInfoLastPage extends StatefulWidget {
@@ -10,6 +11,7 @@ class AcademicInfoLastPage extends StatefulWidget {
   final String highestEdu;
   final String schoolName;
   final String major;
+  final String detailedMajor;
   final String userName;
 
   const AcademicInfoLastPage({
@@ -18,6 +20,7 @@ class AcademicInfoLastPage extends StatefulWidget {
     required this.highestEdu,
     required this.schoolName,
     required this.major,
+    required this.detailedMajor,
     required this.userName,
   });
 
@@ -26,35 +29,52 @@ class AcademicInfoLastPage extends StatefulWidget {
 }
 
 class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
-  final TextEditingController _detailedMajorController = TextEditingController();
-  bool _isDetailedMajorEmpty = false;
-  bool _hasInputDetailedMajor = false;
+  int? _selectedYear;
+  bool _isYearEmpty = false;
+  bool _isFutureYear = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _detailedMajorController.addListener(_updateDetailedMajorTextColor);
-  }
-
-  @override
-  void dispose() {
-    _detailedMajorController.removeListener(_updateDetailedMajorTextColor);
-    _detailedMajorController.dispose();
-    super.dispose();
-  }
-
-  void _updateDetailedMajorTextColor() {
-    setState(() {
-      _hasInputDetailedMajor = _detailedMajorController.text.isNotEmpty;
+  void _showYearPicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext builder) {
+        return Container(
+          height: MediaQuery.of(context).size.height / 3,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Color(0xFF001ED6), width: 2.0),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: CupertinoPicker(
+            itemExtent: 32.0,
+            onSelectedItemChanged: (int index) {
+              setState(() {
+                _selectedYear = DateTime.now().year - index;
+                _isFutureYear = _selectedYear! > DateTime.now().year;
+              });
+            },
+            children: List<Widget>.generate(100, (int index) {
+              return Center(
+                child: Text('${DateTime.now().year - index}'),
+              );
+            }),
+          ),
+        );
+      },
+    ).whenComplete(() {
+      setState(() {
+        _selectedYear ??= DateTime.now().year;
+        _isFutureYear = _selectedYear! > DateTime.now().year;
+      });
     });
   }
 
   void _onNextButtonPressed() {
     setState(() {
-      _isDetailedMajorEmpty = _detailedMajorController.text.isEmpty;
+      _isYearEmpty = _selectedYear == null;
+      _isFutureYear = _selectedYear != null && _selectedYear! > DateTime.now().year;
     });
 
-    if (_isDetailedMajorEmpty) {
+    if (_isYearEmpty || _isFutureYear) {
       return;
     }
 
@@ -62,12 +82,10 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
       context,
       MaterialPageRoute(
         builder: (context) => PersonalInfoConfirmationPage(
-          title: '세부 전공 확인',
-          infoLabel: '세부 전공이',
-          info: _detailedMajorController.text,
-          onConfirmed: () {
-            _sendData();
-          },
+          title: '졸업 연도 확인',
+          infoLabel: '졸업 연도가',
+          info: '${_selectedYear!}년',
+          onConfirmed: _sendData,
         ),
       ),
     );
@@ -85,7 +103,8 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
           'highestEdu': widget.highestEdu,
           'schoolName': widget.schoolName,
           'major': widget.major,
-          'detailedMajor': _detailedMajorController.text,
+          'detailedMajor': widget.detailedMajor,
+          'graduationDate': '${_selectedYear!}년',
         }),
       );
 
@@ -122,26 +141,41 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 230),
+                  SizedBox(height: 250),
                   Text(
-                    '${widget.userName}님의\n세부 전공을\n입력해주세요',
+                    '${widget.userName}님은\n언제 졸업하셨나요?',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Apple SD Gothic Neo',
-                      height: 1.2,
+                      height: 1.0,
                     ),
                   ),
                   SizedBox(height: 10),
-                  if (_isDetailedMajorEmpty)
-                    Text(
-                      '세부 전공을 정확히 입력해주세요.',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                  if (_isYearEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        '졸업 연도를 정확히 선택해주세요.',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  if (_isFutureYear)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        '미래 연도는 선택할 수 없습니다.',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   SizedBox(height: 40),
@@ -156,29 +190,25 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
                         width: 2.0,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: TextField(
-                        controller: _detailedMajorController,
-                        textAlign: TextAlign.center,
+                    child: ElevatedButton(
+                      onPressed: () => _showYearPicker(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 0,
+                      ),
+                      child: Text(
+                        _selectedYear == null
+                            ? '졸업 연도 선택'
+                            : '${_selectedYear!}년',
                         style: TextStyle(
+                          color: Color(0xFF001ED6),
                           fontSize: 20,
-                          color: _hasInputDetailedMajor ? Color(0xFF001ED6) : Colors.grey,
                           fontWeight: FontWeight.bold,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: '세부 전공',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          border: InputBorder.none,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 180),
+                  SizedBox(height: 200),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6),
@@ -210,3 +240,5 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
     );
   }
 }
+
+

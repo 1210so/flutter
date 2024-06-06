@@ -18,10 +18,12 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
   late TextEditingController _schoolNameController;
   late TextEditingController _majorController;
   late TextEditingController _detailedMajorController;
+  late TextEditingController _graduationDateController;
   bool _isHighestEduEmpty = false;
   bool _isSchoolNameEmpty = false;
   bool _isMajorEmpty = false;
   bool _isDetailedMajorEmpty = false;
+  bool _isGraduationDateEmpty = false;
 
   @override
   void initState() {
@@ -30,6 +32,7 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
     _schoolNameController = TextEditingController(text: widget.academicInfo['schoolName']);
     _majorController = TextEditingController(text: widget.academicInfo['major'] ?? '');
     _detailedMajorController = TextEditingController(text: widget.academicInfo['detailedMajor'] ?? '');
+    _graduationDateController = TextEditingController(text: widget.academicInfo['graduationDate'] ?? '');
   }
 
   @override
@@ -38,6 +41,7 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
     _schoolNameController.dispose();
     _majorController.dispose();
     _detailedMajorController.dispose();
+    _graduationDateController.dispose();
     super.dispose();
   }
 
@@ -47,9 +51,10 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
       _isSchoolNameEmpty = _schoolNameController.text.isEmpty;
       _isMajorEmpty = _majorController.text.isEmpty;
       _isDetailedMajorEmpty = _detailedMajorController.text.isEmpty;
+      _isGraduationDateEmpty = _graduationDateController.text.isEmpty;
     });
 
-    if (_isHighestEduEmpty || _isSchoolNameEmpty) {
+    if (_isHighestEduEmpty || _isSchoolNameEmpty || (widget.academicInfo['highestEdu'] == '대학교' || widget.academicInfo['highestEdu'] == '대학원') && _isGraduationDateEmpty) {
       return;
     }
 
@@ -65,6 +70,7 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
           'schoolName': _schoolNameController.text,
           'major': _majorController.text,
           'detailedMajor': _detailedMajorController.text,
+          'graduationDate': _graduationDateController.text,
         }),
       );
 
@@ -190,6 +196,31 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
                     ),
                   ],
                 ),
+              if (widget.academicInfo['graduationDate'] != null && widget.academicInfo['graduationDate'].isNotEmpty)
+                Column(
+                  children: [
+                    SizedBox(height: 20),
+                    TextField(
+                      controller: _graduationDateController,
+                      decoration: InputDecoration(
+                        labelText: '졸업 연도',
+                        labelStyle: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF001ED6),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 3.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF001ED6), width: 3.0),
+                        ),
+                        errorText: _isGraduationDateEmpty ? '졸업 연도를 입력해주세요' : null,
+                      ),
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               SizedBox(height: 50),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -200,8 +231,7 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
                     borderRadius: BorderRadius.circular(24.0),
                   ),
                   shadowColor: Colors.black,
-                  // 버튼의 그림자 색상
-                  elevation: 6, // 버튼의 그림자 높이,
+                  elevation: 6,
                 ),
                 onPressed: _updateData,
                 child: const Text(
@@ -213,6 +243,7 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
                   ),
                 ),
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),

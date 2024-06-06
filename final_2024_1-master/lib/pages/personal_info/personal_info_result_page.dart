@@ -55,15 +55,14 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 100),
+                    SizedBox(height: 120),
                     Text(
                       "입력한 내용을\n확인해주세요",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Apple SD Gothic Neo',
-                        height: 1.2,
+                        height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                       ),
                     ),
                     SizedBox(height: 16),
@@ -74,7 +73,6 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                         fontSize: 20,
                         color: Colors.red,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Apple SD Gothic Neo',
                         height: 1.0,
                       ),
                     ),
@@ -86,7 +84,6 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                         fontSize: 20,
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Apple SD Gothic Neo',
                         height: 1.7,
                       ),
                     ),

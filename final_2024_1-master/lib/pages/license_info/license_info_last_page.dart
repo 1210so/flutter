@@ -3,7 +3,7 @@ import 'license_info_result_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
-import '../academic_info/academic_info_confirmation_page.dart';
+import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
 class LicenseInfoLastPage extends StatefulWidget {
   final int userId;
@@ -83,7 +83,7 @@ class _LicenseInfoLastPageState extends State<LicenseInfoLastPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AcademicInfoConfirmationPage(
+        builder: (context) => PersonalInfoConfirmationPage(
           title: '시행기관 확인',
           infoLabel: '시행기관이',
           info: _agencyController.text,
@@ -108,14 +108,13 @@ class _LicenseInfoLastPageState extends State<LicenseInfoLastPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 230), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 200), // 텍스트와 입력 칸을 상단에 고정
                   Text(
                     '${widget.userName}님,\n자격증/면허의\n시행기관은\n어딘가요?',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
                     style: TextStyle(
                       fontSize: 48, // 텍스트 크기
                       fontWeight: FontWeight.bold, // 텍스트 굵기
-                      fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
                       height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                     ),
                   ),
@@ -163,7 +162,7 @@ class _LicenseInfoLastPageState extends State<LicenseInfoLastPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: 120),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6), // 버튼의 배경색

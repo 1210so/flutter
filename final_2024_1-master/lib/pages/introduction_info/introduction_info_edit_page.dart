@@ -15,11 +15,20 @@ class IntroductionInfoEditPage extends StatefulWidget {
 
 class _IntroductionInfoEditPageState extends State<IntroductionInfoEditPage> {
   late TextEditingController _introductionController;
+  late ScrollController _scrollController; // 추가
 
   @override
   void initState() {
     super.initState();
     _introductionController = TextEditingController(text: widget.initialText);
+    _scrollController = ScrollController(); // 추가
+  }
+
+  @override
+  void dispose() {
+    _introductionController.dispose();
+    _scrollController.dispose(); // 추가
+    super.dispose();
   }
 
   Future<void> _saveIntroduction() async {
@@ -55,6 +64,7 @@ class _IntroductionInfoEditPageState extends State<IntroductionInfoEditPage> {
       },
       child: Scaffold(
         body: SingleChildScrollView(
+          controller: _scrollController, // 추가
           child: Padding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Center(
@@ -68,8 +78,7 @@ class _IntroductionInfoEditPageState extends State<IntroductionInfoEditPage> {
                     style: TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Apple SD Gothic Neo',
-                      height: 1.2,
+                      height: 1.0,
                     ),
                   ),
                   SizedBox(height: 30),
@@ -85,6 +94,7 @@ class _IntroductionInfoEditPageState extends State<IntroductionInfoEditPage> {
                       ),
                     ),
                     child: Scrollbar(
+                      controller: _scrollController, // 추가
                       thumbVisibility: true, // 스크롤바 항상 표시
                       child: TextField(
                         controller: _introductionController,
@@ -130,4 +140,3 @@ class _IntroductionInfoEditPageState extends State<IntroductionInfoEditPage> {
     );
   }
 }
-

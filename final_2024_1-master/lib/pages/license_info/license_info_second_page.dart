@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'license_info_last_page.dart';
-import '../academic_info/academic_info_confirmation_page.dart';
+import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
 class LicenseInfoSecondPage extends StatefulWidget {
   final int userId;
@@ -64,7 +64,7 @@ class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AcademicInfoConfirmationPage(
+        builder: (context) => PersonalInfoConfirmationPage(
           title: '취득일 확인',
           infoLabel: '취득일이',
           info: '${_selectedDate!.year}년 ${_selectedDate!.month}월 ${_selectedDate!.day}일',
@@ -107,8 +107,7 @@ class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
                     style: TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Apple SD Gothic Neo',
-                      height: 1.2,
+                      height: 1.0,
                     ),
                   ),
                   SizedBox(height: 10),
@@ -166,7 +165,7 @@ class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: 130),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6),

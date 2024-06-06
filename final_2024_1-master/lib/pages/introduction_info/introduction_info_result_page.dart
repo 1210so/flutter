@@ -90,11 +90,10 @@ class _IntroductionInfoResultPageState extends State<IntroductionInfoResultPage>
                     style: TextStyle(
                       fontSize: 48, // 텍스트 크기
                       fontWeight: FontWeight.bold, // 텍스트 굵기
-                      fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
-                      height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                     ),
                   ),
-                  SizedBox(height: 10), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 20), // 텍스트와 입력 칸을 상단에 고정
                   Text(
                     'AI는 실수를 할 수 있습니다.\n중요한 정보를 확인해주세요!',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
@@ -102,11 +101,10 @@ class _IntroductionInfoResultPageState extends State<IntroductionInfoResultPage>
                       fontSize: 20, // 텍스트 크기
                       color: Colors.red,
                       fontWeight: FontWeight.bold, // 텍스트 굵기
-                      fontFamily: 'Apple SD Gothic Neo', // 텍스트 폰트
                       height: 1.2, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 30),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9, // 가로 사이즈를 줄임
                     padding: EdgeInsets.all(10),
