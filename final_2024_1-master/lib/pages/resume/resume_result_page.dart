@@ -52,7 +52,10 @@ class ResumeResultPage extends StatelessWidget {
           },
           child: Text(
             '메인 화면으로',
-            style: TextStyle(color: Color(0xFF001ED6), fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Color(0xFF001ED6),
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
           ),
         ),
         actions: [
@@ -96,14 +99,16 @@ class ResumeResultPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0.0), // 양쪽 여백 제거
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 0.0), // 양쪽 여백 제거
                     child: Container(
                       color: Color(0xFF001ED6), // 파란색 배경
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded( // Expanded로 감싸서 공간을 적절히 사용하도록 함
+                          Expanded(
+                            // Expanded로 감싸서 공간을 적절히 사용하도록 함
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -141,6 +146,17 @@ class ResumeResultPage extends StatelessWidget {
                             color: Colors.grey,
                             width: 150,
                             height: 190,
+                            child: Image.network(
+                              'https://raw.githubusercontent.com/1210so/resumeView/main/SampleImage.jpeg',
+                              fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return Center(
+                                  child: Text('Failed to load image',
+                                      textAlign: TextAlign.center),
+                                );
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -157,8 +173,10 @@ class ResumeResultPage extends StatelessWidget {
                           _buildPersonalInfo(data['PersonalInfo']),
                           SizedBox(height: 50),
                         ],
-                        if (data['IntroductionInfo']?['personality1'] != null) ...[
-                          _buildSectionTitle("저, " + data['PersonalInfo']['name'] + "?"),
+                        if (data['IntroductionInfo']?['personality1'] !=
+                            null) ...[
+                          _buildSectionTitle(
+                              "저, " + data['PersonalInfo']['name'] + "?"),
                           _buildPersonalityInfo(data['IntroductionInfo']),
                           SizedBox(height: 50),
                         ],
@@ -167,17 +185,20 @@ class ResumeResultPage extends StatelessWidget {
                           _buildAcademicInfo(data['AcademicInfo']),
                           SizedBox(height: 50),
                         ],
-                        if (data['CareerInfos'] != null && data['CareerInfos'].isNotEmpty) ...[
+                        if (data['CareerInfos'] != null &&
+                            data['CareerInfos'].isNotEmpty) ...[
                           _buildSectionTitle("경력사항"),
                           _buildCareerInfos(data['CareerInfos']),
                           SizedBox(height: 50),
                         ],
-                        if (data['LicenseInfos'] != null && data['LicenseInfos'].isNotEmpty) ...[
+                        if (data['LicenseInfos'] != null &&
+                            data['LicenseInfos'].isNotEmpty) ...[
                           _buildSectionTitle("자격증/면허"),
                           _buildLicenseInfos(data['LicenseInfos']),
                           SizedBox(height: 50),
                         ],
-                        if (data['TrainingInfos'] != null && data['TrainingInfos'].isNotEmpty) ...[
+                        if (data['TrainingInfos'] != null &&
+                            data['TrainingInfos'].isNotEmpty) ...[
                           _buildSectionTitle("훈련/교육"),
                           _buildTrainingInfos(data['TrainingInfos']),
                           SizedBox(height: 50),
@@ -246,7 +267,8 @@ class ResumeResultPage extends StatelessWidget {
   Widget _buildPersonalInfo(Map<String, dynamic>? personalInfo) {
     if (personalInfo == null) return Container();
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      padding:
+          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -262,9 +284,11 @@ class ResumeResultPage extends StatelessWidget {
   }
 
   Widget _buildPersonalityInfo(Map<String, dynamic>? introductionInfo) {
-    if (introductionInfo == null || introductionInfo['personality1'] == null) return Container();
+    if (introductionInfo == null || introductionInfo['personality1'] == null)
+      return Container();
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      padding:
+          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -281,14 +305,17 @@ class ResumeResultPage extends StatelessWidget {
   Widget _buildAcademicInfo(Map<String, dynamic>? academicInfo) {
     if (academicInfo == null) return Container();
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      padding:
+          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildInfoRow("학교명", academicInfo['schoolName']),
-          if (academicInfo['detailedMajor'] != null && academicInfo['detailedMajor'].isNotEmpty)
+          if (academicInfo['detailedMajor'] != null &&
+              academicInfo['detailedMajor'].isNotEmpty)
             _buildInfoRow("전공명", academicInfo['detailedMajor']),
-          if (academicInfo['graduationDate'] != null && academicInfo['graduationDate'].isNotEmpty)
+          if (academicInfo['graduationDate'] != null &&
+              academicInfo['graduationDate'].isNotEmpty)
             _buildInfoRow("졸업 연도", academicInfo['graduationDate']),
         ],
       ),
@@ -298,7 +325,8 @@ class ResumeResultPage extends StatelessWidget {
   Widget _buildCareerInfos(List<dynamic>? careerInfos) {
     if (careerInfos == null || careerInfos.isEmpty) return Container();
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      padding:
+          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         children: careerInfos.map((career) {
           return Padding(
@@ -367,7 +395,8 @@ class ResumeResultPage extends StatelessWidget {
   Widget _buildLicenseInfos(List<dynamic>? licenseInfos) {
     if (licenseInfos == null || licenseInfos.isEmpty) return Container();
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      padding:
+          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         children: licenseInfos.map((license) {
           return Padding(
@@ -395,7 +424,8 @@ class ResumeResultPage extends StatelessWidget {
   Widget _buildTrainingInfos(List<dynamic>? trainingInfos) {
     if (trainingInfos == null || trainingInfos.isEmpty) return Container();
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      padding:
+          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         children: trainingInfos.map((training) {
           return Padding(
@@ -488,7 +518,8 @@ class ResumeResultPage extends StatelessWidget {
           SizedBox(width: 10),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 1.0), // 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+              padding: const EdgeInsets.only(
+                  left: 1.0), // 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
               child: Text(
                 value ?? '',
                 style: TextStyle(
