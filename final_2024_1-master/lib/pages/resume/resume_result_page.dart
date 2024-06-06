@@ -41,9 +41,19 @@ class ResumeResultPage extends StatelessWidget {
             );
           },
         ),
-        title: Text(
-          '메인 화면으로',
-          style: TextStyle(color: Color(0xFF001ED6), fontSize: 20, fontWeight: FontWeight.bold),
+        title: TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FirstPage(),
+              ),
+            );
+          },
+          child: Text(
+            '메인 화면으로',
+            style: TextStyle(color: Color(0xFF001ED6), fontSize: 20, fontWeight: FontWeight.bold),
+          ),
         ),
         actions: [
           Padding(

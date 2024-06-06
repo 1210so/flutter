@@ -69,7 +69,7 @@ class _SecondPageState extends State<SecondPage> {
     // 생년월일 선택 함수
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateTime(1950, 1, 1),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       locale: const Locale('ko', 'KR'), // 한글 로케일 설정
