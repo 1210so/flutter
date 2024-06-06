@@ -14,22 +14,24 @@ class FourthPage extends StatefulWidget {
 }
 
 class _FourthPageState extends State<FourthPage> {
-  final List<TextEditingController> _controllers = List.generate(11, (index) => TextEditingController());
-  final List<FocusNode> _focusNodes = List.generate(11, (index) => FocusNode());
+  final TextEditingController _firstPartController = TextEditingController();
+  final TextEditingController _secondPartController = TextEditingController();
+  final TextEditingController _thirdPartController = TextEditingController();
+  final FocusNode _firstPartFocusNode = FocusNode();
+  final FocusNode _secondPartFocusNode = FocusNode();
+  final FocusNode _thirdPartFocusNode = FocusNode();
   bool _isPhoneEmpty = false;
 
   void _onNextButtonPressed() {
     setState(() {
-      _isPhoneEmpty = _controllers.any((controller) => controller.text.isEmpty);
+      _isPhoneEmpty = _firstPartController.text.isEmpty || _secondPartController.text.isEmpty || _thirdPartController.text.isEmpty;
     });
 
     if (_isPhoneEmpty) {
       return;
     }
 
-    String phoneNumber = _controllers.sublist(0, 3).map((controller) => controller.text).join() + '-' +
-        _controllers.sublist(3, 7).map((controller) => controller.text).join() + '-' +
-        _controllers.sublist(7).map((controller) => controller.text).join();
+    String phoneNumber = '${_firstPartController.text}-${_secondPartController.text}-${_thirdPartController.text}';
 
     Navigator.push(
       context,
@@ -56,33 +58,34 @@ class _FourthPageState extends State<FourthPage> {
     );
   }
 
-  Widget _buildPhoneField(TextEditingController controller, FocusNode focusNode, {bool autoFocus = false}) {
+  Widget _buildPhonePartField(TextEditingController controller, FocusNode focusNode, int maxLength, {bool autoFocus = false}) {
     return Container(
-      width: 30,
+      width: 100,
       height: 50,
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFF001ED6), width: 2.0),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
+      margin: EdgeInsets.symmetric(horizontal: 8),
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
-        maxLength: 1,
+        maxLength: maxLength,
         autofocus: autoFocus,
         focusNode: focusNode,
         style: TextStyle(
-          fontSize: 30,
+          fontSize: 35,
           color: Color(0xFF001ED6),
           fontWeight: FontWeight.bold,
         ),
         decoration: InputDecoration(
           counterText: '',
-          border: InputBorder.none,
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0xFF001ED6),
+              width: 2.0,
+            ),
+          ),
         ),
         onChanged: (value) {
-          if (value.isNotEmpty) {
+          if (value.length == maxLength) {
             FocusScope.of(context).nextFocus();
           }
         },
@@ -104,7 +107,7 @@ class _FourthPageState extends State<FourthPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 150), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 230), // 텍스트와 입력 칸을 상단에 고정
                   Text(
                     '${widget.name}님의\n전화번호를\n입력해주세요',
                     textAlign: TextAlign.center,
@@ -125,26 +128,17 @@ class _FourthPageState extends State<FourthPage> {
                       ),
                     ),
                   SizedBox(height: 40),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(3, (index) => _buildPhoneField(_controllers[index], _focusNodes[index], autoFocus: index == 0)),
-                      ),
-                      Text('-', style: TextStyle(fontSize: 20, color: Color(0xFF001ED6))),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(4, (index) => _buildPhoneField(_controllers[index + 3], _focusNodes[index + 3])),
-                      ),
-                      Text('-', style: TextStyle(fontSize: 20, color: Color(0xFF001ED6))),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(4, (index) => _buildPhoneField(_controllers[index + 7], _focusNodes[index + 7])),
-                      ),
+                      _buildPhonePartField(_firstPartController, _firstPartFocusNode, 3, autoFocus: true),
+                      Text('-', style: TextStyle(fontSize: 24, color: Color(0xFF001ED6))),
+                      _buildPhonePartField(_secondPartController, _secondPartFocusNode, 4),
+                      Text('-', style: TextStyle(fontSize: 24, color: Color(0xFF001ED6))),
+                      _buildPhonePartField(_thirdPartController, _thirdPartFocusNode, 4),
                     ],
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: 160),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6),

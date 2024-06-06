@@ -77,15 +77,64 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                       ),
                     ),
                     SizedBox(height: 32),
-                    Text(
-                      "이름: ${data['name']}\n생년월일: ${data['birth']}\n주민등록번호: ${data['ssn']}\n전화번호: ${data['contact']}\n이메일주소: ${data['email']}\n주소: ${data['address']}",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.bold,
-                        height: 1.7,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "이름: ${data['name']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            height: 1.7,
+                          ),
+                        ),
+                        Text(
+                          "생년월일: ${data['birth']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            height: 1.7,
+                          ),
+                        ),
+                        Text(
+                          "주민등록번호: ${data['ssn']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            height: 1.7,
+                          ),
+                        ),
+                        Text(
+                          "전화번호: ${data['contact']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            height: 1.7,
+                          ),
+                        ),
+                        Text(
+                          "이메일주소: ${data['email']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            height: 1.7,
+                          ),
+                        ),
+                        Text(
+                          "주소: ${data['address']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            height: 1.7,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 50),
                     ElevatedButton(

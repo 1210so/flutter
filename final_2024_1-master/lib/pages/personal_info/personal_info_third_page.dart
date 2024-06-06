@@ -13,22 +13,23 @@ class ThirdPage extends StatefulWidget {
 }
 
 class _ThirdPageState extends State<ThirdPage> {
-  final List<TextEditingController> _controllers = List.generate(13, (index) => TextEditingController());
-  final List<FocusNode> _focusNodes = List.generate(13, (index) => FocusNode());
+  final TextEditingController _firstPartController = TextEditingController();
+  final TextEditingController _secondPartController = TextEditingController();
+  final FocusNode _firstPartFocusNode = FocusNode();
+  final FocusNode _secondPartFocusNode = FocusNode();
   bool _isSSNEmpty = false; // 주민등록번호가 비어 있는지 여부를 확인하는 변수
 
   void _onNextButtonPressed() {
     // 다음 버튼을 눌렀을 때 실행되는 함수
     setState(() {
-      _isSSNEmpty = _controllers.any((controller) => controller.text.isEmpty);
+      _isSSNEmpty = _firstPartController.text.isEmpty || _secondPartController.text.isEmpty;
     });
 
     if (_isSSNEmpty) {
       return;
     }
 
-    String fullSSN = _controllers.sublist(0, 6).map((controller) => controller.text).join() + '-' +
-        _controllers.sublist(6).map((controller) => controller.text).join();
+    String fullSSN = '${_firstPartController.text}-${_secondPartController.text}';
 
     Navigator.push(
       context,
@@ -54,33 +55,34 @@ class _ThirdPageState extends State<ThirdPage> {
     );
   }
 
-  Widget _buildSSNField(TextEditingController controller, FocusNode focusNode, {bool autoFocus = false}) {
+  Widget _buildSSNPartField(TextEditingController controller, FocusNode focusNode, int maxLength, {bool autoFocus = false}) {
     return Container(
-      width: 30,
+      width: 150,
       height: 50,
       margin: EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFF001ED6), width: 2.0),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
-        maxLength: 1,
+        maxLength: maxLength,
         autofocus: autoFocus,
         focusNode: focusNode,
         style: TextStyle(
-          fontSize: 30,
+          fontSize: 35,
           color: Color(0xFF001ED6),
           fontWeight: FontWeight.bold,
         ),
         decoration: InputDecoration(
           counterText: '',
-          border: InputBorder.none,
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0xFF001ED6),
+              width: 2.0,
+            ),
+          ),
         ),
         onChanged: (value) {
-          if (value.isNotEmpty) {
+          if (value.length == maxLength) {
             FocusScope.of(context).nextFocus();
           }
         },
@@ -102,7 +104,7 @@ class _ThirdPageState extends State<ThirdPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 180), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 230), // 텍스트와 입력 칸을 상단에 고정
                   Text(
                     '${widget.name}님의\n주민등록번호를\n입력해주세요',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
@@ -123,21 +125,15 @@ class _ThirdPageState extends State<ThirdPage> {
                       ),
                     ),
                   SizedBox(height: 40),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(6, (index) => _buildSSNField(_controllers[index], _focusNodes[index], autoFocus: index == 0)),
-                      ),
+                      _buildSSNPartField(_firstPartController, _firstPartFocusNode, 6, autoFocus: true),
                       Text('-', style: TextStyle(fontSize: 30, color: Color(0xFF001ED6))),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(7, (index) => _buildSSNField(_controllers[index + 6], _focusNodes[index + 6])),
-                      ),
+                      _buildSSNPartField(_secondPartController, _secondPartFocusNode, 7),
                     ],
                   ),
-                  SizedBox(height: 130),
+                  SizedBox(height: 160),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6), // 버튼의 배경색

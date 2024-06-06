@@ -158,7 +158,7 @@ class _FifthPageState extends State<FifthPage> {
                             controller: _emailController, // 입력 컨트롤러 설정
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 20, // 입력 텍스트의 크기
+                              fontSize: 25, // 입력 텍스트의 크기
                               color: _hasInputEmail ? Color(0xFF001ED6) : Colors.grey, // 입력 텍스트의 색상
                               fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
                             ),
@@ -220,7 +220,7 @@ class _FifthPageState extends State<FifthPage> {
                                 textAlign: TextAlign.center,
                                 focusNode: focusNode,
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 25,
                                   color: textEditingController.text.isNotEmpty ? Color(0xFF001ED6) : Colors.grey,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -264,6 +264,7 @@ class _FifthPageState extends State<FifthPage> {
                                                 option,
                                                 style: TextStyle(
                                                   color: Color(0xFF001ED6), // 파란 글자색
+                                                  fontSize: 18,
                                                 ),
                                               ),
                                               onTap: () {
