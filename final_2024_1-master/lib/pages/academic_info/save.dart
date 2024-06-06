@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
-// import 'package:final_2024_1/pages/academic_info/subject_list_page.dart';
 import 'academic_info_last_page.dart';
-import 'subject_list_page.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:csv/csv.dart';
-import 'dart:async';
 
 class AcademicInfoFourthPage extends StatefulWidget {
   final int userId;
@@ -31,13 +26,11 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
   final TextEditingController _detailedMajorController = TextEditingController();
   bool _isDetailedMajorEmpty = false;
   bool _hasInputDetailedMajor = false;
-  List<String> _subjectNames = [];
 
   @override
   void initState() {
     super.initState();
     _detailedMajorController.addListener(_updateDetailedMajorTextColor);
-    _loadCsvData();
   }
 
   @override
@@ -50,27 +43,6 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
   void _updateDetailedMajorTextColor() {
     setState(() {
       _hasInputDetailedMajor = _detailedMajorController.text.isNotEmpty;
-    });
-  }
-
-  Future<void> _loadCsvData() async {
-    final String rawCsv = await rootBundle.loadString('assets/university_subjects.csv');
-    List<List<dynamic>> csvTable = CsvToListConverter().convert(rawCsv);
-
-    // Assuming the first row is the header and we are interested in the column with title "학과명"
-    int columnIndex = csvTable[0].indexOf('학과명');
-    if (columnIndex == -1) {
-      throw Exception('학과명 column not found');
-    }
-
-    // Extract the column values (excluding the header)
-    List<String> subjectNames = [];
-    for (int i = 1; i < csvTable.length; i++) {
-      subjectNames.add(csvTable[i][columnIndex]);
-    }
-
-    setState(() {
-      _subjectNames = subjectNames;
     });
   }
 
@@ -108,19 +80,6 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
         ),
       ),
     );
-  }
-
-  void _onTextFieldClicked(BuildContext context) async {
-    final selectedSubject = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SubjectListPage()),
-    );
-
-    if (selectedSubject != null) {
-      setState(() {
-        _detailedMajorController.text = selectedSubject;
-      });
-    }
   }
 
   @override
@@ -187,9 +146,6 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
                           ),
                           border: InputBorder.none,
                         ),
-                        onTap: () {
-                          _onTextFieldClicked(context);
-                        },
                       ),
                     ),
                   ),

@@ -110,43 +110,65 @@ class _LastPageState extends State<LastPage> {
     );
   }
 
-  void _showLoadingDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0),
-            child: Row(
-              children: [
-                CircularProgressIndicator(
-                  backgroundColor: Color(0xFF001ED6),
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+
+  // void _onSearchAddress() async {
+  //
+  //   KopoModel? model = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => RemediKopo(),
+  //     ),
+  //   );
+  //
+  //   if (model != null) {
+  //     setState(() {
+  //       _selectedAddress = model.address ?? '';
+  //     });
+  //   }
+  // }
+
+
+  void _onSearchAddress() async {
+    // Navigate to the address search page and show the loading dialog
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Stack(
+          children: [
+            RemediKopo(),
+            Center(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Color(0xFF001ED6),
+                    width: 2.0,
+                  ),
                 ),
-                SizedBox(width: 20),
-                Text(
-                  "주소 정보를\n불러오는 중입니다",
+                child: Text(
+                  "잠시만 기다려주세요☺️",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF001ED6),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24.0),
-            side: BorderSide(color: Color(0xFF001ED6), width: 2),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
-  }
 
-  void _onSearchAddress() async {
+    // Wait for 5 seconds
+    await Future.delayed(Duration(seconds: 4));
+
+    // Close the loading dialog
+    Navigator.pop(context);
+
+    // Navigate to the address search page and wait for the result
     KopoModel? model = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -154,12 +176,14 @@ class _LastPageState extends State<LastPage> {
       ),
     );
 
+    // If the user selected an address, update the state
     if (model != null) {
       setState(() {
         _selectedAddress = model.address ?? '';
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
