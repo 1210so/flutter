@@ -4,14 +4,19 @@ import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_first_page.dart';
 
-class ResumeResultPage extends StatelessWidget {
+class ResumeResultPage extends StatefulWidget {
   final int userId;
 
   const ResumeResultPage({Key? key, required this.userId}) : super(key: key);
 
+  @override
+  _ResumeResultPageState createState() => _ResumeResultPageState();
+}
+
+class _ResumeResultPageState extends State<ResumeResultPage> {
   Future<Map<String, dynamic>> _fetchResumeData() async {
     var response = await http.get(
-      Uri.parse('$BASE_URL/resume/$userId'),
+      Uri.parse('$BASE_URL/resume/${widget.userId}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -21,6 +26,25 @@ class ResumeResultPage extends StatelessWidget {
       return jsonDecode(utf8.decode(response.bodyBytes));
     } else {
       throw Exception('데이터 페치 실패');
+    }
+  }
+
+  Future<void> shareResume() async {
+    var response = await http.post(
+      Uri.parse('$BASE_URL/resume/${widget.userId}/upload'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('이력서가 성공적으로 업로드되었습니다.')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('이력서 업로드에 실패했습니다. 다시 시도해주세요.')),
+      );
     }
   }
 
@@ -72,7 +96,7 @@ class ResumeResultPage extends StatelessWidget {
                 elevation: 6,
               ),
               onPressed: () {
-                // 공유하기 버튼 누를 때의 동작
+                shareResume();
               },
               child: Text(
                 '공유하기',
@@ -100,7 +124,7 @@ class ResumeResultPage extends StatelessWidget {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 0.0), // 양쪽 여백 제거
+                    const EdgeInsets.symmetric(horizontal: 0.0), // 양쪽 여백 제거
                     child: Container(
                       color: Color(0xFF001ED6), // 파란색 배경
                       padding: const EdgeInsets.all(16.0),
@@ -268,7 +292,7 @@ class ResumeResultPage extends StatelessWidget {
     if (personalInfo == null) return Container();
     return Padding(
       padding:
-          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -288,7 +312,7 @@ class ResumeResultPage extends StatelessWidget {
       return Container();
     return Padding(
       padding:
-          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -306,7 +330,7 @@ class ResumeResultPage extends StatelessWidget {
     if (academicInfo == null) return Container();
     return Padding(
       padding:
-          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -326,7 +350,7 @@ class ResumeResultPage extends StatelessWidget {
     if (careerInfos == null || careerInfos.isEmpty) return Container();
     return Padding(
       padding:
-          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         children: careerInfos.map((career) {
           return Padding(
@@ -396,7 +420,7 @@ class ResumeResultPage extends StatelessWidget {
     if (licenseInfos == null || licenseInfos.isEmpty) return Container();
     return Padding(
       padding:
-          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         children: licenseInfos.map((license) {
           return Padding(
@@ -425,7 +449,7 @@ class ResumeResultPage extends StatelessWidget {
     if (trainingInfos == null || trainingInfos.isEmpty) return Container();
     return Padding(
       padding:
-          const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
+      const EdgeInsets.only(left: 30.0), // 전체 내용의 시작점을 더 오른쪽으로 옮기기 위해 추가
       child: Column(
         children: trainingInfos.map((training) {
           return Padding(
