@@ -19,7 +19,7 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
   final Set<String> selectedOptions = Set<String>();
 
   final List<String> options = [
-    '책임감이 있는 사람 🫡', '친화력이 있는 사람 👫', '협동심이 있는 사람 🤝', '성실한 사람 🤓', '노력하는 사람 💦',
+    '책임감이 있는 사람 💪', '친화력이 있는 사람 👫', '협동심이 있는 사람 🤝', '성실한 사람 🤓', '노력하는 사람 💦',
     '인내심이 있는 사람 ✋', '열정적인 사람 ❤️‍🔥', '끈기 있는 사람 🏃', '도전하는 사람 🔥', '적극적인 사람 🙋', '실행력이 있는 사람 ⚡️',
     '정직한 사람 😇', '리더십 있는 사람 💁', '결단력 있는 사람 🙆', '판단력 있는 사람 ⚖️', '창의적인 사람 🧑‍🎨', '잘 웃는 사람 🤭', '말을 잘 하는 사람 🗣️',
     '친절한 사람 ☺️', '밝은 사람 ✨'

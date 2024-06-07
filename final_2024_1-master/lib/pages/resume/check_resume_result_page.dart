@@ -109,7 +109,6 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                   _buildCareerInfos(data['CareerInfos'], context),
                   SizedBox(height: 30),
                   _buildSectionTitle("자격/면허 정보"),
-                  SizedBox(height: 30),
                   _buildLicenseInfos(data['LicenseInfos'], context),
                   SizedBox(height: 20),
                   _buildSectionTitle("훈련 정보"),
