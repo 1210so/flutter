@@ -169,6 +169,7 @@ class _FifthPageState extends State<FifthPage> {
                                 fontSize: 20, // 힌트 텍스트의 크기
                                 fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
                               ),
+                              contentPadding: EdgeInsets.symmetric(vertical: -15), // 수직으로 가운데 정렬
                               border: InputBorder.none, // 입력 필드의 기본 테두리 제거
                             ),
                           ),
@@ -231,6 +232,7 @@ class _FifthPageState extends State<FifthPage> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  contentPadding: EdgeInsets.symmetric(vertical: -15), // 수직으로 가운데 정렬
                                   border: InputBorder.none,
                                 ),
                                 onChanged: (text) {
