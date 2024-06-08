@@ -86,7 +86,11 @@ class _SubjectListPageState extends State<SubjectListPage> {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey, // 회색으로 변경
+                        ),
+                      ),
                     ),
                   ),
                 ),
