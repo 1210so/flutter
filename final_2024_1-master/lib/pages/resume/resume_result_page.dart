@@ -3,20 +3,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_first_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ResumeResultPage extends StatefulWidget {
+class ResumeResultPage extends StatelessWidget {
   final int userId;
 
   const ResumeResultPage({Key? key, required this.userId}) : super(key: key);
 
-  @override
-  _ResumeResultPageState createState() => _ResumeResultPageState();
-}
-
-class _ResumeResultPageState extends State<ResumeResultPage> {
   Future<Map<String, dynamic>> _fetchResumeData() async {
     var response = await http.get(
-      Uri.parse('$BASE_URL/resume/${widget.userId}'),
+      Uri.parse('$BASE_URL/resume/$userId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -29,22 +25,71 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
     }
   }
 
-  Future<void> shareResume() async {
-    var response = await http.post(
-      Uri.parse('$BASE_URL/resume/${widget.userId}/upload'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);  // 수정된 부분: Uri 생성 방법 변경
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw "Can not launch url";
+    }
+  }
+
+  Future<void> _shareResume(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Row(
+              children: [
+                CircularProgressIndicator(
+                  backgroundColor: Color(0xFF001ED6), // 로딩 스피너의 배경색
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white), // 로딩 스피너의 색상
+                ),
+                SizedBox(width: 20),
+                Text(
+                  "이력서를 생성중입니다.\n잠시 기다려주세요!",
+                  style: TextStyle(
+                    fontSize: 18, // 텍스트 크기
+                    fontWeight: FontWeight.bold, // 텍스트 굵기
+                    color: Color(0xFF001ED6), // 텍스트 색상
+                  ),
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.white, // 다이얼로그 배경색
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.0), // 다이얼로그 모서리 둥글기
+            side: BorderSide(color: Color(0xFF001ED6), width: 2), // 다이얼로그 테두리 설정
+          ),
+        );
       },
     );
 
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('이력서가 성공적으로 업로드되었습니다.')),
+    try {
+      final response = await http.post(
+        Uri.parse('$BASE_URL/resume/$userId/upload'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
       );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('이력서 업로드에 실패했습니다. 다시 시도해주세요.')),
-      );
+
+      if (response.statusCode == 200) {
+        final String fileUrl = response.body; // 응답에서 URL 추출
+        await Future.delayed(Duration(seconds: 50)); // 30초 대기
+        Navigator.of(context).pop(); // 다이얼로그 닫기
+        await _launchURL(fileUrl);  // launchUrl 함수 사용
+      } else {
+        Navigator.of(context).pop(); // 다이얼로그 닫기
+        throw Exception('파일 업로드 실패: ${response.body}');
+      }
+    } catch (e) {
+      Navigator.of(context).pop(); // 다이얼로그 닫기
+      throw e; // 예외 다시 던지기
     }
   }
 
@@ -95,9 +140,7 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
                 shadowColor: Colors.black,
                 elevation: 6,
               ),
-              onPressed: () {
-                shareResume();
-              },
+              onPressed: () => _shareResume(context), // 공유하기 버튼 누를 때의 동작
               child: Text(
                 '공유하기',
                 style: TextStyle(
@@ -200,7 +243,7 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
                         if (data['IntroductionInfo']?['personality1'] !=
                             null) ...[
                           _buildSectionTitle(
-                              "저, " + data['PersonalInfo']['name'] + "?"),
+                              "저는요, "),
                           _buildPersonalityInfo(data['IntroductionInfo']),
                           SizedBox(height: 50),
                         ],
