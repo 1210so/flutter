@@ -21,17 +21,17 @@ class _IntroPage2State extends State<IntroPage2> with TickerProviderStateMixin {
     super.initState();
 
     _initialFadeController = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
 
     _loginFadeController = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
 
     _loginSlideController = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 

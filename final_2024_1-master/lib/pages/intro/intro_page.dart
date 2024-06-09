@@ -177,7 +177,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                                       ),
                                       SizedBox(height: 25),
                                       Text(
-                                        '틀렸어요.\n다시 입력할래요.',
+                                        '사용해봤어요.',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Color(0xFF001ED6),
