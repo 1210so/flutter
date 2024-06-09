@@ -56,14 +56,18 @@ class _FifthPageState extends State<FifthPage> {
   }
 
   void _updateEmailTextColor() {
-    setState(() {
-      _hasInputEmail = _emailController.text.isNotEmpty;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _hasInputEmail = _emailController.text.isNotEmpty;
+      });
     });
   }
 
   void _updateDomainTextColor() {
-    setState(() {
-      _hasInputDomain = _domainController.text.isNotEmpty;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _hasInputDomain = _domainController.text.isNotEmpty;
+      });
     });
   }
 
