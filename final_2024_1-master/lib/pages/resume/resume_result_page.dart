@@ -3,15 +3,36 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:share/share.dart'; // for sharing functionality
 import 'package:http/http.dart' as http; // for HTTP requests
 import 'package:url_launcher/url_launcher.dart'; // for URL launching
+import 'package:image_picker/image_picker.dart'; // for image picking
+import 'dart:io'; // for File handling
 import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/intro/intro_page.dart';
 import 'package:flutter/services.dart'; // for Clipboard
 
-class ResumeResultPage extends StatelessWidget {
+class ResumeResultPage extends StatefulWidget {
   final String url;
   final int userId;
 
-  const ResumeResultPage({Key? key, required this.url, required this.userId}) : super(key: key);
+  const ResumeResultPage({Key? key, required this.url, required this.userId})
+      : super(key: key);
+
+  @override
+  _ResumeResultPageState createState() => _ResumeResultPageState();
+}
+
+class _ResumeResultPageState extends State<ResumeResultPage> {
+  File? _image;
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
 
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
@@ -57,7 +78,7 @@ class ResumeResultPage extends StatelessWidget {
 
     try {
       final response = await http.post(
-        Uri.parse('$BASE_URL/resume/$userId/uploadPdf'),
+        Uri.parse('$BASE_URL/resume/${widget.userId}/uploadPdf'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -96,24 +117,12 @@ class ResumeResultPage extends StatelessWidget {
             );
           },
         ),
-        title: TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => IntroPage(),
-              ),
-            );
-          },
-          child: Text(
-            '메인 화면으로',
-            style: TextStyle(
-                color: Color(0xFF001ED6),
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
-          ),
-        ),
         actions: [
+          IconButton(
+            icon: Icon(Icons.image, color: Color(0xFF001ED6)),
+            onPressed: _pickImage,
+            tooltip: '이미지 삽입',
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: ElevatedButton(
@@ -126,7 +135,7 @@ class ResumeResultPage extends StatelessWidget {
                 shadowColor: Colors.black,
                 elevation: 6,
               ),
-              onPressed: () => _showShareOptions(context, url),
+              onPressed: () => _showShareOptions(context, widget.url),
               child: Text(
                 '공유하기',
                 style: TextStyle(
@@ -139,9 +148,18 @@ class ResumeResultPage extends StatelessWidget {
           ),
         ],
       ),
-      body: WebView(
-        initialUrl: url,
-        javascriptMode: JavascriptMode.unrestricted,
+      body: Column(
+        children: [
+          _image == null
+              ? Container()
+              : Image.file(_image!, height: 200, fit: BoxFit.cover),
+          Expanded(
+            child: WebView(
+              initialUrl: widget.url,
+              javascriptMode: JavascriptMode.unrestricted,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -262,7 +280,8 @@ class ResumeResultPage extends StatelessWidget {
           backgroundColor: Colors.white, // 배경 색을 하얀색으로 설정
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24.0),
-            side: BorderSide(color: Color(0xFF001ED6), width: 3), // 테두리를 파란색으로 설정
+            side:
+            BorderSide(color: Color(0xFF001ED6), width: 3), // 테두리를 파란색으로 설정
           ),
           title: Text('공유하기'),
           content: Column(
@@ -273,7 +292,8 @@ class ResumeResultPage extends StatelessWidget {
                 spacing: 16,
                 runSpacing: 16,
                 children: [
-                  _buildShareIconButtonWithImage(context, '카카오톡', 'assets/kakao.png', url),
+                  _buildShareIconButtonWithImage(
+                      context, '카카오톡', 'assets/kakao.png', url),
                   _buildShareIconButton(context, '문자 메세지', Icons.message, url),
                   _buildShareIconButton(context, '이메일', Icons.email, url),
                 ],
@@ -311,8 +331,8 @@ class ResumeResultPage extends StatelessWidget {
     );
   }
 
-
-  Widget _buildShareIconButton(BuildContext context, String label, IconData icon, String url) {
+  Widget _buildShareIconButton(
+      BuildContext context, String label, IconData icon, String url) {
     return Column(
       children: [
         IconButton(
@@ -327,7 +347,8 @@ class ResumeResultPage extends StatelessWidget {
     );
   }
 
-  Widget _buildShareIconButtonWithImage(BuildContext context, String label, String assetPath, String url) {
+  Widget _buildShareIconButtonWithImage(
+      BuildContext context, String label, String assetPath, String url) {
     return Column(
       children: [
         IconButton(
