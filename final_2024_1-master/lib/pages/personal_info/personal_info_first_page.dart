@@ -73,17 +73,13 @@ class _FirstPageState extends State<FirstPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xFFFFFFFF), // 앱 바의 배경색을 흰색으로 설정
-          elevation: 0, // 앱 바의 그림자 제거
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 180), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 250), // 텍스트와 입력 칸을 상단에 고정
                   Text(
                     '성함이\n어떻게 되시나요?',
                     textAlign: TextAlign.center, // 텍스트 가운데 정렬
@@ -120,7 +116,7 @@ class _FirstPageState extends State<FirstPage> {
                         controller: _nameController, // 입력 컨트롤러 설정
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 20, // 입력 텍스트의 크기
+                          fontSize: 28, // 입력 텍스트의 크기
                           color: _hasInput ? Color(0xFF001ED6) : Colors.grey, // 입력 텍스트의 색상
                           fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
                         ),
@@ -128,7 +124,7 @@ class _FirstPageState extends State<FirstPage> {
                           hintText: '성함', // 입력 필드의 힌트 텍스트
                           hintStyle: TextStyle(
                             color: Colors.grey, // 힌트 텍스트의 색상
-                            fontSize: 20, // 힌트 텍스트의 크기
+                            fontSize: 28, // 힌트 텍스트의 크기
                             fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
                           ),
                           border: InputBorder.none, // 입력 필드의 기본 테두리 제거

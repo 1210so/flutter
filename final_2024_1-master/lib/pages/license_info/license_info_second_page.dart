@@ -159,7 +159,7 @@ class _LicenseInfoSecondPageState extends State<LicenseInfoSecondPage> {
                             : '${_selectedDate!.year}년 ${_selectedDate!.month}월 ${_selectedDate!.day}일',
                         style: TextStyle(
                           color: Color(0xFF001ED6),
-                          fontSize: 20,
+                          fontSize: 32,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

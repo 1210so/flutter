@@ -146,7 +146,7 @@ class _LicenseInfoLastPageState extends State<LicenseInfoLastPage> {
                         controller: _agencyController, // 입력 컨트롤러 설정
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 20, // 입력 텍스트의 크기
+                          fontSize: 32, // 입력 텍스트의 크기
                           color: _hasInput ? Color(0xFF001ED6) : Colors.grey, // 입력 텍스트의 색상
                           fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
                         ),
@@ -154,7 +154,7 @@ class _LicenseInfoLastPageState extends State<LicenseInfoLastPage> {
                           hintText: '시행기관 입력', // 입력 필드의 힌트 텍스트
                           hintStyle: TextStyle(
                             color: Colors.grey, // 힌트 텍스트의 색상
-                            fontSize: 20, // 힌트 텍스트의 크기
+                            fontSize: 32, // 힌트 텍스트의 크기
                             fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
                           ),
                           border: InputBorder.none, // 입력 필드의 기본 테두리 제거

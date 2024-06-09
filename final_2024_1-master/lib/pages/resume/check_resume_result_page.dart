@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:final_2024_1/pages/resume/resume_result_page.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/academic_info/academic_info_edit_page.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_edit_page.dart';
 import 'package:final_2024_1/pages/career_info/career_info_edit_page.dart';
 import 'package:final_2024_1/pages/license_info/license_info_edit_page.dart';
 import 'package:final_2024_1/pages/training_info/training_info_edit_page.dart';
 import 'package:final_2024_1/pages/introduction_info/introduction_info_edit_page.dart';
-import 'package:final_2024_1/pages/resume/resume_result_page.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:final_2024_1/config.dart';
 
 class CheckResumeResultPage extends StatefulWidget {
   final int userId;
@@ -44,27 +44,65 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     }
   }
 
-  void _generateResume() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ResumeResultPage(userId: widget.userId),
-      ),
+  Future<void> _generateResume() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Row(
+              children: [
+                CircularProgressIndicator(
+                  backgroundColor: Color(0xFF001ED6),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+                SizedBox(width: 20),
+                Text(
+                  "이력서를 생성중입니다.\n잠시 기다려주세요!",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF001ED6),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.0),
+            side: BorderSide(color: Color(0xFF001ED6), width: 2),
+          ),
+        );
+      },
     );
-  }
-
-  Future<void> _saveUpdatedIntroduction(String updatedText) async {
-    var url = Uri.parse('$BASE_URL/introduction-info/update/${widget.userId}');
-    var headers = {'Content-Type': 'application/json'};
-    var body = jsonEncode({'gpt': updatedText});
 
     try {
-      var response = await http.post(url, headers: headers, body: body);
-      if (response.statusCode != 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${response.reasonPhrase}')));
+      final response = await http.post(
+        Uri.parse('$BASE_URL/resume/${widget.userId}/uploadView'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final String fileUrl = response.body;
+        await Future.delayed(Duration(seconds: 50)); // 30초 대기
+        Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResumeResultPage(url: fileUrl, userId: widget.userId,),
+          ),
+        );
+      } else {
+        Navigator.of(context).pop();
+        throw Exception('파일 업로드 실패: ${response.body}');
       }
     } catch (e) {
+      Navigator.of(context).pop();
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Error: $e')));
     }
@@ -103,12 +141,14 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                   SizedBox(height: 40),
                   _buildSectionTitle("학력 정보"),
                   SizedBox(height: 30),
-                  _buildBox(_buildAcademicInfo(data['AcademicInfo'], context)),
+                  if (data['AcademicInfo'] != null)
+                    _buildBox(_buildAcademicInfo(data['AcademicInfo'], context)),
                   SizedBox(height: 40),
                   _buildSectionTitle("경력 정보"),
                   _buildCareerInfos(data['CareerInfos'], context),
                   SizedBox(height: 30),
                   _buildSectionTitle("자격/면허 정보"),
+                  SizedBox(height: 30),
                   _buildLicenseInfos(data['LicenseInfos'], context),
                   SizedBox(height: 20),
                   _buildSectionTitle("훈련 정보"),
@@ -129,7 +169,6 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                             fontSize: 20,
                             color: Color(0xFF001ED6),
                             fontWeight: FontWeight.bold,
-                            // 텍스트 폰트
                             height: 1.0,
                           ),
                         ),
@@ -146,15 +185,13 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF001ED6),
-                            side:
-                                BorderSide(color: Color(0xFFFFFFFF), width: 2),
+                            side: BorderSide(color: Color(0xFFFFFFFF), width: 2),
                             minimumSize: Size(double.infinity, 60),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24.0),
                             ),
                             shadowColor: Colors.black,
-                            // 버튼의 그림자 색상
-                            elevation: 6, // 버튼의 그림자 높이,
+                            elevation: 6,
                           ),
                         ),
                         SizedBox(height: 40),
@@ -211,14 +248,14 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
           child: Row(
             children: [
               Expanded(
-                flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
+                flex: 9,
                 child: Text(
                   "이름: ${personalInfo['name']}\n"
-                  "생년월일: ${personalInfo['birth']}\n"
-                  "주민등록번호: ${personalInfo['ssn']}\n"
-                  "전화번호: ${personalInfo['contact']}\n"
-                  "이메일주소: ${personalInfo['email']}\n"
-                  "주소: ${personalInfo['address']}",
+                      "생년월일: ${personalInfo['birth']}\n"
+                      "주민등록번호: ${personalInfo['ssn']}\n"
+                      "전화번호: ${personalInfo['contact']}\n"
+                      "이메일주소: ${personalInfo['email']}\n"
+                      "주소: ${personalInfo['address']}",
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black87,
@@ -227,7 +264,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                 ),
               ),
               Expanded(
-                flex: 1, // 버튼이 차지하는 비율을 10%로 설정
+                flex: 1,
                 child: IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () async {
@@ -266,6 +303,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
           fontWeight: FontWeight.bold,
         ),
       );
+
     return Column(
       children: [
         Container(
@@ -273,22 +311,60 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
           child: Row(
             children: [
               Expanded(
-                flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
-                child: Text(
-                  "최종 학력: ${academicInfo['highestEdu']}\n"
-                  "학교 이름: ${academicInfo['schoolName']}\n"
-                  "전공 계열: ${academicInfo['major']}\n"
-                  "세부 전공: ${academicInfo['detailedMajor']}\n"
-                  "졸업 연도: ${academicInfo['graduationDate']}",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
-                  ),
+                flex: 9,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (academicInfo['highestEdu'] != null && academicInfo['highestEdu'].isNotEmpty)
+                      Text(
+                        "최종 학력: ${academicInfo['highestEdu']}",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    if (academicInfo['schoolName'] != null && academicInfo['schoolName'].isNotEmpty)
+                      Text(
+                        "학교 이름: ${academicInfo['schoolName']}",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    if (academicInfo['major'] != null && academicInfo['major'].isNotEmpty)
+                      Text(
+                        "전공 계열: ${academicInfo['major']}",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    if (academicInfo['detailedMajor'] != null && academicInfo['detailedMajor'].isNotEmpty)
+                      Text(
+                        "세부 전공: ${academicInfo['detailedMajor']}",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    if (academicInfo['graduationDate'] != null && academicInfo['graduationDate'].isNotEmpty)
+                      Text(
+                        "졸업 연도: ${academicInfo['graduationDate']}",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                  ],
                 ),
               ),
               Expanded(
-                flex: 1, // 버튼이 차지하는 비율을 10%로 설정
+                flex: 1,
                 child: IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () async {
@@ -345,9 +421,9 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
+                    flex: 9,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 12.0), // 텍스트의 왼쪽 시작 위치 조절
+                      padding: EdgeInsets.only(left: 12.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -372,7 +448,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                     ),
                   ),
                   Expanded(
-                    flex: 1, // 버튼이 차지하는 비율을 10%로 설정
+                    flex: 1,
                     child: IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () async {
@@ -432,9 +508,9 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
+                    flex: 9,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 12.0), // 텍스트의 왼쪽 시작 위치 조절
+                      padding: EdgeInsets.only(left: 12.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -459,7 +535,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                     ),
                   ),
                   Expanded(
-                    flex: 1, // 버튼이 차지하는 비율을 10%로 설정
+                    flex: 1,
                     child: IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () async {
@@ -520,9 +596,9 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
+                    flex: 9,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 12.0), // 텍스트의 왼쪽 시작 위치 조절
+                      padding: EdgeInsets.only(left: 12.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -547,7 +623,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                     ),
                   ),
                   Expanded(
-                    flex: 1, // 버튼이 차지하는 비율을 10%로 설정
+                    flex: 1,
                     child: IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () async {
@@ -596,7 +672,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
           child: Row(
             children: [
               Expanded(
-                flex: 9, // 텍스트가 차지하는 비율을 90%로 설정
+                flex: 9,
                 child: Text(
                   introductionInfo['gpt'] ?? '자기소개서가 없습니다.',
                   style: TextStyle(
@@ -607,7 +683,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                 ),
               ),
               Expanded(
-                flex: 1, // 버튼이 차지하는 비율을 10%로 설정
+                flex: 1,
                 child: IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () async {
@@ -622,7 +698,6 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
                     if (result != null && result is String) {
                       setState(() {
                         introductionInfo['gpt'] = result;
-                        // 변경된 자기소개서 정보를 서버에 저장합니다.
                         _saveUpdatedIntroduction(result);
                       });
                     }
@@ -634,5 +709,22 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
         ),
       ],
     );
+  }
+
+  Future<void> _saveUpdatedIntroduction(String updatedText) async {
+    var url = Uri.parse('$BASE_URL/introduction-info/update/${widget.userId}');
+    var headers = {'Content-Type': 'application/json'};
+    var body = jsonEncode({'gpt': updatedText});
+
+    try {
+      var response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode != 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${response.reasonPhrase}')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
   }
 }

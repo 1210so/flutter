@@ -307,7 +307,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                                 controller: _typeAheadController,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 28,
                                   color: _hasInputLicenseName ? Color(0xFF001ED6) : Colors.grey,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -315,7 +315,7 @@ class _LicenseInfoFirstPageState extends State<LicenseInfoFirstPage> with Ticker
                                   hintText: '자격증/면허명',
                                   hintStyle: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 20,
+                                    fontSize: 28,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   border: InputBorder.none,

@@ -166,7 +166,7 @@ class _FifthPageState extends State<FifthPage> {
                               hintText: '아이디', // 입력 필드의 힌트 텍스트
                               hintStyle: TextStyle(
                                 color: Colors.grey, // 힌트 텍스트의 색상
-                                fontSize: 20, // 힌트 텍스트의 크기
+                                fontSize: 25, // 힌트 텍스트의 크기
                                 fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
                               ),
                               contentPadding: EdgeInsets.symmetric(vertical: -15), // 수직으로 가운데 정렬
@@ -229,7 +229,7 @@ class _FifthPageState extends State<FifthPage> {
                                   hintText: '도메인 선택',
                                   hintStyle: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 20,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   contentPadding: EdgeInsets.symmetric(vertical: -15), // 수직으로 가운데 정렬

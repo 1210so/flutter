@@ -142,7 +142,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
                         controller: _taskController,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 32,
                           color: _hasInputTask ? Color(0xFF001ED6) : Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -150,7 +150,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
                           hintText: '업무 내용',
                           hintStyle: TextStyle(
                             color: Colors.grey,
-                            fontSize: 20,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold,
                           ),
                           border: InputBorder.none,

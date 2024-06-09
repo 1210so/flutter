@@ -36,15 +36,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 fontFamily: 'HakgyoansimKkwabaegiR',
               ),
             ),
-            SizedBox(height: 20),
-            Text(
-              '1, 2, 3처럼 쉬운 이력서 만들기',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                fontFamily: 'HakgyoansimKkwabaegiR',
-              ),
-            ),
           ],
         ),
       ),

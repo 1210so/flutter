@@ -145,7 +145,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
                         controller: _agencyController,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 32,
                           color: _hasInput ? Color(0xFF001ED6) : Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -153,7 +153,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
                           hintText: '주관기관 입력',
                           hintStyle: TextStyle(
                             color: Colors.grey,
-                            fontSize: 20,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold,
                           ),
                           border: InputBorder.none,

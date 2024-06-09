@@ -172,7 +172,7 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
                         controller: _schoolNameController,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 32,
                           color: _hasInputSchoolName ? Color(0xFF001ED6) : Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -180,7 +180,7 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
                           hintText: '학교 이름',
                           hintStyle: TextStyle(
                             color: Colors.grey,
-                            fontSize: 20,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold,
                           ),
                           border: InputBorder.none,

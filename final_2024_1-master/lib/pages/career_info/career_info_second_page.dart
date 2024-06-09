@@ -219,7 +219,7 @@ class _CareerInfoSecondPageState extends State<CareerInfoSecondPage> {
                             : '$_selectedStartYear년 $_selectedStartMonth월',
                         style: TextStyle(
                           color: Color(0xFF001ED6),
-                          fontSize: 20,
+                          fontSize: 32,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -249,7 +249,7 @@ class _CareerInfoSecondPageState extends State<CareerInfoSecondPage> {
                             : '$_selectedEndYear년 $_selectedEndMonth월',
                         style: TextStyle(
                           color: Color(0xFF001ED6),
-                          fontSize: 20,
+                          fontSize: 32,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

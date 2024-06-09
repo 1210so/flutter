@@ -7,10 +7,12 @@ class IntroPage2 extends StatefulWidget {
 }
 
 class _IntroPage2State extends State<IntroPage2> with TickerProviderStateMixin {
-  late AnimationController _fadeController;
-  late AnimationController _slideController;
-  late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
+  late AnimationController _initialFadeController;
+  late AnimationController _loginFadeController;
+  late AnimationController _loginSlideController;
+  late Animation<double> _initialFadeAnimation;
+  late Animation<double> _loginFadeAnimation;
+  late Animation<Offset> _loginSlideAnimation;
   late Animation<Color?> _colorAnimation;
   bool _showLoginSection = false;
 
@@ -18,12 +20,17 @@ class _IntroPage2State extends State<IntroPage2> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _fadeController = AnimationController(
+    _initialFadeController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     );
 
-    _slideController = AnimationController(
+    _loginFadeController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _loginSlideController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
@@ -31,35 +38,40 @@ class _IntroPage2State extends State<IntroPage2> with TickerProviderStateMixin {
     _colorAnimation = ColorTween(
       begin: Colors.black,
       end: Colors.grey,
-    ).animate(_fadeController);
+    ).animate(_initialFadeController);
 
-    _fadeAnimation = Tween<double>(
+    _initialFadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ).animate(CurvedAnimation(parent: _fadeController, curve: Curves.easeIn))
+    ).animate(CurvedAnimation(parent: _initialFadeController, curve: Curves.easeIn))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           setState(() {
             _showLoginSection = true;
           });
-          _slideController.forward();
+          _loginFadeController.forward();
+          _loginSlideController.forward();
         }
       });
 
-    _slideAnimation = Tween<Offset>(
-      begin: Offset(0, 0.5),
-      end: Offset(0, 0.1),
-    ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeIn));
+    _loginFadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _loginFadeController, curve: Curves.easeIn));
 
-    _fadeController.forward().then((_) {
-      _slideController.forward();
-    });
+    _loginSlideAnimation = Tween<Offset>(
+      begin: Offset(0, 0.5),
+      end: Offset(0, 0.3),
+    ).animate(CurvedAnimation(parent: _loginSlideController, curve: Curves.easeIn));
+
+    _initialFadeController.forward();
   }
 
   @override
   void dispose() {
-    _fadeController.dispose();
-    _slideController.dispose();
+    _initialFadeController.dispose();
+    _loginFadeController.dispose();
+    _loginSlideController.dispose();
     super.dispose();
   }
 
@@ -89,30 +101,33 @@ class _IntroPage2State extends State<IntroPage2> with TickerProviderStateMixin {
                   children: [
                     SizedBox(height: 150),
                     SlideTransition(
-                      position: _slideAnimation,
+                      position: _loginSlideAnimation,
                       child: AnimatedBuilder(
                         animation: _colorAnimation,
                         builder: (context, child) {
-                          return Text(
-                            '처음이시군요!\n반가워요 ✋',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 48,
-                              fontWeight: FontWeight.bold,
-                              color: _colorAnimation.value,
-                              fontFamily: 'AppleSDGothicNeoM',
-                              height: 1.0,
+                          return FadeTransition(
+                            opacity: _initialFadeAnimation,
+                            child: Text(
+                              '처음이시군요!\n반가워요 ✋',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                                color: _colorAnimation.value,
+                                fontFamily: 'AppleSDGothicNeoM',
+                                height: 1.0,
+                              ),
                             ),
                           );
                         },
                       ),
                     ),
+                    SizedBox(height: 50),
                     if (_showLoginSection)
                       FadeTransition(
-                        opacity: _fadeAnimation,
+                        opacity: _loginFadeAnimation,
                         child: Column(
                           children: [
-                            SizedBox(height: 50),
                             Text(
                               '로그인\n하시겠습니까?',
                               textAlign: TextAlign.center,

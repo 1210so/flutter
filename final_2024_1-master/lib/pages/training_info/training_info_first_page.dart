@@ -205,7 +205,7 @@ class _TrainingInfoFirstPageState extends State<TrainingInfoFirstPage> with Tick
                               controller: _trainingNameController,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 32,
                                 color: _hasInputTrainingName ? Color(0xFF001ED6) : Colors.grey,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -213,7 +213,7 @@ class _TrainingInfoFirstPageState extends State<TrainingInfoFirstPage> with Tick
                                 hintText: '훈련/교육명',
                                 hintStyle: TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 20,
+                                  fontSize: 32,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 border: InputBorder.none,

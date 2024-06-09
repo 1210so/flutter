@@ -185,7 +185,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                               controller: _placeController,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 32,
                                 color: Color(0xFF001ED6),
                                 fontWeight: FontWeight.bold,
                               ),
@@ -193,7 +193,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                                 hintText: '근무처',
                                 hintStyle: TextStyle(
                                   color: Color(0xFF001ED6),
-                                  fontSize: 20,
+                                  fontSize: 32,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 border: InputBorder.none,

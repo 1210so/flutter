@@ -121,13 +121,15 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: _selectedMajorCategory,
-                          hint: Text(
-                            '전공 계열을 선택하세요',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xFF001ED6),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                          hint: Center(
+                            child: Text(
+                              '전공 계열 선택',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFF001ED6),
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           onChanged: (String? newValue) {
@@ -139,13 +141,15 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                           items: _majorCategories.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(
-                                value,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color(0xFF001ED6),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                              child: Center(
+                                child: Text(
+                                  value,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xFF001ED6),
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             );
@@ -153,8 +157,7 @@ class _AcademicInfoThirdPageState extends State<AcademicInfoThirdPage> {
                           dropdownColor: Colors.white,
                           iconEnabledColor: Color(0xFF001ED6),
                           underline: SizedBox.shrink(),
-                          alignment: Alignment.centerLeft,
-                          borderRadius: BorderRadius.circular(24.0),
+                          isExpanded: true, // 이 속성을 추가하여 드롭다운이 가로로 확장되도록 함
                         ),
                       ),
                     ),

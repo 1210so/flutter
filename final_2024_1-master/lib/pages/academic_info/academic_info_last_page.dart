@@ -202,7 +202,7 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
                             : '${_selectedYear!}년',
                         style: TextStyle(
                           color: Color(0xFF001ED6),
-                          fontSize: 20,
+                          fontSize: 32,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

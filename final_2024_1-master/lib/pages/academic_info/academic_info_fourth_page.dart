@@ -174,7 +174,7 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
                         controller: _detailedMajorController,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 28,
                           color: _hasInputDetailedMajor ? Color(0xFF001ED6) : Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
@@ -182,7 +182,7 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
                           hintText: '세부 전공',
                           hintStyle: TextStyle(
                             color: Colors.grey,
-                            fontSize: 20,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold,
                           ),
                           border: InputBorder.none,
