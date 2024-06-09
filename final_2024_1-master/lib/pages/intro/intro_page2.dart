@@ -129,7 +129,7 @@ class _IntroPage2State extends State<IntroPage2> with TickerProviderStateMixin {
                         child: Column(
                           children: [
                             Text(
-                              '로그인\n하시겠습니까?',
+                              '회원가입\n하시겠습니까?',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 48,
