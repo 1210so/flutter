@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:share/share.dart'; // for sharing functionality
-import 'package:http/http.dart' as http; // for HTTP requests
-import 'package:url_launcher/url_launcher.dart'; // for URL launching
-import 'package:image_picker/image_picker.dart'; // for image picking
-import 'dart:io'; // for File handling
+import 'package:share/share.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/intro/intro_page.dart';
-import 'package:flutter/services.dart'; // for Clipboard
+import 'package:flutter/services.dart';
 
+// ResumeResultPage : 생성된 이력서 결과를 보여주는 페이지
 class ResumeResultPage extends StatefulWidget {
   final String url;
   final int userId;
@@ -34,6 +35,7 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
     }
   }
 
+  // 주어진 URL을 외부 어플리케이션으로 여는 함수
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -41,6 +43,7 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
     }
   }
 
+  // 이력서를 PDF로 생성하고 공유할 수 있는 함수
   Future<void> _shareResume(BuildContext context) async {
     showDialog(
       context: context,
@@ -77,6 +80,7 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
     );
 
     try {
+      // PDF 생성을 위한 POST 요청
       final response = await http.post(
         Uri.parse('$BASE_URL/resume/${widget.userId}/uploadPdf'),
         headers: <String, String>{
@@ -164,6 +168,7 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
     );
   }
 
+  // 공유 옵션을 표시하는 함수
   void _showShareOptions(BuildContext context, String url) {
     showModalBottomSheet(
       context: context,
@@ -272,6 +277,7 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
     );
   }
 
+  // 공유 다이얼로그를 표시하는 함수
   void _showShareDialog(BuildContext context, String url) {
     showDialog(
       context: context,
@@ -331,6 +337,7 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
     );
   }
 
+  // 공유 옵션 버튼을 생성하는 함수 (아이콘 사용)
   Widget _buildShareIconButton(
       BuildContext context, String label, IconData icon, String url) {
     return Column(
@@ -347,6 +354,7 @@ class _ResumeResultPageState extends State<ResumeResultPage> {
     );
   }
 
+  // 공유 옵션 버튼을 생성하는 함수 (이미지 사용)
   Widget _buildShareIconButtonWithImage(
       BuildContext context, String label, String assetPath, String url) {
     return Column(
