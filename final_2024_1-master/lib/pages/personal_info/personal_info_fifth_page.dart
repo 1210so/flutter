@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'personal_info_confirmation_page.dart';
 import 'personal_info_last_page.dart';
 
+// FifthPage : 사용자가 이메일 주소를 입력하는 페이지
 class FifthPage extends StatefulWidget {
   final String name;
   final String birth;
@@ -26,6 +27,7 @@ class _FifthPageState extends State<FifthPage> {
   bool _isEmailEmpty = false;
   bool _hasInputEmail = false;
   bool _hasInputDomain = false;
+  // 이메일 도메인 목록
   final List<String> _emailDomains = [
     'naver.com',
     'gmail.com',
@@ -55,6 +57,7 @@ class _FifthPageState extends State<FifthPage> {
     super.dispose();
   }
 
+  // 이메일 아이디 입력 상태에 따른 텍스트 색상 업데이트 함수
   void _updateEmailTextColor() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
@@ -63,6 +66,7 @@ class _FifthPageState extends State<FifthPage> {
     });
   }
 
+  // 이메일 도메인 입력 상태에 따른 텍스트 색상 업데이트 함수
   void _updateDomainTextColor() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
@@ -71,6 +75,7 @@ class _FifthPageState extends State<FifthPage> {
     });
   }
 
+  // '다음' 버튼을 눌렀을 때 호출되는 함수
   void _onNextButtonPressed() {
     setState(() {
       _isEmailEmpty = _emailController.text.isEmpty || _domainController.text.isEmpty;
@@ -80,8 +85,10 @@ class _FifthPageState extends State<FifthPage> {
       return;
     }
 
+    // 입력된 이메일 아이디와 도메인을 결합하여 전체 이메일 주소를 생성
     String email = '${_emailController.text}@${_domainController.text}';
 
+    // 이메일 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -108,6 +115,7 @@ class _FifthPageState extends State<FifthPage> {
     );
   }
 
+  // UI 구성
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -247,6 +255,7 @@ class _FifthPageState extends State<FifthPage> {
                               );
                             },
                             optionsViewBuilder: (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+                              // 자동완성 옵션을 보여주는 드롭다운 UI 구성
                               return Align(
                                 alignment: Alignment.topLeft,
                                 child: Material(

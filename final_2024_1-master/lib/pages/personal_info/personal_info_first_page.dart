@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'personal_info_confirmation_page.dart';
 import 'personal_info_second_page.dart';
 
+// FirstPage: 사용자가 이름을 입력하는 페이지
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
 
@@ -17,7 +18,7 @@ class _FirstPageState extends State<FirstPage> {
   @override
   void initState() {
     super.initState();
-    _nameController.addListener(_updateTextColor);
+    _nameController.addListener(_updateTextColor); // 입력 상태에 따른 텍스트 색상 업데이트 리스너 추가
   }
 
   @override
@@ -27,6 +28,7 @@ class _FirstPageState extends State<FirstPage> {
     super.dispose();
   }
 
+  // 텍스트 입력 상태에 따라 UI 업데이트
   void _updateTextColor() {
     setState(() {
       _hasInput = _nameController.text.isNotEmpty;
@@ -43,7 +45,7 @@ class _FirstPageState extends State<FirstPage> {
       return;
     }
 
-    String fullName = _nameController.text + ' 선생님';
+    String fullName = _nameController.text + ' 선생님'; // 입력된 이름에 '선생님' 추가
 
     Navigator.push(
       context,
@@ -82,11 +84,11 @@ class _FirstPageState extends State<FirstPage> {
                   SizedBox(height: 250), // 텍스트와 입력 칸을 상단에 고정
                   Text(
                     '성함이\n어떻게 되시나요?',
-                    textAlign: TextAlign.center, // 텍스트 가운데 정렬
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 48, // 텍스트 크기
-                      fontWeight: FontWeight.bold, // 텍스트 굵기
-                      height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      height: 1.0,
                     ),
                   ),
                   if (_isNameEmpty)
@@ -100,34 +102,34 @@ class _FirstPageState extends State<FirstPage> {
                     ),
                   SizedBox(height: 40),
                   Container(
-                    width: 347, // 입력 창의 너비
-                    height: 60, // 입력 창의 높이
+                    width: 347,
+                    height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.white, // 입력 창의 배경색
-                      borderRadius: BorderRadius.circular(24.0), // 입력 창의 모서리 둥글기
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24.0),
                       border: Border.all(
-                        color: Color(0xFF001ED6), // 입력 창의 테두리 색상
-                        width: 2.0, // 입력 창의 테두리 두께
+                        color: Color(0xFF001ED6),
+                        width: 2.0,
                       ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0), // 입력 창의 내부 패딩
                       child: TextField(
-                        controller: _nameController, // 입력 컨트롤러 설정
+                        controller: _nameController,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 28, // 입력 텍스트의 크기
-                          color: _hasInput ? Color(0xFF001ED6) : Colors.grey, // 입력 텍스트의 색상
-                          fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
+                          fontSize: 28,
+                          color: _hasInput ? Color(0xFF001ED6) : Colors.grey,
+                          fontWeight: FontWeight.bold,
                         ),
                         decoration: InputDecoration(
-                          hintText: '성함', // 입력 필드의 힌트 텍스트
+                          hintText: '성함',
                           hintStyle: TextStyle(
-                            color: Colors.grey, // 힌트 텍스트의 색상
-                            fontSize: 28, // 힌트 텍스트의 크기
-                            fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
+                            color: Colors.grey,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
                           ),
-                          border: InputBorder.none, // 입력 필드의 기본 테두리 제거
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
@@ -135,26 +137,26 @@ class _FirstPageState extends State<FirstPage> {
                   SizedBox(height: 150),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF001ED6), // 버튼의 배경색
+                      backgroundColor: Color(0xFF001ED6),
                       side: BorderSide(color: Color(0xFFFFFFFF), width: 2,), // 버튼의 테두리 설정
-                      minimumSize: Size(345, 60), // 버튼의 최소 크기 설정
-                      shadowColor: Colors.black, // 버튼의 그림자 색상
-                      elevation: 6, // 버튼의 그림자 높이,
+                      minimumSize: Size(345, 60),
+                      shadowColor: Colors.black,
+                      elevation: 6,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0), // 버튼의 모서리 둥글기
+                        borderRadius: BorderRadius.circular(24.0),
                       ),
                     ),
-                    onPressed: _onNextButtonPressed, // 다음 버튼을 눌렀을 때 실행되는 함수
+                    onPressed: _onNextButtonPressed, // 다음 버튼을 눌렀을 때 함수 실행
                     child: const Text(
                       '다음',
                       style: TextStyle(
-                        fontSize: 18, // 버튼 텍스트의 크기
-                        fontWeight: FontWeight.bold, // 버튼 텍스트의 굵기
-                        color: Colors.white, // 버튼 텍스트의 색상
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                  SizedBox(height: 20), // 추가된 공간
+                  SizedBox(height: 20),
                 ],
               ),
             ),

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 
+// PersonalInfoResultPage : 사용자가 입력한 개인 정보를 확인하는 페이지
 class PersonalInfoResultPage extends StatefulWidget {
   final int userId;
 
@@ -23,6 +24,7 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
     _dataFuture = _fetchData();
   }
 
+  // 서버에서 사용자 데이터를 가져오는 함수
   Future<Map<String, dynamic>> _fetchData() async {
     var response = await http.get(
       Uri.parse('$BASE_URL/personal-info/${widget.userId}'),
@@ -172,6 +174,7 @@ class _PersonalInfoResultPageState extends State<PersonalInfoResultPage> {
                       ),
                     ),
                     SizedBox(height: 20),
+                    // '모든 정보가 맞아요!' 버튼: 학력 정보 입력 페이지로 이동
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF001ED6),
