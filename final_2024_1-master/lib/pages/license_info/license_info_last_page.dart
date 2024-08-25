@@ -6,89 +6,108 @@ import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
 class LicenseInfoLastPage extends StatefulWidget {
-  final int userId;
-  final String licenseName;
-  final String date;
-  final String userName;
+  final int userId; // 사용자 ID
+  final String licenseName; // 자격증/면허명
+  final String date; // 자격증/면허 취득일
+  final String userName; // 사용자 이름
 
-  const LicenseInfoLastPage({super.key, required this.userId, required this.licenseName, required this.date, required this.userName});
+  const LicenseInfoLastPage({
+    super.key,
+    required this.userId,
+    required this.licenseName,
+    required this.date,
+    required this.userName
+  });
 
   @override
   _LicenseInfoLastPageState createState() => _LicenseInfoLastPageState();
 }
 
 class _LicenseInfoLastPageState extends State<LicenseInfoLastPage> {
-  final TextEditingController _agencyController = TextEditingController();
-  bool _isAgencyEmpty = false;
-  bool _hasInput = false;
+  final TextEditingController _agencyController = TextEditingController(); // 시행기관 입력 컨트롤러
+  bool _isAgencyEmpty = false; // 시행기관 입력 여부 확인 변수
+  bool _hasInput = false; // 입력 여부 확인 변수
 
   @override
   void initState() {
     super.initState();
+    // 시행기관 입력 컨트롤러에 리스너 추가
     _agencyController.addListener(_updateTextColor);
   }
 
   @override
   void dispose() {
+    // 시행기관 입력 컨트롤러의 리스너 제거 및 컨트롤러 폐기
     _agencyController.removeListener(_updateTextColor);
     _agencyController.dispose();
     super.dispose();
   }
 
+  // 입력된 시행기관 텍스트가 변경될 때 호출되는 함수
   void _updateTextColor() {
     setState(() {
+      // 시행기관 텍스트 입력 여부에 따라 상태 업데이트
       _hasInput = _agencyController.text.isNotEmpty;
     });
   }
 
+  // 데이터를 서버에 전송하는 비동기 함수
   Future<void> _sendData() async {
     try {
       var response = await http.post(
-        Uri.parse('$BASE_URL/license-info/save/${widget.userId}'),
+        Uri.parse('$BASE_URL/license-info/save/${widget.userId}'), // 서버 URL
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8', // 요청 헤더
         },
         body: jsonEncode(<String, String>{
-          'userId': widget.userId.toString(),
-          'licenseName': widget.licenseName,
-          'date': widget.date,
-          'agency': _agencyController.text,
+          'userId': widget.userId.toString(), // 사용자 ID
+          'licenseName': widget.licenseName, // 자격증/면허명
+          'date': widget.date, // 자격증/면허 취득일
+          'agency': _agencyController.text, // 시행기관
         }),
       );
 
       if (response.statusCode == 201) {
+        // 응답 상태가 201이면 성공 처리
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => LicenseInfoResultPage(userId: widget.userId, userName: widget.userName)),
+            builder: (context) => LicenseInfoResultPage(
+              userId: widget.userId, // 사용자 ID
+              userName: widget.userName, // 사용자 이름
+            ),
+          ),
         );
       } else {
-        print('데이터 저장 실패');
+        print('데이터 저장 실패'); // 데이터 저장 실패 시 메시지 출력
       }
     } catch (e) {
-      print('데이터 전송 실패 : $e');
+      print('데이터 전송 실패 : $e'); // 데이터 전송 실패 시 예외 메시지 출력
     }
   }
 
+  // '확인' 버튼이 눌렸을 때 실행되는 함수
   void _onConfirmAgency() {
     setState(() {
-      _isAgencyEmpty = _agencyController.text.isEmpty;
+      _isAgencyEmpty = _agencyController.text.isEmpty; // 시행기관 입력 여부 확인
     });
 
     if (_isAgencyEmpty) {
+      // 시행기관이 입력되지 않은 경우 함수 종료
       return;
     }
 
+    // 시행기관 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PersonalInfoConfirmationPage(
-          title: '시행기관 확인',
-          infoLabel: '시행기관이',
-          info: _agencyController.text,
+          title: '시행기관 확인', // 확인 페이지 제목
+          infoLabel: '시행기관이', // 정보 레이블
+          info: _agencyController.text, // 입력된 시행기관
           onConfirmed: () {
-            _sendData();
+            _sendData(); // 확인 후 데이터 전송
           },
         ),
       ),
