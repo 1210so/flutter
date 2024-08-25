@@ -1,7 +1,7 @@
 import 'package:final_2024_1/pages/intro/intro_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:final_2024_1/pages/personal_info/personal_info_first_page.dart';
+// import 'package:final_2024_1/pages/personal_info/personal_info_first_page.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,6 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  // 1210so 로딩 화면
   @override
   Widget build(BuildContext context) {
     return Scaffold(

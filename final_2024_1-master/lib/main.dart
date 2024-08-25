@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:final_2024_1/pages/personal_info/personal_info_first_page.dart';
+// import 'package:final_2024_1/pages/personal_info/personal_info_first_page.dart';
 import 'package:final_2024_1/pages/splash_screen.dart'; // 스플래시 스크린 파일을 임포트
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+// import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
