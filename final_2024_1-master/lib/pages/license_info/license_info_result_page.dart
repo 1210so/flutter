@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 
 class LicenseInfoResultPage extends StatefulWidget {
-  final int userId;
-  final String userName;
+  final int userId; // 사용자 ID
+  final String userName; // 사용자 이름
 
   const LicenseInfoResultPage({Key? key, required this.userId, required this.userName}) : super(key: key);
 
@@ -17,27 +17,31 @@ class LicenseInfoResultPage extends StatefulWidget {
 }
 
 class _LicenseInfoResultPageState extends State<LicenseInfoResultPage> {
-  late Future<List<Map<String, dynamic>>> _dataFuture;
+  late Future<List<Map<String, dynamic>>> _dataFuture; // 비동기 데이터 저장 변수
 
   @override
   void initState() {
     super.initState();
+    // 데이터 로딩을 위한 Future 초기화
     _dataFuture = _fetchData();
   }
 
+  // 데이터를 서버에서 가져오는 비동기 함수
   Future<List<Map<String, dynamic>>> _fetchData() async {
     var response = await http.get(
-      Uri.parse('$BASE_URL/license-info/${widget.userId}'),
+      Uri.parse('$BASE_URL/license-info/${widget.userId}'), // 사용자 ID를 포함한 서버 URL
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json; charset=UTF-8', // 요청 헤더
       },
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
-      return data.cast<Map<String, dynamic>>();
+      // 응답 상태가 200이면 데이터 로딩 성공
+      List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes)); // 응답
+      return data.cast<Map<String, dynamic>>(); // 데이터 형변환
     } else {
-      throw Exception('데이터 페치 실패');
+      // 응답 상태가 200이 아니면 예외 발생
+      throw Exception('데이터 페치 실패'); // 데이터 가져오기 실패 시 예외 메시지
     }
   }
 
