@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'personal_info_confirmation_page.dart';
 import 'personal_info_fourth_page.dart';
 
+// ThirdPage : 사용자가 주민등록번호를 입력하는 페이지
 class ThirdPage extends StatefulWidget {
   final String name;
   final String birth;
@@ -19,8 +20,8 @@ class _ThirdPageState extends State<ThirdPage> {
   final FocusNode _secondPartFocusNode = FocusNode();
   bool _isSSNEmpty = false; // 주민등록번호가 비어 있는지 여부를 확인하는 변수
 
+  // 다음 버튼을 눌렀을 때 실행되는 함수
   void _onNextButtonPressed() {
-    // 다음 버튼을 눌렀을 때 실행되는 함수
     setState(() {
       _isSSNEmpty = _firstPartController.text.isEmpty || _secondPartController.text.isEmpty;
     });
@@ -29,8 +30,10 @@ class _ThirdPageState extends State<ThirdPage> {
       return;
     }
 
+    // 입력된 주민등록번호를 조합하여 하나의 문자열로 생성
     String fullSSN = '${_firstPartController.text}-${_secondPartController.text}';
 
+    // 주민등록번호 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -55,6 +58,7 @@ class _ThirdPageState extends State<ThirdPage> {
     );
   }
 
+  // 주민등록번호 입력 필드 UI를 구성하는 함수
   Widget _buildSSNPartField(TextEditingController controller, FocusNode focusNode, int maxLength, {bool autoFocus = false}) {
     return Container(
       width: 150,
@@ -90,6 +94,7 @@ class _ThirdPageState extends State<ThirdPage> {
     );
   }
 
+  // UI 구성
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

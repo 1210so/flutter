@@ -10,6 +10,7 @@ import 'package:final_2024_1/pages/license_info/license_info_edit_page.dart';
 import 'package:final_2024_1/pages/training_info/training_info_edit_page.dart';
 import 'package:final_2024_1/pages/introduction_info/introduction_info_edit_page.dart';
 
+// CheckResumeResultPage : 사용자가 입력한 이력서 정보를 확인하는 페이지
 class CheckResumeResultPage extends StatefulWidget {
   final int userId;
 
@@ -29,6 +30,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     _dataFuture = _fetchResumeData();
   }
 
+  // 서버에서 이력서 데이터를 가져오는 함수
   Future<Map<String, dynamic>> _fetchResumeData() async {
     var response = await http.get(
       Uri.parse('$BASE_URL/resume/${widget.userId}'),
@@ -44,6 +46,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     }
   }
 
+  // 이력서 생성을 처리하는 함수
   Future<void> _generateResume() async {
     showDialog(
       context: context,
@@ -202,12 +205,13 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
               ),
             );
           }
-          return const CircularProgressIndicator();
+          return const CircularProgressIndicator(); // 데이터 로드 중인 경우 로딩 인디케이터 표시
         },
       ),
     );
   }
 
+  // 섹션 타이틀을 빌드하는 함수
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
@@ -216,6 +220,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
+  // 카드 스타일의 박스를 빌드하는 함수
   Widget _buildBox(Widget child) {
     return Card(
       shape: RoundedRectangleBorder(
@@ -230,6 +235,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
+  // 개인 정보를 표시하는 위젯을 빌드하는 함수
   Widget _buildPersonalInfo(
       Map<String, dynamic>? personalInfo, BuildContext context) {
     if (personalInfo == null)
@@ -292,6 +298,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
+  // 학력 정보를 표시하는 위젯을 빌드하는 함수
   Widget _buildAcademicInfo(
       Map<String, dynamic>? academicInfo, BuildContext context) {
     if (academicInfo == null)
@@ -392,6 +399,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
+  // 경력 정보를 표시하는 위젯을 빌드하는 함수
   Widget _buildCareerInfos(List<dynamic>? careerInfos, BuildContext context) {
     if (careerInfos == null || careerInfos.isEmpty)
       return Text(
@@ -479,6 +487,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
+  // 자격/면허 정보를 표시하는 위젯을 빌드하는 함수
   Widget _buildLicenseInfos(List<dynamic>? licenseInfos, BuildContext context) {
     if (licenseInfos == null || licenseInfos.isEmpty)
       return Text(
@@ -566,6 +575,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
+  // 훈련 정보를 표시하는 위젯을 빌드하는 함수
   Widget _buildTrainingInfos(
       List<dynamic>? trainingInfos, BuildContext context) {
     if (trainingInfos == null || trainingInfos.isEmpty)
@@ -654,6 +664,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
+  // 자기소개서를 표시하는 위젯을 빌드하는 함수
   Widget _buildIntroductionInfo(
       Map<String, dynamic>? introductionInfo, BuildContext context) {
     if (introductionInfo == null)
@@ -711,6 +722,7 @@ class _CheckResumeResultPageState extends State<CheckResumeResultPage> {
     );
   }
 
+  // 업데이트된 자기소개서를 저장하는 함수
   Future<void> _saveUpdatedIntroduction(String updatedText) async {
     var url = Uri.parse('$BASE_URL/introduction-info/update/${widget.userId}');
     var headers = {'Content-Type': 'application/json'};

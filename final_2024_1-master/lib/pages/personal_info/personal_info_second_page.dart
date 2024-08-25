@@ -3,6 +3,7 @@ import 'package:intl/intl.dart'; // 날짜 형식을 지정하기 위해 intl �
 import 'personal_info_confirmation_page.dart';
 import 'personal_info_third_page.dart';
 
+// SecondPage: 사용자가 생년월일을 입력하는 페이지
 class SecondPage extends StatefulWidget {
   final String name;
   const SecondPage({super.key, required this.name});
@@ -45,6 +46,7 @@ class _SecondPageState extends State<SecondPage> {
       return;
     }
 
+    // 생년월일 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -76,11 +78,11 @@ class _SecondPageState extends State<SecondPage> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: Color(0xFF001ED6), // 포인트 색상
-            hintColor: Color(0xFF001ED6), // 포인트 색상
-            colorScheme: ColorScheme.light(primary: Color(0xFF001ED6)), // 포인트 색상
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary), // 포인트 색상
-            dialogBackgroundColor: Colors.white, // 배경 색상
+            primaryColor: Color(0xFF001ED6),
+            hintColor: Color(0xFF001ED6),
+            colorScheme: ColorScheme.light(primary: Color(0xFF001ED6)),
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            dialogBackgroundColor: Colors.white,
           ),
           child: child!,
         );
@@ -106,14 +108,14 @@ class _SecondPageState extends State<SecondPage> {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 240), // 텍스트와 입력 칸을 상단에 고정
+                  SizedBox(height: 240),
                   Text(
                     '${widget.name}님은\n언제\n태어나셨나요?',
-                    textAlign: TextAlign.center, // 텍스트 가운데 정렬
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 48, // 텍스트 크기
-                      fontWeight: FontWeight.bold, // 텍스트 굵기
-                      height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      height: 1.0,
                     ),
                   ),
                   SizedBox(height: 10),
@@ -128,36 +130,36 @@ class _SecondPageState extends State<SecondPage> {
                     ),
                   SizedBox(height: 40),
                   Container(
-                    width: 347, // 입력 창의 너비
-                    height: 60, // 입력 창의 높이
+                    width: 347,
+                    height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.white, // 입력 창의 배경색
-                      borderRadius: BorderRadius.circular(24.0), // 입력 창의 모서리 둥글기
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24.0),
                       border: Border.all(
-                        color: Color(0xFF001ED6), // 입력 창의 테두리 색상
-                        width: 2.0, // 입력 창의 테두리 두께
+                        color: Color(0xFF001ED6),
+                        width: 2.0,
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0), // 입력 창의 내부 패딩
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: TextField(
                         controller: _birthController, // 입력 컨트롤러 설정
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 28, // 입력 텍스트의 크기
-                          color: _hasInput ? Color(0xFF001ED6) : Colors.grey, // 입력 텍스트의 색상
-                          fontWeight: FontWeight.bold, // 입력 텍스트의 굵기
+                          fontSize: 28,
+                          color: _hasInput ? Color(0xFF001ED6) : Colors.grey,
+                          fontWeight: FontWeight.bold,
                         ),
                         decoration: InputDecoration(
-                          hintText: '생년월일 선택하기', // 입력 필드의 힌트 텍스트
+                          hintText: '생년월일 선택하기',
                           hintStyle: TextStyle(
-                            color: Colors.grey, // 힌트 텍스트의 색상
-                            fontSize: 28, // 힌트 텍스트의 크기
-                            fontWeight: FontWeight.bold, // 힌트 텍스트의 굵기
+                            color: Colors.grey,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
                           ),
-                          border: InputBorder.none, // 입력 필드의 기본 테두리 제거
+                          border: InputBorder.none,
                         ),
-                        readOnly: true, // 사용자가 직접 입력하지 못하도록 설정
+                        readOnly: true,
                         onTap: () => _selectDate(context), // 텍스트 필드를 탭하면 생년월일 선택 함수 호출
                       ),
                     ),
@@ -165,26 +167,26 @@ class _SecondPageState extends State<SecondPage> {
                   SizedBox(height: 150),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF001ED6), // 버튼의 배경색
-                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2,), // 버튼의 테두리 설정
-                      minimumSize: Size(345, 60), // 버튼의 최소 크기 설정
-                      shadowColor: Colors.black, // 버튼의 그림자 색상
-                      elevation: 6, // 버튼의 그림자 높이,
+                      backgroundColor: Color(0xFF001ED6),
+                      side: BorderSide(color: Color(0xFFFFFFFF), width: 2,),
+                      minimumSize: Size(345, 60),
+                      shadowColor: Colors.black,
+                      elevation: 6,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0), // 버튼의 모서리 둥글기
+                        borderRadius: BorderRadius.circular(24.0),
                       ),
                     ),
-                    onPressed: _onNextButtonPressed, // 다음 버튼을 눌렀을 때 실행되는 함수
+                    onPressed: _onNextButtonPressed,
                     child: const Text(
                       '다음',
                       style: TextStyle(
-                        fontSize: 18, // 버튼 텍스트의 크기
-                        fontWeight: FontWeight.bold, // 버튼 텍스트의 굵기
-                        color: Colors.white, // 버튼 텍스트의 색상
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                  SizedBox(height: 20), // 추가된 공간
+                  SizedBox(height: 20),
                 ],
               ),
             ),

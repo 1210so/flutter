@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'personal_info_confirmation_page.dart';
 import 'personal_info_fifth_page.dart';
 
+// FourthPage : 사용자가 전화번호를 입력하는 페이지
 class FourthPage extends StatefulWidget {
   final String name;
   final String birth;
@@ -22,6 +23,7 @@ class _FourthPageState extends State<FourthPage> {
   final FocusNode _thirdPartFocusNode = FocusNode();
   bool _isPhoneEmpty = false;
 
+  // 다음 버튼을 눌렀을 때 호출되는 함수
   void _onNextButtonPressed() {
     setState(() {
       _isPhoneEmpty = _firstPartController.text.isEmpty || _secondPartController.text.isEmpty || _thirdPartController.text.isEmpty;
@@ -31,8 +33,10 @@ class _FourthPageState extends State<FourthPage> {
       return;
     }
 
+    // 입력된 전화번호를 조합하여 하나의 문자열로 생성
     String phoneNumber = '${_firstPartController.text}-${_secondPartController.text}-${_thirdPartController.text}';
 
+    // 전화번호 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -58,6 +62,7 @@ class _FourthPageState extends State<FourthPage> {
     );
   }
 
+  // 전화번호 입력 필드 UI를 구성하는 함수
   Widget _buildPhonePartField(TextEditingController controller, FocusNode focusNode, int maxLength, {bool autoFocus = false}) {
     return Container(
       width: 100,
@@ -93,6 +98,7 @@ class _FourthPageState extends State<FourthPage> {
     );
   }
 
+  // UI 구성
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 
+// LastPage : 사용자가 주소를 입력하는 페이지
 class LastPage extends StatefulWidget {
   final String name;
   final String birth;
@@ -45,12 +46,14 @@ class _LastPageState extends State<LastPage> {
     super.dispose();
   }
 
+  // 상세 주소 입력 상태에 따른 텍스트 색상 업데이트 함수
   void _updateTextColor() {
     setState(() {
       _hasInput = _addressDetailController.text.isNotEmpty;
     });
   }
 
+  // 입력된 정보를 서버에 전송하는 함수
   Future<void> _sendData(String address) async {
     try {
       var response = await http.post(
@@ -68,6 +71,7 @@ class _LastPageState extends State<LastPage> {
         }),
       );
 
+      // 요청이 성공적으로 완료되면 다음 페이지로 이동
       if (response.statusCode == 201) {
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         Navigator.pushReplacement(
@@ -86,6 +90,7 @@ class _LastPageState extends State<LastPage> {
     }
   }
 
+  // 주소 확인 버튼을 눌렀을 때 호출되는 함수
   void _onConfirmAddress() {
     setState(() {
       _isAddressEmpty = _selectedAddress.isEmpty;
@@ -95,6 +100,7 @@ class _LastPageState extends State<LastPage> {
       return;
     }
 
+    // 주소 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -110,26 +116,8 @@ class _LastPageState extends State<LastPage> {
     );
   }
 
-
-  // void _onSearchAddress() async {
-  //
-  //   KopoModel? model = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => RemediKopo(),
-  //     ),
-  //   );
-  //
-  //   if (model != null) {
-  //     setState(() {
-  //       _selectedAddress = model.address ?? '';
-  //     });
-  //   }
-  // }
-
-
+  // 주소 검색을 수행하는 함수
   void _onSearchAddress() async {
-    // Navigate to the address search page and show the loading dialog
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -162,13 +150,12 @@ class _LastPageState extends State<LastPage> {
       ),
     );
 
-    // Wait for 5 seconds
+    // 5초동안 대기
     await Future.delayed(Duration(seconds: 4));
 
-    // Close the loading dialog
     Navigator.pop(context);
 
-    // Navigate to the address search page and wait for the result
+    // 주소 검색 페이지로 이동하고 결과를 기다림
     KopoModel? model = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -176,7 +163,6 @@ class _LastPageState extends State<LastPage> {
       ),
     );
 
-    // If the user selected an address, update the state
     if (model != null) {
       setState(() {
         _selectedAddress = model.address ?? '';
@@ -184,7 +170,7 @@ class _LastPageState extends State<LastPage> {
     }
   }
 
-
+  // UI 구성
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

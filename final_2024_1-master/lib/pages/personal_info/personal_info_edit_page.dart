@@ -30,6 +30,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
   @override
   void initState() {
     super.initState();
+    // 초기화 시 입력 컨트롤러에 기존 사용자 정보 삽입
     _nameController = TextEditingController(text: widget.personalInfo['name']);
     _birthController = TextEditingController(text: widget.personalInfo['birth']);
     _ssnController = TextEditingController(text: widget.personalInfo['ssn']);
@@ -49,6 +50,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
     super.dispose();
   }
 
+  // 서버로 사용자 정보를 업데이트 하는 함수
   Future<void> _updateData() async {
     setState(() {
       _isNameEmpty = _nameController.text.isEmpty;
@@ -59,11 +61,13 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
       _isAddressEmpty = _addressController.text.isEmpty;
     });
 
+    // 하나라도 비어있다면 함수 종료
     if (_isNameEmpty || _isBirthEmpty || _isSsnEmpty || _isContactEmpty || _isEmailEmpty || _isAddressEmpty) {
       return;
     }
 
     try {
+      // 서버에 사용자 정보 업데이트 요청
       var response = await http.post(
         Uri.parse('$BASE_URL/personal-info/update/${widget.userId}'),
         headers: <String, String>{
@@ -112,6 +116,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
                 ),
               ),
               SizedBox(height: 20),
+              // 이름 입력 필드
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -132,6 +137,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
+              // 생년월일 입력 필드
               TextField(
                 controller: _birthController,
                 decoration: InputDecoration(
@@ -152,6 +158,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
+              // 주민등록번호 입력 필드
               TextField(
                 controller: _ssnController,
                 decoration: InputDecoration(
@@ -172,6 +179,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
+              // 전화번호 입력 필드
               TextField(
                 controller: _contactController,
                 decoration: InputDecoration(
@@ -192,6 +200,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
+              // 이메일주소 입력 필드
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -212,6 +221,7 @@ class _PersonalInfoEditPageState extends State<PersonalInfoEditPage> {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
+              // 주소 입력 필드
               TextField(
                 controller: _addressController,
                 decoration: InputDecoration(
