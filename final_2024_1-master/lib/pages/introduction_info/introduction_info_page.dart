@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'introduction_info_result_page.dart';
 import 'package:final_2024_1/config.dart';
 
+// 자기소개 정보 페이지 StatefulWidget 정의
 class IntroductionInfoPage extends StatefulWidget {
   final int userId;
   final String userName;
@@ -14,10 +15,12 @@ class IntroductionInfoPage extends StatefulWidget {
   _IntroductionInfoPageState createState() => _IntroductionInfoPageState();
 }
 
+// 위젯의 상태를 관리하는 클래스
 class _IntroductionInfoPageState extends State<IntroductionInfoPage> with SingleTickerProviderStateMixin {
   Future<Map<String, dynamic>>? _personalInfoFuture;
   final Set<String> selectedOptions = Set<String>();
 
+// 선택지 리스트
   final List<String> options = [
     '책임감이 있는 사람 💪', '친화력이 있는 사람 👫', '협동심이 있는 사람 🤝', '성실한 사람 🤓', '노력하는 사람 💦',
     '인내심이 있는 사람 ✋', '열정적인 사람 ❤️‍🔥', '끈기 있는 사람 🏃', '도전하는 사람 🔥', '적극적인 사람 🙋', '실행력이 있는 사람 ⚡️',
@@ -32,16 +35,18 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
   @override
   void initState() {
     super.initState();
-    _personalInfoFuture = _fetchPersonalInfo();
+    _personalInfoFuture = _fetchPersonalInfo(); // 사용자 정보 로딩 시작
     _controller = AnimationController(duration: const Duration(seconds: 2), vsync: this);
     _opacity = Tween<double>(begin: 1.0, end: 0.3).animate(_controller);
-    _visibleOptions = List<bool>.filled(options.length, false);
+    _visibleOptions = List<bool>.filled(options.length, false); // 모든 옵션을 초기에는 숨김
 
+
+// 애니메이션 시작 후 각 옵션을 순차적으로 보이도록 설정
     _controller.forward().whenComplete(() {
       Future.forEach<int>(List.generate(options.length, (index) => index), (index) {
         return Future.delayed(Duration(milliseconds: 10 * index), () {
           setState(() {
-            _visibleOptions[index] = true;
+            _visibleOptions[index] = true; // 해당 옵션을 보이도록 설정
           });
         });
       });
@@ -54,25 +59,29 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
     super.dispose();
   }
 
+// 사용자 정보를 서버에서 가져오는 비동기 함수
   Future<Map<String, dynamic>> _fetchPersonalInfo() async {
     var response = await http.get(
-      Uri.parse('$BASE_URL/personal-info/${widget.userId}'),
+      Uri.parse('$BASE_URL/personal-info/${widget.userId}'), // API 호출 URL
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200) { // 성공적으로 데이터를 가져온 경우
       return jsonDecode(utf8.decode(response.bodyBytes));
     } else {
-      throw Exception('Failed to load personal info');
+      throw Exception('Failed to load personal info'); // 실패 시 예외 던짐
     }
   }
 
+
+// 선택된 옵션을 바탕으로 자기소개서를 생성하고 저장하는 함수
   Future<void> _generateAndSaveIntroduction() async {
+     // 로딩 다이얼로그 표시
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: false, // 사용자가 다이얼로그 바깥을 눌러도 닫히지 않음
       builder: (BuildContext context) {
         return AlertDialog(
           content: Container(
@@ -137,12 +146,12 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
-      future: _personalInfoFuture,
+      future: _personalInfoFuture,// 사용자 정보 로딩 상태를 추적
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             body: Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(), // 로딩 인디케이터 표시
             ),
           );
         } else if (snapshot.connectionState == ConnectionState.done) {
@@ -151,11 +160,11 @@ class _IntroductionInfoPageState extends State<IntroductionInfoPage> with Single
               appBar: AppBar(
                 title: const Text("자기소개서 생성하기"),
               ),
-              body: Center(child: Text("Error: ${snapshot.error}")),
+              body: Center(child: Text("Error: ${snapshot.error}")), // 오류 메시지 표시
             );
           }
-          var personalInfo = snapshot.data!;
-          var name = personalInfo['name'];
+          var personalInfo = snapshot.data!; // 가져온 사용자 정보
+          var name = personalInfo['name']; // 사용자 이름
 
           return Scaffold(
             body: SingleChildScrollView(

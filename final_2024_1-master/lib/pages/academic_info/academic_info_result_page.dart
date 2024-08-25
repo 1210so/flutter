@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 
 class AcademicInfoResultPage extends StatefulWidget {
+   // 학력 정보 확인 페이지의 StatefulWidget 클래스 정의
   final int userId;
   final String highestEdu;
   final String schoolName;
@@ -35,6 +36,7 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
   }
 
   Future<Map<String, dynamic>> _fetchData() async {
+    // 학력 정보를 서버에서 가져오는 메서드
     var response = await http.get(
       Uri.parse('$BASE_URL/academic-info/${widget.userId}'),
       headers: <String, String>{
@@ -51,6 +53,7 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
 
   @override
   Widget build(BuildContext context) {
+  // 화면을 그리는 메서드
     return Scaffold(
       body: FutureBuilder<Map<String, dynamic>>(
         future: _dataFuture,
@@ -61,9 +64,11 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
             }
             var data = snapshot.data!;
             return SingleChildScrollView(
+            // 스크롤이 가능한 화면 구성
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
+                // 위젯들을 세로로 배치
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(height: 170),
@@ -174,6 +179,7 @@ class _AcademicInfoResultPageState extends State<AcademicInfoResultPage> {
   }
 
   String _buildAcademicInfoText(Map<String, dynamic> data) {
+    // 서버에서 가져온 데이터를 기반으로 학력 정보를 빌드하는 메서드
     List<String> info = [];
 
     info.add("최종 학력: ${data['highestEdu']}");

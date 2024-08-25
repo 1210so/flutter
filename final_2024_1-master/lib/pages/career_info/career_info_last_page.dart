@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
+// 경력 정보 입력의 마지막 페이지를 위한 StatefulWidget
 class CareerInfoLastPage extends StatefulWidget {
   final int userId;
   final String place;
@@ -40,6 +41,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
     });
   }
 
+// 서버에 데이터 전송
   Future<void> _sendData() async {
     try {
       var response = await http.post(
@@ -56,6 +58,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
       );
 
       if (response.statusCode == 201) {
+      // 데이터 저장 성공 시 결과 페이지로 이동
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         Navigator.push(
           context,
@@ -69,6 +72,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
     }
   }
 
+// '다음' 버튼 클릭 시 동작
   void _onNextButtonPressed() {
     setState(() {
       _isTaskEmpty = _taskController.text.isEmpty;
@@ -78,6 +82,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
       return;
     }
 
+// 입력 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -143,6 +148,7 @@ class _CareerInfoLastPageState extends State<CareerInfoLastPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 32,
+                          // 입력 여부에 따라 텍스트 색상 변경
                           color: _hasInputTask ? Color(0xFF001ED6) : Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),

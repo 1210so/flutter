@@ -6,6 +6,7 @@ import 'package:final_2024_1/config.dart';
 import 'career_info_second_page.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
+// 경력 정보 입력의 첫 페이지를 위한 StatefulWidget
 class CareerInfoFirstPage extends StatefulWidget {
   final int userId;
   final String userName;
@@ -19,6 +20,8 @@ class CareerInfoFirstPage extends StatefulWidget {
 class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerProviderStateMixin {
   final TextEditingController _placeController = TextEditingController();
   bool _isPlaceEmpty = false;
+
+  // 애니메이션 컨트롤러와 애니메이션 선언
   late AnimationController _fadeController;
   late AnimationController _slideController;
   late Animation<Color?> _colorAnimation;
@@ -29,6 +32,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
   void initState() {
     super.initState();
 
+    // 애니메이션 컨트롤러 초기화
     _fadeController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -39,16 +43,22 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
       vsync: this,
     );
 
+
+    // 색상 변화 애니메이션 설정
     _colorAnimation = ColorTween(
       begin: Colors.black,
       end: Colors.grey,
     ).animate(_fadeController);
 
+
+    // 페이드 인 애니메이션 설정
     _fadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeIn));
 
+
+     // 슬라이드 애니메이션 설정
     _slideAnimation = Tween<Offset>(
       begin: Offset(0, 0),
       end: Offset(0, -0.3),
@@ -59,6 +69,8 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
     });
   }
 
+
+// '다음' 버튼 눌렀을 때 동작
   void _onNextButtonPressed() {
     setState(() {
       _isPlaceEmpty = _placeController.text.isEmpty;
@@ -68,6 +80,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
       return;
     }
 
+// 입력 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -76,6 +89,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
           infoLabel: '근무처가',
           info: _placeController.text,
           onConfirmed: () {
+          // 확인 후 다음 페이지로 이동
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -92,7 +106,9 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
     );
   }
 
+// '경력없음' 버튼 눌렀을 때 동작
   void _onNoExperienceButtonPressed() {
+  // 자격증 정보 입력 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -106,6 +122,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
 
   @override
   void dispose() {
+  // 애니메이션 컨트롤러 해제
     _fadeController.dispose();
     _slideController.dispose();
     super.dispose();
@@ -114,6 +131,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+    // 화면 터치 시 키보드 닫기
       onTap: () {
         FocusScope.of(context).unfocus();
       },
@@ -158,6 +176,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                           ),
                         ),
                         SizedBox(height: 10),
+                        // 근무처 입력 필드가 비어있을 때 에러 메시지 표시
                         if (_isPlaceEmpty)
                           Text(
                             '근무처를 정확히 입력해주세요.',
@@ -168,6 +187,7 @@ class _CareerInfoFirstPageState extends State<CareerInfoFirstPage> with TickerPr
                             ),
                           ),
                         SizedBox(height: 40),
+                        // 근무처 입력 필드
                         Container(
                           width: 347,
                           height: 60,

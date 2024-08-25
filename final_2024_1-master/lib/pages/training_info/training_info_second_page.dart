@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'training_info_last_page.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
+// 훈련 정보 두 번째 페이지를 위한 StatefulWidget
 class TrainingInfoSecondPage extends StatefulWidget {
   final int userId;
   final String userName;
@@ -15,18 +16,23 @@ class TrainingInfoSecondPage extends StatefulWidget {
 }
 
 class _TrainingInfoSecondPageState extends State<TrainingInfoSecondPage> {
+  // 선택된 날짜 정보를 저장하는 변수들
   int? _selectedStartYear;
   int? _selectedStartMonth;
   int? _selectedEndYear;
   int? _selectedEndMonth;
+
+  // 유효성 검사를 위한 플래그 변수들
   bool _isStartDateEmpty = false;
   bool _isEndDateEmpty = false;
   bool _isPeriodInvalid = false;
 
+// 년월 선택기를 표시하는 메서드
   void _showYearMonthPicker(BuildContext context, bool isStartDate) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext builder) {
+      // 초기 선택 값 설정
         int initialYearIndex = isStartDate
             ? (_selectedStartYear ?? 1950) - 1950
             : (_selectedEndYear ?? 1950) - 1950;
@@ -83,6 +89,7 @@ class _TrainingInfoSecondPageState extends State<TrainingInfoSecondPage> {
         );
       },
     ).whenComplete(() {
+    // 선택기가 닫힐 때 기본값 설정
       setState(() {
         if (isStartDate) {
           _selectedStartYear ??= 1950;
@@ -95,6 +102,7 @@ class _TrainingInfoSecondPageState extends State<TrainingInfoSecondPage> {
     });
   }
 
+// 선택된 기간이 유효한지 검사하는 메서드
   bool _isValidPeriod() {
     if (_selectedStartYear == null || _selectedStartMonth == null || _selectedEndYear == null || _selectedEndMonth == null) {
       return false;
@@ -111,6 +119,7 @@ class _TrainingInfoSecondPageState extends State<TrainingInfoSecondPage> {
     return true;
   }
 
+// '다음' 버튼 클릭 시 동작하는 메서드
   void _onNextButtonPressed() {
     setState(() {
       _isStartDateEmpty = _selectedStartYear == null || _selectedStartMonth == null;
@@ -122,6 +131,7 @@ class _TrainingInfoSecondPageState extends State<TrainingInfoSecondPage> {
       return;
     }
 
+// 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -130,6 +140,7 @@ class _TrainingInfoSecondPageState extends State<TrainingInfoSecondPage> {
           infoLabel: '훈련/교육 기간이',
           info: '${_selectedStartYear}년 ${_selectedStartMonth}월 ~ ${_selectedEndYear}년 ${_selectedEndMonth}월',
           onConfirmed: () {
+          // 확인 후 마지막 훈련 정보 페이지로 이동
             Navigator.push(
               context,
               MaterialPageRoute(

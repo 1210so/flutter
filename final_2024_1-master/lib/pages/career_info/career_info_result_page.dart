@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 
+
+// 경력 정보 결과 페이지를 위한 StatefulWidget
 class CareerInfoResultPage extends StatefulWidget {
   final int userId;
   final String userName;
@@ -17,14 +19,17 @@ class CareerInfoResultPage extends StatefulWidget {
 }
 
 class _CareerInfoResultPageState extends State<CareerInfoResultPage> {
+  // 서버에서 데이터를 가져오는 Future 객체
   late Future<List<Map<String, dynamic>>> _dataFuture;
 
   @override
   void initState() {
     super.initState();
+    // 위젯 초기화 시 데이터 fetch 시작
     _dataFuture = _fetchData();
   }
 
+// 서버에서 경력 정보 데이터를 가져오는 함수
   Future<List<Map<String, dynamic>>> _fetchData() async {
     var response = await http.get(
       Uri.parse('$BASE_URL/career-info/${widget.userId}'),
@@ -74,6 +79,7 @@ class _CareerInfoResultPageState extends State<CareerInfoResultPage> {
                           ),
                         ),
                         SizedBox(height: 16),
+                        // 주의사항 텍스트
                         Text(
                           '잘못 입력하신 정보에 대해서는\n책임지지 않습니다.',
                           textAlign: TextAlign.center,
@@ -131,6 +137,7 @@ class _CareerInfoResultPageState extends State<CareerInfoResultPage> {
                                             ),
                                           ),
                                         );
+                                        // 수정 완료 시 데이터 리로드
                                         if (result == true) {
                                           setState(() {
                                             _dataFuture = _fetchData();
@@ -146,6 +153,7 @@ class _CareerInfoResultPageState extends State<CareerInfoResultPage> {
                           },
                         ),
                         SizedBox(height: 50),
+                        // 경력 정보 추가 버튼
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
@@ -171,6 +179,7 @@ class _CareerInfoResultPageState extends State<CareerInfoResultPage> {
                           ),
                         ),
                         SizedBox(height: 20),
+                        // 자격증/면허 정보 입력 버튼
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF001ED6),
