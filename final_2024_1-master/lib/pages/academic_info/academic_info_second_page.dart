@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 
 class AcademicInfoSecondPage extends StatefulWidget {
+    // 두 번째 학력 정보 입력 페이지를 위한 StatefulWidget 클래스
   final int userId;
   final String highestEdu;
   final String userName;
@@ -29,18 +30,21 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
 
   @override
   void initState() {
+  // 페이지가 초기화될 때 호출되는 메서드
     super.initState();
     _schoolNameController.addListener(_updateSchoolNameTextColor);
   }
 
   @override
   void dispose() {
+  // 페이지가 소멸될 때 호출되는 메서드
     _schoolNameController.removeListener(_updateSchoolNameTextColor);
     _schoolNameController.dispose();
     super.dispose();
   }
 
   void _updateSchoolNameTextColor() {
+  // 학교 이름 입력 상태에 따라 텍스트 색상 업데이트
     setState(() {
       _hasInputSchoolName = _schoolNameController.text.isNotEmpty;
     });
@@ -52,6 +56,7 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
     });
 
     if (_isSchoolNameEmpty) {
+    // 학교 이름이 비어있으면 리턴
       return;
     }
 
@@ -85,6 +90,7 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
   }
 
   Future<void> _sendData() async {
+  // 서버로 데이터를 전송하는 메서드
     try {
       var response = await http.post(
         Uri.parse('$BASE_URL/academic-info/save/${widget.userId}'),
@@ -123,12 +129,14 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
 
   @override
   Widget build(BuildContext context) {
+  // UI를 구성하는 메서드
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         body: SingleChildScrollView(
+         // 스크롤이 가능한 화면 구성
           child: Padding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Center(
@@ -169,7 +177,7 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: TextField(
-                        controller: _schoolNameController,
+                        controller: _schoolNameController,// 학교 이름을 입력받는 컨트롤러
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 32,
@@ -183,7 +191,7 @@ class _AcademicInfoSecondPageState extends State<AcademicInfoSecondPage> {
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                           ),
-                          border: InputBorder.none,
+                          border: InputBorder.none,// 입력 필드의 테두리 제거
                         ),
                       ),
                     ),

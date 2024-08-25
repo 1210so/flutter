@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:final_2024_1/config.dart';
 
+// AcademicInfoLastPage는 사용자가 졸업 연도를 선택하고 입력한 정보를 서버에 전송하는 페이지
 class AcademicInfoLastPage extends StatefulWidget {
   final int userId;
   final String highestEdu;
@@ -27,12 +28,13 @@ class AcademicInfoLastPage extends StatefulWidget {
   @override
   _AcademicInfoLastPageState createState() => _AcademicInfoLastPageState();
 }
-
+// 페이지의 상태를 관리하는 클래스
 class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
   int? _selectedYear;
   bool _isYearEmpty = false;
   bool _isFutureYear = false;
 
+// 연도 선택을 위한 Picker를 표시하는 함수
   void _showYearPicker(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -52,6 +54,7 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
                 _isFutureYear = _selectedYear! > DateTime.now().year;
               });
             },
+            // 현재 연도부터 과거 100년까지의 연도를 표시
             children: List<Widget>.generate(100, (int index) {
               return Center(
                 child: Text('${DateTime.now().year - index}'),
@@ -77,7 +80,7 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
     if (_isYearEmpty || _isFutureYear) {
       return;
     }
-
+    // 졸업 연도 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -90,7 +93,7 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
       ),
     );
   }
-
+ // 사용자가 입력한 학력 정보를 서버로 전송하는 함수
   Future<void> _sendData() async {
     try {
       var response = await http.post(
@@ -109,6 +112,7 @@ class _AcademicInfoLastPageState extends State<AcademicInfoLastPage> {
       );
 
       if (response.statusCode == 201) {
+      // 데이터 저장에 성공하면 결과 페이지로 이동
         Navigator.push(
           context,
           MaterialPageRoute(

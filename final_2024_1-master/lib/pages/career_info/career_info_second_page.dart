@@ -8,6 +8,7 @@ class CareerInfoSecondPage extends StatefulWidget {
   final String place;
   final String userName;
 
+// 생성자: 사용자 ID, 근무지, 사용자 이름
   const CareerInfoSecondPage({super.key, required this.userId, required this.place, required this.userName});
 
   @override
@@ -15,24 +16,30 @@ class CareerInfoSecondPage extends StatefulWidget {
 }
 
 class _CareerInfoSecondPageState extends State<CareerInfoSecondPage> {
+  // 선택된 시작/종료 년월 저장 변수
   int? _selectedStartYear;
   int? _selectedStartMonth;
   int? _selectedEndYear;
   int? _selectedEndMonth;
+
+  // 유효성 검사를 위한 플래그 변수들
   bool _isStartDateEmpty = false;
   bool _isEndDateEmpty = false;
   bool _isPeriodInvalid = false;
 
+// 년월 선택기 표시 함수
   void _showYearMonthPicker(BuildContext context, bool isStartDate) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext builder) {
+        // 초기 선택 값 설정
         int initialYearIndex = isStartDate
             ? (_selectedStartYear ?? 1950) - 1950
             : (_selectedEndYear ?? 1950) - 1950;
         int initialMonthIndex = isStartDate
             ? (_selectedStartMonth ?? 1) - 1
             : (_selectedEndMonth ?? 1) - 1;
+        // 년월 선택기 UI 구성
         return Container(
           height: MediaQuery.of(context).size.height / 3,
           decoration: BoxDecoration(
@@ -83,6 +90,7 @@ class _CareerInfoSecondPageState extends State<CareerInfoSecondPage> {
         );
       },
     ).whenComplete(() {
+    // 선택기 닫힐 때 기본값 설정
       setState(() {
         if (isStartDate) {
           _selectedStartYear ??= 1950;
@@ -95,6 +103,7 @@ class _CareerInfoSecondPageState extends State<CareerInfoSecondPage> {
     });
   }
 
+ // 선택된 기간의 유효성 검사 함수
   bool _isValidPeriod() {
     if (_selectedStartYear == null || _selectedStartMonth == null || _selectedEndYear == null || _selectedEndMonth == null) {
       return false;
@@ -111,6 +120,8 @@ class _CareerInfoSecondPageState extends State<CareerInfoSecondPage> {
     return true;
   }
 
+
+// '다음' 버튼 클릭 시 실행되는 함수
   void _onNextButtonPressed() {
     setState(() {
       _isStartDateEmpty = _selectedStartYear == null || _selectedStartMonth == null;
@@ -122,6 +133,7 @@ class _CareerInfoSecondPageState extends State<CareerInfoSecondPage> {
       return;
     }
 
+// 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -130,6 +142,7 @@ class _CareerInfoSecondPageState extends State<CareerInfoSecondPage> {
           infoLabel: '근무 기간이',
           info: '${_selectedStartYear}년 ${_selectedStartMonth}월 ~ ${_selectedEndYear}년 ${_selectedEndMonth}월',
           onConfirmed: () {
+          // 확인 시 다음 페이지(CareerInfoLastPage)로 이동
             Navigator.push(
               context,
               MaterialPageRoute(

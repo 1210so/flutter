@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/personal_info/personal_info_confirmation_page.dart';
 
+// 훈련 정보 마지막 페이지를 위한 StatefulWidget
 class TrainingInfoLastPage extends StatefulWidget {
   final int userId;
   final String userName;
@@ -17,6 +18,7 @@ class TrainingInfoLastPage extends StatefulWidget {
   _TrainingInfoLastPageState createState() => _TrainingInfoLastPageState();
 }
 
+// TrainingInfoLastPage의 상태를 관리하는 클래스
 class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
   final TextEditingController _agencyController = TextEditingController();
   bool _isAgencyEmpty = false;
@@ -41,6 +43,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
     });
   }
 
+ // 서버로 데이터 전송
   Future<void> _sendData() async {
     try {
       var response = await http.post(
@@ -57,6 +60,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
       );
 
       if (response.statusCode == 201) {
+      // 데이터 저장 성공 시 결과 페이지로 이동
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         Navigator.pushReplacement(
           context,
@@ -70,6 +74,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
     }
   }
 
+// 기관명 확인 및 데이터 전송
   void _onConfirmAgency() {
     setState(() {
       _isAgencyEmpty = _agencyController.text.isEmpty;
@@ -79,6 +84,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
       return;
     }
 
+ // 확인 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -118,6 +124,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
                     ),
                   ),
                   SizedBox(height: 10),
+                  // 기관명이 비어있을 때 표시되는 에러 메시지
                   if (_isAgencyEmpty)
                     Text(
                       '주관기관을 정확히 입력해주세요.',
@@ -128,6 +135,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
                       ),
                     ),
                   SizedBox(height: 40),
+                  // 기관명 입력 필드
                   Container(
                     width: 347,
                     height: 60,
@@ -162,6 +170,7 @@ class _TrainingInfoLastPageState extends State<TrainingInfoLastPage> {
                     ),
                   ),
                   SizedBox(height: 130),
+                  // '완료' 버튼
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF001ED6),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:final_2024_1/config.dart';
 
+// 학력 정보 수정 페이지를 정의하는 StatefulWidget 클래스
 class AcademicInfoEditPage extends StatefulWidget {
   final int userId;
   final Map<String, dynamic> academicInfo;
@@ -12,7 +13,7 @@ class AcademicInfoEditPage extends StatefulWidget {
   @override
   _AcademicInfoEditPageState createState() => _AcademicInfoEditPageState();
 }
-
+// 페이지의 상태를 관리하는 State 클래스
 class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
   late TextEditingController _highestEduController;
   late TextEditingController _schoolNameController;
@@ -28,6 +29,7 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
   @override
   void initState() {
     super.initState();
+    // 위젯 생성 시 초기 데이터로 TextEditingController를 초기화
     _highestEduController = TextEditingController(text: widget.academicInfo['highestEdu']);
     _schoolNameController = TextEditingController(text: widget.academicInfo['schoolName']);
     _majorController = TextEditingController(text: widget.academicInfo['major'] ?? '');
@@ -44,7 +46,7 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
     _graduationDateController.dispose();
     super.dispose();
   }
-
+ // 데이터 업데이트를 처리하는 비동기 함수
   Future<void> _updateData() async {
     setState(() {
       _isHighestEduEmpty = _highestEduController.text.isEmpty;
@@ -54,11 +56,13 @@ class _AcademicInfoEditPageState extends State<AcademicInfoEditPage> {
       _isGraduationDateEmpty = _graduationDateController.text.isEmpty;
     });
 
+    // 필수 필드가 비어 있거나, 대학이나 대학원 학력일 경우 졸업 연도가 비어 있는 경우 업데이트 중단
     if (_isHighestEduEmpty || _isSchoolNameEmpty || (widget.academicInfo['highestEdu'] == '대학교' || widget.academicInfo['highestEdu'] == '대학원') && _isGraduationDateEmpty) {
       return;
     }
 
     try {
+    // HTTP POST 요청을 보내서 서버에 학력 정보 업데이트
       var response = await http.post(
         Uri.parse('$BASE_URL/academic-info/update/${widget.userId}'),
         headers: <String, String>{

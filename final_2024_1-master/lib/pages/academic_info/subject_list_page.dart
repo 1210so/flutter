@@ -9,45 +9,54 @@ class SubjectListPage extends StatefulWidget {
 
 class _SubjectListPageState extends State<SubjectListPage> {
   Future<List<String>>? _fetchData;
+  // 검색 입력을 위한 TextEditingController
   TextEditingController _searchController = TextEditingController();
+  // 전체 학과 이름 리스트
   List<String> _subjectNames = [];
+  // 검색 결과에 따른 필터링된 학과 이름 리스트
   List<String> _filteredSubjectNames = [];
 
   @override
   void initState() {
     super.initState();
     _fetchData = fetchData();
+     // 검색어 입력 시 필터링 함수 연결
     _searchController.addListener(_filterSubjects);
   }
 
   @override
   void dispose() {
+  // 위젯 dispose 시 컨트롤러 해제
     _searchController.dispose();
     super.dispose();
   }
 
+// CSV 파일에서 데이터를 가져오는 함수
   Future<List<String>> fetchData() async {
+  // assets 폴더에서 CSV 파일 로드
     final String rawCsv = await rootBundle.loadString('assets/university_subjects.csv');
+    // CSV 데이터를 List로 변환
     List<List<dynamic>> csvTable = CsvToListConverter().convert(rawCsv);
 
-    // Assuming the first row is the header and we are interested in the column with title "학과명"
+    // '학과명' 열의 인덱스 찾기
     int columnIndex = csvTable[0].indexOf('학과명');
     if (columnIndex == -1) {
       throw Exception('학과명 column not found');
     }
 
-    // Extract the column values (excluding the header)
+    // 학과명 열의 데이터만 추출 (헤더 제외)
     List<String> subjectNames = [];
     for (int i = 1; i < csvTable.length; i++) {
       subjectNames.add(csvTable[i][columnIndex]);
     }
-
+     // 전체 및 필터링된 리스트 초기화
     _subjectNames = subjectNames;
     _filteredSubjectNames = subjectNames;
 
     return subjectNames;
   }
 
+// 검색어에 따라 학과 리스트 필터링하는 함수
   void _filterSubjects() {
     final query = _searchController.text.toLowerCase();
     setState(() {
@@ -94,6 +103,7 @@ class _SubjectListPageState extends State<SubjectListPage> {
                     ),
                   ),
                 ),
+                // 필터링된 학과 리스트 표시
                 Expanded(
                   child: ListView.builder(
                     itemCount: _filteredSubjectNames.length,

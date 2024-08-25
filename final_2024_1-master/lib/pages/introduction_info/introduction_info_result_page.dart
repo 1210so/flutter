@@ -5,6 +5,7 @@ import 'package:final_2024_1/pages/resume/check_resume_result_page.dart';
 import 'introduction_info_edit_page.dart';
 import 'package:final_2024_1/config.dart';
 
+// 자기소개서 결과 페이지의 StatefulWidget 정의
 class IntroductionInfoResultPage extends StatefulWidget {
   final int userId;
   final String introductionText;
@@ -15,19 +16,21 @@ class IntroductionInfoResultPage extends StatefulWidget {
   _IntroductionInfoResultPageState createState() => _IntroductionInfoResultPageState();
 }
 
+// 페이지의 상태를 관리하는 State 클래스
 class _IntroductionInfoResultPageState extends State<IntroductionInfoResultPage> {
   late String _introductionText;
 
   @override
   void initState() {
     super.initState();
-    _introductionText = widget.introductionText;
+    _introductionText = widget.introductionText; // 초기 자기소개서 텍스트 설정
   }
 
+// 자기소개서를 업데이트하는 비동기 함수
   Future<void> _updateIntroduction(String newText) async {
     var url = Uri.parse('$BASE_URL/introduction-info/update/${widget.userId}');
     var headers = {'Content-Type': 'application/json'};
-    var body = jsonEncode({'gpt': newText});
+    var body = jsonEncode({'gpt': newText}); // 요청 본문 설정
 
     try {
       var response = await http.post(url, headers: headers, body: body);
@@ -44,7 +47,9 @@ class _IntroductionInfoResultPageState extends State<IntroductionInfoResultPage>
     }
   }
 
+// 자기소개서를 편집하는 함수
   void _editIntroduction() async {
+  // 자기소개서 편집 페이지로 이동하고 결과를 기다림
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -55,11 +60,13 @@ class _IntroductionInfoResultPageState extends State<IntroductionInfoResultPage>
       ),
     );
 
+ // 결과가 문자열일 경우 자기소개서 업데이트
     if (result != null && result is String) {
       _updateIntroduction(result);
     }
   }
 
+// 이력서 확인 페이지로 이동하는 함수
   void _goToResumeCheck() {
     Navigator.push(
       context,

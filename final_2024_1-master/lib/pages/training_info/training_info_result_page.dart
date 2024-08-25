@@ -6,6 +6,7 @@ import 'training_info_edit_page.dart';
 import 'package:final_2024_1/config.dart';
 import 'package:final_2024_1/pages/introduction_info/introduction_info_page.dart';
 
+// 훈련 정보 결과 페이지를 위한 StatefulWidget
 class TrainingInfoResultPage extends StatefulWidget {
   final int userId;
   final String userName;
@@ -25,6 +26,7 @@ class _TrainingInfoResultPageState extends State<TrainingInfoResultPage> {
     _dataFuture = _fetchData();
   }
 
+// 서버에서 훈련 정보 데이터 가져오기
   Future<List<Map<String, dynamic>>> _fetchData() async {
     var response = await http.get(
       Uri.parse('$BASE_URL/training-info/${widget.userId}'),
@@ -84,6 +86,7 @@ class _TrainingInfoResultPageState extends State<TrainingInfoResultPage> {
                             height: 1.0, // 줄 간격 조정 (기본값은 1.0, 더 작은 값을 사용하여 줄 간격 좁히기)
                           ),
                         ),
+                        // 훈련 정보 리스트
                         ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
@@ -146,6 +149,7 @@ class _TrainingInfoResultPageState extends State<TrainingInfoResultPage> {
                           },
                         ),
                         SizedBox(height: 50),
+                        // 훈련/교육 정보 추가 버튼
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
@@ -171,6 +175,7 @@ class _TrainingInfoResultPageState extends State<TrainingInfoResultPage> {
                           ),
                         ),
                         SizedBox(height: 20),
+                        // 자기소개서 작성 버튼
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF001ED6),

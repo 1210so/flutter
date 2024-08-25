@@ -14,12 +14,13 @@ class IntroductionInfoEditPage extends StatefulWidget {
 }
 
 class _IntroductionInfoEditPageState extends State<IntroductionInfoEditPage> {
-  late TextEditingController _introductionController;
+  late TextEditingController _introductionController;// 텍스트 필드의 컨트롤러
   late ScrollController _scrollController; // 추가
 
   @override
   void initState() {
     super.initState();
+    // 초기 자기소개서 텍스트로 텍스트 컨트롤러 초기화
     _introductionController = TextEditingController(text: widget.initialText);
     _scrollController = ScrollController(); // 추가
   }
@@ -31,8 +32,10 @@ class _IntroductionInfoEditPageState extends State<IntroductionInfoEditPage> {
     super.dispose();
   }
 
+// 서버에 자기소개서 저장하는 비동기 함수
   Future<void> _saveIntroduction() async {
     try {
+    // HTTP POST 요청을 사용하여 서버에 데이터를 보냄
       var response = await http.post(
         Uri.parse('$BASE_URL/introduction-info/update/${widget.userId}'),
         headers: <String, String>{
@@ -41,15 +44,18 @@ class _IntroductionInfoEditPageState extends State<IntroductionInfoEditPage> {
         body: jsonEncode({'gpt': _introductionController.text}),
       );
 
+// 요청이 성공적으로 완료되면 이전 페이지로 돌아가면서 텍스트를 반환
       if (response.statusCode == 200) {
         await Future.delayed(Duration(milliseconds: 300));
         Navigator.pop(context, _introductionController.text);
       } else {
+      // 오류 발생 시 사용자에게 알림
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: ${response.reasonPhrase}')),
         );
       }
     } catch (e) {
+    // 예외 발생 시 사용자에게 알림
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );

@@ -7,6 +7,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
 import 'dart:async';
 
+/// AcademicInfoFourthPage는 StatefulWidget이며, 사용자의 학사 정보를 입력받는 UI 페이지.
+
 class AcademicInfoFourthPage extends StatefulWidget {
   final int userId;
   final String highestEdu;
@@ -26,7 +28,7 @@ class AcademicInfoFourthPage extends StatefulWidget {
   @override
   _AcademicInfoFourthPageState createState() => _AcademicInfoFourthPageState();
 }
-
+// 페이지의 상태를 관리하는 클래스
 class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
   final TextEditingController _detailedMajorController = TextEditingController();
   bool _isDetailedMajorEmpty = false;
@@ -46,7 +48,7 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
     _detailedMajorController.dispose();
     super.dispose();
   }
-
+// 세부 전공 입력 텍스트 필드의 색상을 업데이트하는 함수
   void _updateDetailedMajorTextColor() {
     setState(() {
       _hasInputDetailedMajor = _detailedMajorController.text.isNotEmpty;
@@ -57,13 +59,12 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
     final String rawCsv = await rootBundle.loadString('assets/university_subjects.csv');
     List<List<dynamic>> csvTable = CsvToListConverter().convert(rawCsv);
 
-    // Assuming the first row is the header and we are interested in the column with title "학과명"
-    int columnIndex = csvTable[0].indexOf('학과명');
+ // 첫 번째 행이 헤더라고 가정하고, "학과명"이라는 열의 인덱스를 찾음    int columnIndex = csvTable[0].indexOf('학과명');
     if (columnIndex == -1) {
       throw Exception('학과명 column not found');
     }
 
-    // Extract the column values (excluding the header)
+    // 헤더를 제외한 학과명 데이터를 리스트에 저장
     List<String> subjectNames = [];
     for (int i = 1; i < csvTable.length; i++) {
       subjectNames.add(csvTable[i][columnIndex]);
@@ -73,7 +74,7 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
       _subjectNames = subjectNames;
     });
   }
-
+// "다음" 버튼을 눌렀을 때 호출되는 함수
   void _onNextButtonPressed() {
     setState(() {
       _isDetailedMajorEmpty = _detailedMajorController.text.isEmpty;
@@ -82,7 +83,7 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
     if (_isDetailedMajorEmpty) {
       return;
     }
-
+    // 페이지 이동: 개인 정보 확인 페이지로 이동 후, 최종 학사 정보 페이지로 이동
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -109,7 +110,7 @@ class _AcademicInfoFourthPageState extends State<AcademicInfoFourthPage> {
       ),
     );
   }
-
+  // 텍스트 필드 클릭 시 호출되는 함수 (학과 선택 페이지로 이동)
   void _onTextFieldClicked(BuildContext context) async {
     final selectedSubject = await Navigator.push(
       context,

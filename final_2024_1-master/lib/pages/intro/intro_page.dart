@@ -7,14 +7,19 @@ class IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
+  // 애니메이션 컨트롤러 선언
   late AnimationController _helloFadeController;
   late AnimationController _helloSlideController;
   late AnimationController _secondFadeController;
   late AnimationController _secondSlideController;
+
+  // 애니메이션 선언
   late Animation<double> _helloFadeAnimation;
   late Animation<Offset> _helloSlideAnimation;
   late Animation<double> _secondFadeAnimation;
   late Animation<Offset> _secondSlideAnimation;
+
+  // 두 번째 섹션 표시 여부를 결정하는 플래그
   bool _showSecondSection = false;
 
   @override
@@ -61,6 +66,8 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
       end: Offset(0, 0.0),
     ).animate(CurvedAnimation(parent: _secondSlideController, curve: Curves.easeIn));
 
+
+// 애니메이션 순서 설정
     _helloFadeController.forward().then((_) {
       setState(() {
         _showSecondSection = true;
@@ -85,6 +92,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
     return Scaffold(
       body: Stack(
         children: [
+        // "안녕하세요!" 텍스트 애니메이션
           Positioned(
             top: MediaQuery.of(context).size.height * 0.3,
             left: 0,
@@ -113,6 +121,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                // 두 번째 섹션 애니메이션
                   if (_showSecondSection)
                     FadeTransition(
                       opacity: _secondFadeAnimation,
@@ -120,6 +129,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                         position: _secondSlideAnimation,
                         child: Column(
                           children: [
+                           // "12쉽소를 처음 사용하시나요?" 텍스트
                             RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
@@ -201,6 +211,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                                     elevation: 5,
                                   ),
                                   onPressed: () {
+                                  // "예" 버튼 클릭 시 IntroPage2로 이동
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(builder: (context) => IntroPage2()),
